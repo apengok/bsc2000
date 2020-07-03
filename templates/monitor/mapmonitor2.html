@@ -1,0 +1,130 @@
+{% extends '_vbase_ol.html' %}
+
+{% load staticfiles %}
+
+<style type="text/css">
+        #container {
+            background-color: white !important;
+        }
+
+        #thetree {
+            height: 20000px;
+        }
+
+        #MapContainer {
+            height: 20000px;
+        }
+
+        #dataTableBind td {
+            padding: 7px 10px;
+        }
+        .toolOperateClick .map-call::before{
+            content:"";position:relative;display:inline-block;top:6px;left:0;width:22px;height:22px;background-image:url(/clbs/resources/img/call-off.png)!important;background-size:22px 22px
+        }
+        .toolOperateClick .map-call.active::before{content:"";position:relative;display:inline-block;top:6px;left:0;width:22px;height:22px;background-image:url(/clbs/resources/img/call-on.png)!important;background-size:22px 22px}
+
+
+.overlay2 {
+    display: none;
+    position: absolute;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.25);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 400px;
+    /*top: -76px;*/
+    left: -90px;
+    user-select: none;
+}
+
+.overlay2:after {
+    /*top: 100%;*/
+    border: 10px solid transparent;
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+    border-top-color: rgba(255,255,255,0.9);
+}
+
+.overlay button + button {
+    float: right;
+}
+    </style>
+
+                        {% block main_content %}
+                        
+                        <div id="content-right" class="col-md-10 content-right" ">
+                            <div >
+                                <div id="js-map" class="map"></div>
+                                <div id="js-overlay" class="overlay2" >
+                                        <div class="form-group">
+                                          <label class="col-md-5 control-label" style="margin-right: 0;text-align: right;">分区名称:</label>
+                                          <label class="col-md-7 control-label" id="dma_name"><span style="color: #0099CC;"></span></label>
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="col-md-5 control-label" style="margin-right: 0;text-align: right;">所属组织:</label>
+                                          <label class="col-md-7 control-label" id="belongto"><span "></span></label>
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="col-md-5 control-label" style="margin-right: 0;text-align: right;">分区层级:</label>
+                                          <label class="col-md-7 control-label" id="dma_level"><span "></span></label>
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                          <label class="col-md-5 control-label" style="margin-right: 0;text-align: right;">状态:</label>
+                                          <label class="col-md-7 control-label" id="dma_status"><span style="color: #2ce80b;"></span></label>
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="col-md-5 control-label" style="margin-right: 0;text-align: right;">分区流量:</label>
+                                          <label class="col-md-7 control-label" id="dmaflow"><span ></span></label>
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="col-md-5 control-label" style="margin-right: 0;text-align: right;">当月售水量:</label>
+                                          <label class="col-md-7 control-label" id="month_sale"><span ></span></label>
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="col-md-5 control-label" style="margin-right: 0;text-align: right;">上月售水量:</label>
+                                          <label class="col-md-7 control-label" id="lastmonth_sale"><span ></span></label>
+                                        </div>
+                                        <div class="form-group">
+                                          <label class="col-md-5 control-label" style="margin-left: 0,margin-right: 0;text-align: right;">上月增长比例:</label>
+                                          <label class="col-md-7 control-label" id="bili"><span ></span></label>
+                                        </div>
+                                      
+                                      
+                                </div>
+
+                            </div>
+                            <!-- <div class="panel panel-default contPanelMargin">
+                                <div class="panel-body fixed-table-body form-horizontal btnPaddingTop">
+                                    <div class="form-group  mapDataPadd">
+                                        <div class="col-md-12 mapPaddCon">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="goShow">
+                                    <i id="goHidden" class="fa fa-chevron-right"></i>
+                                </div>
+
+                            </div> -->
+
+                        </div>
+
+
+                            
+                        {% endblock main_content %}
+
+
+{% block javascript %}
+  <script type="text/javascript">
+     
+    var  statsinfo = {{ dmastasticinfo|safe }};
+    
+ </script>
+    <script src="{% static 'virvo/wro/mapmonitor.js' %}"></script>
+ 
+{% endblock %}

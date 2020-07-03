@@ -1,0 +1,233 @@
+{% load staticfiles %}
+<form id="addForm" role="form" action="/devm/meter/add/" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button id="doXAdd" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">新增表具</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="deviceNumberGroup" class="form-group">
+                    <label class="col-md-2 control-label"><label
+                        class="text-danger">*</label> 表具编号：</label>
+                    <div class="col-md-4">
+                        <input name="serialnumber" placeholder="请输入表具编号" type="text" id= "serialnumber"
+                            class="form-control" />
+                        <label id="serialnumber-error" style="display: none" class="error" for="serialnumber">请输入终端号，范围：7~15</label>
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> SIM卡号：</label>
+                    <div class="col-sm-4 col-md-4 form-group" style="padding-top:10px; margin:0px;">
+                        <div style="position:relative;">
+                            <span style="overflow:hidden;">
+                                <input type="hidden" id="simID" name="simID" value=""/>
+                                </span>
+                                <div class="input-group">
+                                    <input value=""  type="text" placeholder="" class="form-control" maxlength="20" id="sims" name="simid">
+                                    
+                                    <div class="input-group-btn">
+                                        <!-- <input type="hidden" class="hidenSubmitControl"/> -->
+                                      <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                          <i class="fa fa-spinner loading-state"></i>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                      </ul>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-4">
+                        <input name="simid" placeholder="请输入表具编号" type="text" id= "simid"
+                            class="form-control" />
+                        
+                    </div> -->
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label"> 型号：</label>
+                    <div class="col-md-4">
+                        <input name="version"  type="text" id= "version" class="form-control" />
+                        <!-- <label id="deviceNumber-error" style="display: none" class="error" for="deviceNumber">请输入终端号，范围：7~15</label> -->
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 所属组织：</label>
+                    <div class="has-feedback col-md-4">
+                        <input name="belongto" class="form-control" id="zTreeOrganSel"
+                            placeholder="请选择所属企业" readonly="readonly" style="background-color: #fafafa; cursor: pointer;"  type="text"/>
+                        <span class="fa fa-chevron-down form-control-feedback" aria-hidden="true" id="zTreeCitySelSpan"></span>
+                        <div class="ztreeModelBox" id="zTreeContent">
+                            <ul id="ztreeDemo" class="ztree"></ul>
+                        </div>
+                        <input id = "groupId" name = "groupId" type="text" hidden="true" />
+                        <label id="error_label_add" class="error" style="display: none;"></label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 类型：</label>
+                    <div class="col-md-4">
+                        <select name="mtype" id="mtype" autocomplete="off"  class="form-control">
+                            <!-- <option  value="">- 请选择类型 -</option> -->
+                            <option  value="0">电磁水表</option>
+                            <option  value="1">超声水表</option>
+                            <option  value="2">机械水表</option>
+                            <option  value="3">插入电磁</option>
+                            
+                        </select>
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 通讯协议：</label>
+                    <div class="col-md-4">
+                        <select name="protocol" id="protocol" autocomplete="off"  class="form-control">
+                            <!-- <option  value="">- 请选择通讯协议 -</option> -->
+                            <option  value="0">平台协议</option>
+                            <option  value="1">和达协议</option>
+                            <option  value="2">安信协议</option>
+                            <option  value="3">手抄协议01</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">制造厂商：</label>
+                    <div class="col-md-4">
+                        <input name="manufacturer" id="manufacturer" placeholder="请输入条码" type="text" class="form-control" />
+                    </div>
+                    <label class="col-md-2 control-label"><label
+                        class="text-danger">*</label> 检修周期：</label>
+                    <div class="col-md-4">
+                        <select name="check_cycle" id="check_cycle" autocomplete="off" class="form-control">
+                            <option  value="10">10</option>
+                            <option  value="30">30</option>
+                            <option  value="40">40</option>
+                            <option  value="50">50</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <label class="radio-inline"> <input type="radio" name="metertype" id="isRadio" value="水表" checked> 水表</label>
+                        <label class="radio-inline"> <input type="radio" name="metertype" id="noRadio" value="流量计"> 流量计</label>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 口径：</label>
+                    <div class="col-md-4">
+                        <select name="dn" id="dn" autocomplete="off"  class="form-control">
+                            <option  value="40">40</option>
+                            <option  value="50">50</option>
+                            <option  value="65">65</option>
+                            <option  value="80">80</option>
+                            <option  value="100">100</option>
+                            <option  value="125">125</option>
+                            <option  value="150">150</option>
+                            <option  value="200">200</option>
+                            <option  value="250">250</option>
+                            <option  value="300">300</option>
+                            <option  value="400">400</option>
+                            <option  value="500">500</option>
+                            <option  value="600">600</option>
+                            <option  value="700">700</option>
+                            <option  value="800">800</option>
+                            <option  value="900">900</option>
+                            <option  value="1000">1000</option>
+                            <option  value="1200">1200</option>
+                            <option  value="1400">1400</option>
+                            <option  value="1600">1600</option>
+                        </select>
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> R值：</label>
+                    <div class="col-md-4">
+                        <select name="R" id="R" autocomplete="off"  class="form-control">
+                            <option  value="100">100</option>
+                            <option  value="160">160</option>
+                            <option  value="200">200</option>
+                            <option  value="250">250</option>
+                            <option  value="400">400</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label>Q1：</label>
+                    <div class="col-md-4">
+                        <input name="q1" id="q1" type="text" class="form-control" />
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label>Q3：</label>
+                    <div class="col-md-4">
+                        <!-- <input name="q3"  type="text" class="form-control" /> -->
+                        <select name="q3" id="q3" autocomplete="off"  class="form-control">
+                            <option  value="1">1</option>
+                            <option  value="10">10</option>
+                            <option  value="100">100</option>
+                            <option  value="1000">1000</option>
+                            <option  value="1.6">1.6</option>
+                            <option  value="16">16</option>
+                            <option  value="160">160</option>
+                            <option  value="1600">1600</option>
+                            <option  value="2.5">2.5</option>
+                            <option  value="25">25</option>
+                            <option  value="250">250</option>
+                            <option  value="2500">2500</option>
+                            <option  value="4">4</option>
+                            <option  value="40">40</option>
+                            <option  value="400">400</option>
+                            <option  value="4000">4000</option>
+                            <option  value="6.3">6.3</option>
+                            <option  value="63">63</option>
+                            <option  value="630">630</option>
+                            <option  value="6300">6300</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label>Q2：</label>
+                    <div class="col-md-4">
+                        <input name="q2" id="q2"  type="text" class="form-control" />
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label>Q4：</label>
+                    <div class="col-md-4">
+                        <input name="q4" id="q4"   type="text" class="form-control" readonly/>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class=" pull-left" style="margin-left: 100px;">
+            <label class="radio-inline"> <input type="radio" name="state" id="isRadio" value="1" checked> 启用</label>
+            <label class="radio-inline"> <input type="radio" name="state" id="noRadio" value="0"> 停用</label>
+        </div>
+        <button class="btn btn-primary" type="button" id="doSubmit">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+    <input  type="hidden" value="a1ccfc1b-3f76-46c3-8695-650671e0271e" name="avoidRepeatSubmitToken" id="avoidRepeatSubmitToken">
+</form>
+
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+
+<script>
+    var deviceNumberNull = "\u7EC8\u7AEF\u53F7\u4E0D\u80FD\u4E3A\u7A7A";
+    var deviceNumberError = "\u8BF7\u8F93\u5165\u5B57\u6BCD/\u6570\u5B57/\u4E0B\u5212\u7EBF/\u77ED\u6760\uFF0C\u8303\u56F4\uFF08\u8F66\uFF097~15\uFF08\u4EBA\uFF091~20";
+    var deviceNumberExists = "\u7EC8\u7AEF\u53F7\u5DF2\u5B58\u5728";
+    var deviceTypeNull="\u901A\u8BAF\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A";
+
+    var publicSize6="\u957F\u5EA6\u4E0D\u8D85\u8FC76\u4F4D";
+    var publicSize10="\u957F\u5EA6\u4E0D\u8D85\u8FC710\u4F4D";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize50="\u957F\u5EA6\u4E0D\u8D85\u8FC750\u4F4D";
+    var publicSize64="\u957F\u5EA6\u4E0D\u8D85\u8FC764\u4F4D";
+    var publicSize100="\u957F\u5EA6\u4E0D\u8D85\u8FC7100\u4F4D";
+    var phoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u624B\u673A\u53F7\u5462";
+    var publicNull = "\u4E0D\u80FD\u4E3A\u7A7A";
+</script>
+
+
+<script src="{% static 'virvo/wro/meterAdd.js' %}"></script>

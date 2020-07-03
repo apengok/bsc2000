@@ -1,0 +1,185 @@
+{% load staticfiles %}
+<form id="editForm" role="form" action="{% url 'devm:concentratoredit' object.pk %}" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button id="doXEdit" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">编辑集中器</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="deviceNumberGroup" class="form-group">
+                    <label class="col-md-2 control-label"><label
+                        class="text-danger">*</label> 集中器名称：</label>
+                    <div class="col-md-4">
+                        <input name="name" value="{{ form.name.value|default:'' }}" type="text" id= "name" class="form-control" />
+                        <label id="name-error" style="display: none" class="error" for="name">请输集中器名称</label>
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 所属组织：</label>
+                    <div class="has-feedback col-md-4">
+                        <input name="belongto" class="form-control" id="zTreeOrganSel"
+                            value="{{ form.belongto.value|default:'' }}" readonly="readonly" style="background-color: #fafafa; cursor: pointer;"  type="text"/>
+                        <span class="fa fa-chevron-down form-control-feedback" aria-hidden="true" id="zTreeCitySelSpan"></span>
+                        <div class="ztreeModelBox" id="zTreeContent">
+                            <ul id="ztreeDemo" class="ztree"></ul>
+                        </div>
+                        <input id = "groupId" name = "groupId" type="text" hidden="true" />
+                        <label id="error_label_add" class="error" style="display: none;"></label>
+                    </div>
+                    
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 经度：</label>
+                    <div class="col-md-4">
+                        <input name="lng"  type="text" id= "lng" value="{{ form.lng.value|default:'' }}" class="form-control" />
+                        <!-- <label id="deviceNumber-error" style="display: none" class="error" for="deviceNumber">请输入终端号，范围：7~15</label> -->
+                    </div>
+                    <label class="col-md-2 control-label"> 坐标类型：</label>
+                    <div class="col-md-4">
+                        
+                        <select name="coortype"  id="coortype" value="{{ form.coortype.value }}" autocomplete="off"  class="form-control">
+                            <!-- <option  value="">- 请选择类型 -</option> -->
+                            <option value="WGS84">地球坐标</option>
+                            <option value="GCJ-02">火星坐标</option>
+                            <option value="BD-09">百度坐标</option>
+                            <option value="IAG75">西安坐标</option>
+                            <option value="CGCS2000">大地坐标</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 纬度：</label>
+                    <div class="col-md-4">
+                        <input name="lat"  type="text" id= "lat" value="{{ form.lat.value|default:'' }}" class="form-control" />
+                        <!-- <label id="deviceNumber-error" style="display: none" class="error" for="deviceNumber">请输入终端号，范围：7~15</label> -->
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> SIM卡号：</label>
+                    <div class="col-sm-4 col-md-4 form-group" style="padding-top:10px; margin:0px;">
+                        <div style="position:relative;">
+                            <span style="overflow:hidden;">
+                                <input type="hidden" id="simID" name="simID" value=""/>
+                                </span>
+                                <div class="input-group">
+                                    <input readonly="true" value="{{ form.commaddr.value|default:'' }}"  type="text"  class="form-control" maxlength="20" id="sims" name="commaddr">
+                                    
+                                    <div class="input-group-btn">
+                                        <!-- <input type="hidden" class="hidenSubmitControl"/> -->
+                                      <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                          <i class="fa fa-spinner loading-state"></i>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                      </ul>
+                                    </div>
+
+                                </div>
+                                <label id="commaddr-error" style="display: none" class="error" for="name"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">位置描述：</label>
+                    <div class="col-md-10">
+                        <input name="address" id="address" value="{{ form.address.value|default:'' }}" type="text" class="form-control" />
+                    </div>
+                    
+                </div>
+                <br>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label"> 型号：</label>
+                    <div class="col-md-4">
+                        <!-- <input name="model" id="model" type="text" class="form-control" /> -->
+                        <select name="model" id="model" autocomplete="off"  class="form-control">
+                            <!-- <option  value="">- 请选择类型 -</option> -->
+                            <option value="LORA">LORA</option>
+                            <option value="NB0.0">NB0.0</option>
+                            <option value="NB1.0">NB1.0</option>
+                            
+                        </select>
+                    </div>
+                    
+                    <label class="col-md-2 control-label"> 出厂编号：</label>
+                    <div class="col-md-4">
+                        <input name="serialnumber" id="serialnumber" value="{{ form.serialnumber.value|default:'' }}" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    
+                    <label class="col-md-2 control-label">厂家：</label>
+                    <div class="col-md-4">
+                        <input id="manufacturer" name="manufacturer" value="{{ form.manufacturer.value|default:'' }}"  type="hidden" class="form-control" />
+                        <select name="manufacturerSelect" id="manufacturerSelect" autocomplete="off"  class="form-control">
+                            <option  value="常州天厚">常州天厚</option>
+                            <option  value="威盛集团">威盛集团</option>
+                            <option  value="常德水表">常德水表</option>
+                            <option  value="中科君达">中科君达</option>
+                            <option  value="新天科技">新天科技</option>
+                            <option  value="宁波水表">宁波水表</option>
+                            <option  value="潍微科技">潍微科技</option>
+                            <option  value="积成电子">积成电子</option>
+                            <option  value="京源中科">京源中科</option>
+                            
+                        </select>
+                    </div>
+                    <label class="col-md-2 control-label">生产日期：</label>
+                    <div class="col-md-4">
+                        <input name="madedate" id="madedate" value="{{ form.madedate.value|default:'' }}" type="text" class="form-control" />
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        
+        <button class="btn btn-primary" type="button" id="doSubmit">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+    <input  type="hidden" value="a1ccfc1b-3f76-46c3-8695-650671e0271e" name="avoidRepeatSubmitToken" id="avoidRepeatSubmitToken">
+</form>
+
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+
+<script>
+    var deviceNumberNull = "\u7EC8\u7AEF\u53F7\u4E0D\u80FD\u4E3A\u7A7A";
+    var deviceNumberError = "\u8BF7\u8F93\u5165\u5B57\u6BCD/\u6570\u5B57/\u4E0B\u5212\u7EBF/\u77ED\u6760\uFF0C\u8303\u56F4\uFF08\u8F66\uFF097~15\uFF08\u4EBA\uFF091~20";
+    var deviceNumberExists = "\u7EC8\u7AEF\u53F7\u5DF2\u5B58\u5728";
+    var deviceTypeNull="\u901A\u8BAF\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A";
+
+    var publicSize6="\u957F\u5EA6\u4E0D\u8D85\u8FC76\u4F4D";
+    var publicSize10="\u957F\u5EA6\u4E0D\u8D85\u8FC710\u4F4D";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize50="\u957F\u5EA6\u4E0D\u8D85\u8FC750\u4F4D";
+    var publicSize64="\u957F\u5EA6\u4E0D\u8D85\u8FC764\u4F4D";
+    var publicSize100="\u957F\u5EA6\u4E0D\u8D85\u8FC7100\u4F4D";
+    var phoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u624B\u673A\u53F7\u5462";
+    var publicNull = "\u4E0D\u80FD\u4E3A\u7A7A";
+
+    var manufacturer = "{{ form.manufacturer.value|default:'' }}"
+    var coortype = "{{ form.coortype.value|default:'' }}"
+
+    var name = "{{ form.name.value|default:'' }}"
+    var lng = "{{ form.lng.value|default:'' }}"
+
+    var lat = "{{ form.lat.value|default:'' }}"
+    var commaddr = "{{ form.commaddr.value|default:'' }}"
+
+    var model = "{{ form.model.value|default:'' }}"
+    var serialnumber = "{{ form.serialnumber.value|default:'' }}"
+
+    var madedate = "{{ form.madedate.value|default:'' }}"
+    var address = "{{ form.address.value|default:'' }}"
+    var belongto = "{{ form.belongto.value|default:'' }}"
+
+</script>
+
+
+<script src="{% static 'virvo/wro/concentratorEdit.js' %}"></script>

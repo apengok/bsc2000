@@ -1,0 +1,340 @@
+{% load staticfiles %}
+<form id="addForm" role="form" action="{% url 'sysm:mcadd' %}" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button type="button" id="doXAdd" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">修改通讯设置</h4>
+    </div>
+    <div class="modal-body">
+        <input  type="text" class="hidden" id="cid" name="cid" value="{{ cid }}" />
+        <input  type="text" class="hidden" id="pid" name="pId" value="{{ pId }}"/>
+        <div class="row">
+            <div class="row">
+                      <div class="form-group">
+                        <label class="col-md-4 control-label">通讯名称：</label>
+                        <div class=" col-md-7">
+                          <input type="text"  class="form-control" name="name" id = "name"/>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-md-4 control-label">通讯类型：</label>
+                        
+                        <div class=" col-md-7">
+                          <!-- <input type="text"  class="form-control" name="commtype" id = "commtype"/> -->
+                          <select name="commtype" id="commtype" autocomplete="off"  class="form-control">
+                            <option  value="0">集中器</option>
+                            <option  value="1">大表</option>
+                            <!-- <option  value="2">导入</option>
+                            <option  value="3">导出</option> -->
+                            
+                            </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-md-4 control-label">TCP端口：</label>
+                        <div class=" col-md-7">
+                          <input type="text"  class="form-control" name="tcpport" id = "tcpport"/>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-md-4 control-label">通讯规约：</label>
+                        <div class=" col-md-7">
+                            <select name="commprotocol" id="commprotocol" autocomplete="off"  class="form-control">
+                                
+                                
+                            </select>
+                        </div>
+                        <!-- <div class="col-sm-7 col-md-7 form-group" style="padding-top:10px; margin:0px;">
+                            <div style="position:relative;">
+                                <span style="overflow:hidden;">
+                                    <input type="hidden" id="commprotocolID" name="commprotocolID" value=""/>
+                                    </span>
+                                    <div class="input-group">
+                                        <input value=""  type="text" placeholder="" class="form-control" maxlength="20" id="commprotocol" name="commprotocol">
+                                        
+                                        <div class="input-group-btn">
+                                            
+                                          <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                              <i class="fa fa-spinner loading-state"></i>
+                                          </button>
+                                          <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                          </ul>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div> -->
+                        <!-- <div class=" col-md-7">
+                          <input type="text"  class="form-control" name="commprotocol" id = "commprotocol"/>
+                        </div> -->
+                      </div>
+                    </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="submitEdit"  class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+    <input  type="hidden" value="ef6c759b-ef14-46f7-bec1-5819d0c322fa" name="avoidRepeatSubmitToken" id="avoidRepeatSubmitToken">
+</form>
+<!-- <script type="text/javascript" src="/clbs/resources/js/sendAjax.js"></script> -->
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+<script>
+
+
+    (function($,window){
+        var commprotocolInput = $("#commprotocol");
+        var commprotocolId = $("#commprotocolID").val();
+        commConfigAdd = {
+            init: function(){
+                // $.ajax({
+                //     url: 'group/findOperations',
+                //     type: 'POST',
+                //     data: "",
+                //     async:false,
+                //     dataType: 'json',
+                //     success: function (data) {
+                //         if(data.success==true){
+                //             var operations=[];
+                //             var selector=$("#operation");
+                //             selector.append('<option  value = "">'+"请选择组织结构性质"+'</option>');
+                //             //selector.append('<optgroup label="请选择运营资质类别"></optgroup>');
+                //             if(data.obj.operation != null && data.obj.operation.length > 0){
+                //                 var calldata = data.obj.operation;
+                //                 for(var i=0;i<calldata.length;i++){
+                //                     selector.append('<option  value="'+calldata[i].operationType+'">'+calldata[i].operationType+'</option>');
+                //                 }
+                //             }
+                //         }
+                //     },
+                // });
+                // laydate.render({elem: '#registerDate',max: commConfigAdd.getsTheMaxTime(),theme: '#6dcff6'});
+                commConfigAdd.InitCallback();
+            },
+            //显示或隐藏输入框
+            showHideValueCase: function(type,dataInput){
+                var dataInputType = dataInput.selector;
+                if (type == 0) {//限制输入
+                    
+                    if ("#commprotocol" == dataInputType) { //sim卡限制
+                        $(".simsList").attr("readonly",true);
+                        $("#simParentGroupName").css("background-color","");
+                        $("#simGroupDiv").css("display","block");
+                        $("#operatorTypeDiv").css("display","block");
+                        // simFlag = false;
+                    }
+                } else if (type == 1) {//放开输入
+                    
+                    if ("#commprotocol" == dataInputType) { //sim卡放开
+                        $(".simsList").removeAttr("readonly");
+                        $("#simParentGroupName").css("background-color","#fafafa");
+                        $("#simGroupDiv").css("display","none");
+                        $("#operatorTypeDiv").css("display","none");
+                        // simFlag = true;
+                    }
+                }
+            },
+            hideErrorMsg: function(){
+                $("#error_label").hide();
+            },
+            InitCallback: function(){
+                //sim卡
+                // commConfigAdd.initProtocolType("/sysm/commconfig/getProtocolSelect/");
+                
+                json_ajax("POST", "/sysm/commconfig/getProtocolSelect/", "json", true,
+                    {commtype: $("#commtype").val()}, commConfigAdd.protocolTypeChangeCallback);
+            },
+            initProtocolType: function (url) {
+                commConfigAdd.initDataList(commprotocolInput, url, commprotocolId);
+                // commConfigAdd.initDataList(commprotocolInput, url, commprotocolId,commConfigAdd.protocolTypeChange);
+            },
+            protocolTypeChange: function (keyword) {
+                // datas = keyword.key;
+                // json_ajax("POST", "/devm/getSimcardInfoBySimcardNumber/", "json", true,
+                //     {simcardNumber: datas}, commConfigAdd.protocolTypeChangeCallback);
+            },
+            protocolTypeChangeCallback: function(data){
+                if(data.success){
+                    console.log("protocolTypeChangeCallback");
+                    console.log(data);
+                    var itemList = data.obj;
+                    console.log(itemList);
+                    commprotocolInput.next().find('button').removeClass('disabled loading-state-button').find('i').attr("class", 'caret');
+                    for(var i=0;i<itemList.length;i++){
+                        commprotocolInput.append('<option  value="'+itemList[i].name+'">'+itemList[i].name+'</option>');
+                    }
+                    // var suggest=commprotocolInput.bsSuggest({
+                    //     indexId: 1,  //data.value 的第几个数据，作为input输入框的内容
+                    //     indexKey: 0, //data.value 的第几个数据，作为input输入框的内容
+                    //     data: {value:itemList},
+                    //     idField: "id",
+                    //     keyField: "name",
+                    //     effectiveFields: ["name"]
+                    // }).on('onDataRequestSuccess', function (e, result) {
+                    // }).on("click",function(){
+                    // }).on('onSetSelectValue', function (e, keyword, data) {
+                        
+                    // }).on('onUnsetSelectValue', function () {
+                    //     //放开输入
+                    //     commConfigAdd.showHideValueCase(1,dataInput);
+                    // });
+                    
+                    // commprotocolInput.next().find('button').removeClass('disabled loading-state-button').find('i').attr("class", 'caret');
+                        
+                    // $("#iccidSim").val(data.obj.simcardInfo.ICCID);
+                    // $("#simParentGroupName").val(data.obj.simcardInfo.groupName);
+                    // $("#operator").val(data.obj.simcardInfo.operator);
+                    // $("#simFlow").val(data.obj.simcardInfo.simFlow);
+                    // $("#openCardTime").val(data.obj.simcardInfo.openCardTime);
+                }else{
+                    layer.msg(data.msg);
+                }
+            },
+            initDataList: function (dataInput, urlString, id, callback,moreCallback) {
+                console.log(dataInput,id);
+                // if(id.indexOf('#')<0){
+                //     dataInput.attr('data-id',id);
+                // }
+                //if(dataInput.attr('name').indexOf('_')<0){
+                //  dataInput.attr('name',dataInput.attr('name')+'__');
+                //}
+                $.ajax({
+                    type: "POST",
+                    url: urlString,
+                    data: {commtype: $("#commtype").val()},
+                    dataType: "json",
+                    success: function (data) {
+                        var itemList = data.obj;
+                        console.log(itemList);
+                        var suggest=dataInput.bsSuggest({
+                            indexId: 1,  //data.value 的第几个数据，作为input输入框的内容
+                            indexKey: 0, //data.value 的第几个数据，作为input输入框的内容
+                            data: {value:itemList},
+                            idField: "id",
+                            keyField: "name",
+                            effectiveFields: ["name"]
+                        }).on('onDataRequestSuccess', function (e, result) {
+                        }).on("click",function(){
+                        }).on('onSetSelectValue', function (e, keyword, data) {
+                            if(callback){
+                                dataInput.closest('.form-group').find('.dropdown-menu').hide()
+                                callback(keyword)
+                            }
+                            //限制输入
+                            // commConfigAdd.showHideValueCase(0,dataInput);
+                            // commConfigAdd.hideErrorMsg();
+                        }).on('onUnsetSelectValue', function () {
+                            //放开输入
+                            commConfigAdd.showHideValueCase(1,dataInput);
+                        });
+                        
+                        dataInput.next().find('button').removeClass('disabled loading-state-button').find('i').attr("class", 'caret');
+                        if(moreCallback){
+                            moreCallback()
+                        }
+                    }
+                });
+            },
+            // 提交
+            doSubmit: function(){
+                console.log('validas...');
+            
+                if(commConfigAdd.validates() == true){
+                    // var s = $("#operation").val();
+                    // if (s == null) {
+                    //     $("#operation").val("");
+                    // }
+                    $("#addForm").ajaxSubmit(function(data) {
+                        console.log(data);
+                        var result = $.parseJSON(data);
+                        // if (result.success) {
+
+                        //     $("#commonSmWin").modal("hide");
+                        //     layer.msg("添加成功！",{move:false});
+                        //     $("#search_condition").val("");
+                        // }
+                        if (result.success) {
+                            if (result.obj.flag == 1){
+                                $("#commonSmWin").modal("hide");
+                                
+                                layer.msg("添加成功！",{move:false});
+                                myTable.refresh();
+                                $("#search_condition").val("");
+                            }else{
+                                layer.msg(result.obj.errMsg,{move:false});
+                            }
+                        }else{
+                            layer.msg(result.msg,{move:false});
+                        }
+                    });
+                }
+                
+
+            },
+            clearPreviousValue :function(){
+                if($(".remote").data("previousValue")){
+                    $(".remote").data("previousValue").old = null;
+                }
+            },
+            
+            //校验
+            validates: function(){
+                return $("#addForm").validate({
+                    rules : {
+                        name:{
+                            required:true,
+                            maxlength:25,
+                            
+                        },
+                        commtype:{
+                            required:true,
+                            maxlength:25,
+                            
+                        },
+                        tcpport:{
+                            required:true,
+                            maxlength:25
+                        },
+                        
+                        commprotocol:{
+                            required:true
+                        }
+                    },
+                    messages : {
+                        name:{
+                            required :  "通讯名称不能为空",
+                            maxlength : "\u957F\u5EA6\u4E0D\u8D85\u8FC725\u4F4D",
+                            // remote:"该分区编号已存在"
+                        },
+                        commtype:{
+                            required :  "请选择通讯类型",
+                            maxlength : "\u957F\u5EA6\u4E0D\u8D85\u8FC725\u4F4D",
+                            // remote:"该分区名称已存在"
+                        },
+                        tcpport:{
+                            required :  "tcp端口不能为空",
+                            maxlength : "\u957F\u5EA6\u4E0D\u8D85\u8FC725\u4F4D"
+                        },
+                        commprotocol:{
+                            required : "请选择通讯规约"
+                        }
+                    }
+                }).form();
+            }
+        }
+        $(function() {
+            commConfigAdd.init();
+            $("#submitEdit").on("click",commConfigAdd.doSubmit);
+            $('input').inputClear();
+            $("#commtype").bind("propertychange change", function (event) {
+                $("#commprotocol").find('option').remove();
+                commConfigAdd.InitCallback();
+                
+            });
+            $("#name,#commtype,#tcpport,#commprotocol,#cursor").on("change",commConfigAdd.clearPreviousValue);
+        });
+    })($,window)
+</script>
+

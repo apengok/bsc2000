@@ -1,0 +1,57 @@
+{% load staticfiles %}
+<form id="editForm" role="form" action="{% url 'entm:roleedit' object.id %}" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button type="button" id="doXEdit" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">修改角色</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <input id="idStr" type="text" hidden="true" name="id" value="{{ object.pk }}" />
+                <input id="rolename" type="text" hidden="true" name="name" value="{{ object.name }}" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><label
+                        class="text-danger">*</label> 角色名称： </label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入角色名称" type="text" readonly="true"
+                            class="form-control" id="roleName" name="name" value="{{ form.name.value }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注：</label>
+                    <div class="col-md-7">
+                        <textarea rows="4" class="form-control"
+                            placeholder="最大140个字符" id="description" name="notes">{{ form.notes.value }}</textarea>
+                    </div>
+                </div>
+                <input id="permissionEditTree" name="permissionTree" type="text"
+                    hidden="true" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> 操作权限：</label>
+                    <div class="col-md-7">
+                        <div class="treeArea">
+                            <ul id="permissionEditDemo" name="fenceTree" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="doSubmitEdit" class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseEdit" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+</form>
+<script>
+    var roleNameNull = "\u89D2\u8272\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize140="\u957F\u5EA6\u4E0D\u8D85\u8FC7140\u4F4D";
+    var publicMinSize1Length="\u957F\u5EA6\u4E0D\u80FD\u5C0F\u4E8E1\u4F4D";
+</script>
+<script src="{% static 'virvo/wro/roleEdit.js' %}"></script>

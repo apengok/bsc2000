@@ -1,0 +1,216 @@
+{% load staticfiles %}
+<form id="addForm" role="form" action="{% url 'wirelessm:watermeteradd' %}" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button type="button" id="doXAdd" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">新增水表</h4>
+    </div>
+    <div class="modal-body">
+        <input  type="text" class="hidden" id="cid" name="cid" value="{{ cid }}" />
+        <input  type="text" class="hidden" id="pid" name="pId" value="{{ pId }}"/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 户号：</label>
+                    <div class="col-md-4">
+                        <input name="numbersth" placeholder="请输入户号" type="text" maxlength="50" class="form-control" id="numbersth"/>
+                        <label id="numbersth-error" style="display: none" class="error" for="numbersth">请输入户名</label>
+                    </div>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 栋号：</label>
+                    <div class="col-md-4">
+                        <input name="buildingname" placeholder="请输入栋号" type="text" maxlength="50" class="form-control" id="buildingname"/>
+                        <label id="buildingname-error" style="display: none" class="error" for="buildingname">请输入栋号</label>
+                    </div>
+                    <!-- <label class="col-md-2 control-label"><label class="text-danger">*</label> 所属组织：</label>
+                    <div class="has-feedback col-md-4">
+                        <input name="belongto" class="form-control" id="zTreeOrganSel"
+                            placeholder="请选择所属企业" readonly="readonly" style="background-color: #fafafa; cursor: pointer;"  type="text"/>
+                        <span class="fa fa-chevron-down form-control-feedback" aria-hidden="true" id="zTreeCitySelSpan"></span>
+                        <div class="ztreeModelBox" id="zTreeContent">
+                            <ul id="ztreeDemo" class="ztree"></ul>
+                        </div>
+                        <input id = "groupId" name = "groupId" type="text" hidden="true" />
+                        <label id="error_label_add" class="error" style="display: none;"></label>
+                    </div> -->
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 房号：</label>
+                    <div class="col-md-4">
+                        <input name="roomname" placeholder="请输入房号" type="text" maxlength="50" class="form-control" id="roomname"/>
+                        <label id="roomname-error" style="display: none" class="error" for="roomname">请输入房号</label>
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label>所属小区：</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input name="communityid" type="hidden" class="form-control" id="communityid">
+                            <input name="communitysel" type="text" class="form-control" id="communitysel">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-white dropdown-toggle"
+                                    data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 表编号：</label>
+                    <div class="col-md-4">
+                        <input name="serialnumber" placeholder="请输入编号" type="text" maxlength="50" class="form-control" id="serialnumber"/>
+                        <label id="serialnumber-error" style="display: none" class="error" for="serialnumber">请输入编号</label>
+                    </div>
+                    <label class="col-md-2 control-label">所属集中器：</label>
+                    <div class="col-md-4">
+                        <input name="concentrator" type="text" class="form-control" id="concentrator" readonly="true">
+                        <!-- <div class="input-group">
+                            <input name="concentrator" type="text" class="form-control" id="concentrator">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-white dropdown-toggle"
+                                    data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                </ul>
+                            </div>
+                        </div> -->
+                    </div>
+
+
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"> 用户姓名：</label>
+                    <div class="col-md-4">
+                        <input name="username" placeholder="请输入用户姓名" type="text" maxlength="50" class="form-control" id="username"/>
+                        
+                    </div>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;">用户电话：</label>
+                    <div class="col-md-4">
+                        <input name="usertel" placeholder="用户电话" type="text" maxlength="50" class="form-control" id="usertel"/>
+                        
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"> 口径：</label>
+                    <div class="col-md-4">
+                        <select name="dn" id="dn" autocomplete="off"  class="form-control">
+                            <option  value="15">15</option>
+                            <option  value="20">20</option>
+                            <option  value="25">25</option>
+                            
+                        </select>
+                    </div>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"> 厂家：</label>
+                    <div class="col-md-4">
+                        <input name="manufacturer" placeholder="请输入厂家" type="text" maxlength="50" class="form-control" id="manufacturer"/>
+                        
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"> 用户地址：</label>
+                    <div class="col-md-4">
+                        <input name="useraddr" placeholder="请输入用户地址" type="text" maxlength="150" class="form-control" id="useraddr"/>
+                        
+                    </div>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;">安装位置：</label>
+                    <div class="col-md-4">
+                        <input name="installationsite" placeholder="安装位置" type="text" maxlength="150" class="form-control" id="installationsite"/>
+                        
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;">阀控表：</label>
+                    <div class="col-md-4">
+                        <select name="metercontrol" id="metercontrol" autocomplete="off"  class="form-control">
+                            <!-- <option  value="">- 请选择类型 -</option> -->
+                            <option value="0">非阀控表</option>
+                            <option value="1">阀控表</option>
+                            
+                        </select>
+                        
+                    </div>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"> 生产日期：</label>
+                    <div class="col-md-4">
+                        <input style="cursor: pointer;  background-color: #fafafa;" class="form-control layer-date laydate-icon"
+                               id="madedate" name="madedate" placeholder=""/>
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label>表类型：</label>
+                    <div class="col-md-4">
+                        <select name="metertype" id="metertype" autocomplete="off"  class="form-control">
+                            <!-- <option  value="">- 请选择类型 -</option> -->
+                            <option value="0">NB物联</option>
+                            <option value="1">LORA智能</option>
+                            <option value="2">有线远传</option>
+                            <option value="3">其他</option>
+                            
+                        </select>
+                        
+                    </div>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;">关联IMEI：</label>
+                    <div class="col-sm-4 col-md-4 form-group" style="padding-top:10px; margin:0px;">
+                        <div style="position:relative;">
+                            <span style="overflow:hidden;">
+                                <input type="hidden" id="wateraddr" name="wateraddr" />
+                                </span>
+                                <div class="input-group">
+                                    <input value=""  type="text" placeholder="" class="form-control" maxlength="20" id="sims" name="simid">
+                                    
+                                    <div class="input-group-btn">
+                                        <!-- <input type="hidden" class="hidenSubmitControl"/> -->
+                                      <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                          <i class="fa fa-spinner loading-state"></i>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                      </ul>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="doSubmit"  class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+    <input  type="hidden" value="ef6c759b-ef14-46f7-bec1-5819d0c322fa" name="avoidRepeatSubmitToken" id="avoidRepeatSubmitToken">
+</form>
+<!-- <script type="text/javascript" src="/clbs/resources/js/sendAjax.js"></script> -->
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+
+<script>
+var deviceNumberNull = "\u7EC8\u7AEF\u53F7\u4E0D\u80FD\u4E3A\u7A7A";
+    var deviceNumberError = "\u8BF7\u8F93\u5165\u5B57\u6BCD/\u6570\u5B57/\u4E0B\u5212\u7EBF/\u77ED\u6760\uFF0C\u8303\u56F4\uFF08\u8F66\uFF097~15\uFF08\u4EBA\uFF091~20";
+    var deviceNumberExists = "\u7EC8\u7AEF\u53F7\u5DF2\u5B58\u5728";
+    var deviceTypeNull="\u901A\u8BAF\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A";
+
+    var publicSize6="\u957F\u5EA6\u4E0D\u8D85\u8FC76\u4F4D";
+    var publicSize10="\u957F\u5EA6\u4E0D\u8D85\u8FC710\u4F4D";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize50="\u957F\u5EA6\u4E0D\u8D85\u8FC750\u4F4D";
+    var publicSize64="\u957F\u5EA6\u4E0D\u8D85\u8FC764\u4F4D";
+    var publicSize100="\u957F\u5EA6\u4E0D\u8D85\u8FC7100\u4F4D";
+    var phoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u624B\u673A\u53F7\u5462";
+    var publicNull = "\u4E0D\u80FD\u4E3A\u7A7A";
+
+    laydate.render({elem: '#madedate',theme: '#6dcff6'});
+</script>
+
+<script src="{% static 'virvo/wro/watermeterAdd.js' %}"></script>

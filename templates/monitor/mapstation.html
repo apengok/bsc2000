@@ -1,0 +1,171 @@
+{% extends '_vbase_amap.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/ol/v3.20.1-dist/ol.css' %}"/>
+
+<style type="text/css">
+        #container {
+            background-color: white !important;
+        }
+
+        #treeDemo {
+            height: 20000px;
+        }
+
+        #map {
+            height: 2000px;
+        }
+
+        #dataTableBind td {
+            padding: 7px 10px;
+        }
+        .toolOperateClick .map-call::before{
+            content:"";position:relative;display:inline-block;top:6px;left:0;width:22px;height:22px;background-image:url(/clbs/resources/img/call-off.png)!important;background-size:22px 22px
+        }
+        .toolOperateClick .map-call.active::before{content:"";position:relative;display:inline-block;top:6px;left:0;width:22px;height:22px;background-image:url(/clbs/resources/img/call-on.png)!important;background-size:22px 22px}
+
+        #map-container {width:1600px; height: 850px; }  
+
+
+.overlay2 {
+    display: none;
+    position: absolute;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.25);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 400px;
+    /*top: -76px;*/
+    left: -90px;
+    user-select: none;
+}
+
+.overlay2:after {
+    /*top: 100%;*/
+    border: 10px solid transparent;
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+    border-top-color: rgba(255,255,255,0.9);
+}
+
+
+.overlay button + button {
+    float: right;
+}
+
+.info {
+    /*display: none;*/
+    /*position: absolute;*/
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.9);
+    font-family:'微软雅黑';
+    font-weight:400;
+    font-style:normal;
+    font-size:12px;
+    
+    
+}
+
+.span2 {
+  font-family:'微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
+  font-weight:700;
+  font-style:normal;
+  font-size:12px;
+  color:#0099CC;
+  margin-left: 10px;
+}
+
+.span1 {
+  
+  margin-left: 10px;
+}
+
+.span3 {
+  font-family:'微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
+  font-weight:700;
+  font-style:normal;
+  font-size:12px;
+  color:#008000;
+  margin-left: 10px;
+}
+
+.span4 {
+  font-family:'微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
+  font-weight:700;
+  font-style:normal;
+  font-size:12px;
+  color:red;
+  margin-left: 10px;
+}
+
+    </style>
+{% endblock %}
+
+{% block main_content %}
+
+<div id="content-right" class="col-md-10 content-right" >
+    <div >
+        <!-- <div id="js-map" class="map"></div> -->
+        
+      <div id="map" ></div> 
+      <div id="popup"></div>
+      <div id="js-overlay" class="overlay2" >
+          <div>站点名称:<span class="map_span" style="color: #0099CC;">东门小学</span></div>
+          <div>所属组织:<span class="map_span">龙岗分公司</span></div>
+          <div>关联表具:<span class="map_span">170524</span></div>
+          <div>表具类型:<span class="map_span">电池水表</span></div>
+          <div>表均口径:<span class="map_span">DN600</span></div>
+          <div>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态:<span class="map_span" style="color: #008000;">在线</span></div>
+          <!-- <hr style="color: #ccc;background-color: #ccc;height: 1px;"> -->
+          <div style=";margin-left: -16px;"><img  src="{% static 'virvo/images/u3922.png' %}"></div>
+          <div>采集时间:<span class="map_span">2018-04-11</span></div>
+          <div>瞬时流量:<span class="map_span">12.54 m3/h</span></div>
+          <div>累积流量:<span class="map_span">546521 m3</span></div>
+          <div>管网压力:<span class="map_span">0.054MPa</span></div>
+          <div>信号强度:<span class="map_span">25</span></div>
+        </div>
+        
+
+    </div>
+    <!-- <div class="panel panel-default contPanelMargin">
+        <div class="panel-body fixed-table-body form-horizontal btnPaddingTop">
+            <div class="form-group  mapDataPadd">
+                <div class="col-md-12 mapPaddCon">
+
+                </div>
+            </div>
+        </div>
+        
+        <div id="goShow">
+            <i id="goHidden" class="fa fa-chevron-right"></i>
+        </div>
+
+    </div> -->
+
+</div>
+
+
+    
+{% endblock main_content %}
+
+ 
+
+{% block javascript %}
+  <script type="text/javascript">
+     
+    
+    
+ </script>
+    <!-- <script src="http://webapi.amap.com/maps?v=1.4.6&key=f034871b532a7bfb2d93f18e915b322c&plugin=AMap.DistrictSearch"></script> -->
+    <!-- <script src="http://webapi.amap.com/maps?v=1.4.6&key=f034871b532a7bfb2d93f18e915b322c&plugin=AMap.DistrictSearch,AMap.MouseTool,AMap.Driving,AMap.Autocomplete,AMap.Geocoder,AMap.PlaceSearch,AMap.PolyEditor,AMap.CircleEditor,AMap.MarkerClusterer"></script> -->
+    <script type="text/javascript" src="{% static '/ol/v3.20.1-dist/ol-debug.js' %}"></script>
+
+<script src="{% static 'virvo/wro/mapstation_ol3.js' %}"></script>
+ 
+{% endblock %}

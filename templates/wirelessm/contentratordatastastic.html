@@ -1,0 +1,326 @@
+ 
+{% extends '_vbase.html' %}
+
+
+{% load staticfiles %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'virvo/resources/js/bootstrap/css/bootstrap-table.min.css' %}" >
+
+<style type="text/css">
+
+.u15486_input {
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:183px;
+  height:51px;
+  background-color:transparent;
+  font-family:'微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
+  font-weight:700;
+  font-style:normal;
+  font-size:28px;
+  text-decoration:none;
+  color:#FFFFFF;
+  text-align:left;
+  border-color:transparent;
+  outline-style:none;
+}
+
+.col-md-5ths {width: 20%;float: left;}
+.col-md-5ths-1 {width: 18%;float: left;}
+.col-belong {width: 200px;}
+</style>
+
+{% endblock %}
+
+{% block main_content %}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading" id="stretch">
+                <h3 class="panel-title fwb">综合信息</h3>
+                <div class="actions pull-right" style="right:45px">
+                    <i class="fa chevron-down"  id="stretch-chevron"></i>
+                </div>
+            </div>
+            <div class="panel-body fixed-table-body" id="stretch-body">
+                <div class="form-group all-statistics-area" >
+                    <div class="col-md-6-xp">
+                        <div style="left: -10px" class=" col-md-6 report-group">
+                            <div class="col-md-12 report-group-more" id="checkGroup" >
+                                <div class="col-md-6"><span style="cursor:pointer;font-size:14px">用水情况</span></div>
+                                
+                            </div>
+                            <div class="col-md-12 area" style="position:relative;">
+                                <table class="table table-stripped table-bordered small " style="border:1px solid #cdcdcd">
+                                    <tr style="height: 10px;">
+                                        <td>昨日用水量(m³)</td>
+                                        <td id="todayuse"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>本月用水量(m³)</td>
+                                        <td id="thismonth"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>上月用水量(m³)</td>
+                                        <td id="lastmonth"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>本年用水量(m³)</td>
+                                        <td id="thisyear"></td>
+                                    </tr>
+                                </table>
+                            
+                            </div>
+                            
+                        </div>
+                      
+
+                        <div style="left: -5px" class="col-md-6 report-time">
+                        <div class="col-md-12 report-time-more" id="">
+                            <div class="col-md-6"><span style="cursor:pointer;font-size:14px">抄见数据</span></div>
+                        </div>
+                            <div class="col-md-12 area" style="position:relative;">
+                                <table class="table table-stripped table-bordered small " style="border:1px solid #cdcdcd">
+                                    <tr style="height: 10px;">
+                                        <td>小区总数(个)</td>
+                                        <td id="communitynum"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>用户总数(个)</td>
+                                        <td id="usernum"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>昨日抄见率(个)</td>
+                                        <td id="yestodaypercent"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>本月抄见率(个)</td>
+                                        <td id="monthpercent"></td>
+                                    </tr>
+                                </table>
+                            
+                            </div>
+                            
+                        </div>
+                    </div>
+                   
+
+				   <div class="col-md-6">
+                        <div style="left: 5px" class="col-md-6 report-speed">
+                        <div class="col-md-12 report-speed-more" id="">
+                            <div class="col-md-6"><span style="cursor:pointer;">异常用水</span></div>
+                        </div>
+                        <div class="col-md-12 area" style="position:relative;">
+                            <table class="table table-stripped table-bordered small " style="border:1px solid #cdcdcd">
+                                <tr style="height: 10px;">
+                                    <td>近三日无数据表计数</td>
+                                    <td id="nouse1d"> 台</td>
+                                </tr>
+                                <tr>
+                                    <td>近一月无数据表计数</td>
+                                    <td id="nouse1m"> 台</td>
+                                </tr>
+                                <tr>
+                                    <td>近三月无数据表计数</td>
+                                    <td id="nouse3m"> 台</td>
+                                </tr>
+                                <tr>
+                                    <td>用量超限表计数</td>
+                                    <td id="overflowuse"> 台</td>
+                                </tr>
+                            </table>
+                        
+                        </div>
+                        
+                        </div>
+
+                        <div class="col-md-6 report-stoptime">
+                            <div class="col-md-12 report-stoptime-more" id="">
+                                <div class="col-md-6"><span style="cursor:pointer;">厂家统计</span></div>
+                            </div>
+                            <div class="col-md-12 area" style="position:relative;">
+                                <table id="manutable" class="table table-stripped table-bordered small " style="border:1px solid #cdcdcd">
+                                    <tbody></tbody>
+                                    <!-- <tr style="height: 10px;">
+                                        <td>中科君达</td>
+                                        <td>12 台</td>
+                                    </tr>
+                                    <tr>
+                                        <td>宁波水表</td>
+                                        <td>123 台</td>
+                                    </tr>
+                                    <tr>
+                                        <td>潍薇科技</td>
+                                        <td>21 台</td>
+                                    </tr>
+                                    <tr>
+                                        <td>新天科技</td>
+                                        <td>1234567 台</td>
+                                    </tr> -->
+                                </table>
+                            
+                            </div>
+                            
+							
+							
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+
+		</div>
+			
+    </div>
+    
+    <div class="row" style="height: 350px;">
+        <div class="col-md-5ths-1" style="margin-left: 20px;">
+            <div id="useyears" style="height:241px;width:100%;"></div>
+        </div>
+        <div class="col-md-5ths">
+            <div id="useproperty" style="height:241px;width:100%;"></div>
+        </div>
+        <div class="col-md-5ths">
+            <div id="metertypes" style="height:241px;width:100%;"></div>
+        </div>
+        <div class="col-md-5ths">
+            <div id="meterdns" style="height:241px;width:100%;"></div>
+        </div>
+        <div class="col-md-5ths">
+            <div id="metervalves" style="height:241px;width:100%;"></div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading" id="stretch2" >
+                <h3 class="panel-title fwb">水量统计报表</h3>
+                <div class="actions pull-right">
+                    <i class="fa chevron-down"  id="stretch2-chevron" ></i>
+                </div>
+            </div>
+            <div class="panel-body fixed-table-body"  id="stretch2-body">
+                <div class="col-md-2" style="padding-right: 0px; padding-left: 0px;">
+                    <div class="panel panel-default">
+                      <!-- <div class="panel-heading">
+                        <h3 class="panel-title fwb">小区列表</h3>
+                        <div class="actions pull-right listActions">
+                          <i class="fa fa-chevron-down"></i>
+                        </div>
+                      </div> -->
+                      <div class="panel-body" style="padding: 0px;">
+                        <!-- <div class="form-group" style="margin-top: 15px;">
+                          <div class="col-md-12">
+                            <input id="search_condition" name="search" class="form-control" style="margin-bottom: 10px;" type="text" placeholder="请输入组织名称" />
+                          </div>
+                        </div> -->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="padding: 0px;height:80%!important">
+                          <ul id="commubitytreeDemo" class="ztreee" style="overflow:auto;height:500px!important"></ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              <div class="col-md-10">
+                <div class="ToolPanel">
+                    <div class="bars pull-left">
+                        <div class="btn-group pull-left barsMargin" role="group">
+                            <div style="width: 320px;">
+                                <input style="cursor: pointer; background-color: #fafafa;"
+                                class="form-control layer-date laydate-icon"
+                                id="timeInterval" name="timeInterval" readonly />
+                                <label id="timeInterval-error" class="error" for="timeInterval" style="display: none;">开始时间请不要超过上个月一号</label>
+                            
+                                
+                            </div>
+                             
+                            
+                            
+                        </div>
+                        <button type="button" id="search_button7" 
+                            class="btn btn-outline btn-default"  style="background-color: #f00fb0;">七天内
+                        </button> 
+                        <button type="button" id="search_button30" 
+                            class="btn btn-outline btn-default" style="background-color:#f00fb0;">一月内
+                        </button> 
+                        <button type="button" id="search_button" 
+                            class="btn btn-outline btn-default" style="background-color:#f00fb0;">查询
+                        </button> 
+
+                        <!-- <div class="col-md-6  searchListSelect">
+                            <input style="cursor: pointer; background-color: #fafafa;"
+                                class="form-control layer-date laydate-icon"
+                                id="timeInterval" name="timeInterval" readonly />
+                            <label id="timeInterval-error" class="error" for="timeInterval" style="display: none;">开始时间请不要超过上个月一号</label>
+                        </div> -->
+                        <!-- <div class="col-md-2">
+                            <button>七天内</button>
+                        </div> -->
+                        
+                    </div>
+                    <!-- <div class="columns btn-group pull-right simCardManagement">
+                        <button id="refreshTable" class="btn btn-default" type="button" name="refresh"
+                                title="刷新">
+                            <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                        </button>
+                        <div class="keep-open btn-group" title="定制显示列">
+                            <button id="customizeColumns" type="button" class="btn btn-default dropdown-toggle"
+                                    data-toggle="dropdown">
+                                <i class="glyphicon glyphicon-th icon-th"></i> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" id="Ul-menu-text">
+                            </ul>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- <div style="overflow:auto"> -->
+                  <table id="dataTable"
+                       class="table table-striped table-bordered table-hover checkTable"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <!-- <th></th>
+                        <th>
+                            <input type="checkbox" id="checkAll">
+                        </th> -->
+                        <th>组织</th>
+                        <th>今日用水量</th>
+                        <th>昨日用水量</th>
+                        <th>用户总数</th>
+                        <th>零吨用户</th>
+                        <th>昨日抄见率</th>
+                        <th>故障表数</th>
+                        <th>超量用户</th>
+                        <th>近三月无用水</th>
+                        <th>工单</th>
+                        
+                    </tr>
+                    </thead>
+                </table>
+                <!-- </div> -->
+              </div>  
+            </div>
+        </div>
+    </div>
+ 
+</div>
+
+
+
+{% endblock %}
+
+
+
+{% block javascript %}
+
+<script src="{% static 'virvo/resources/js/zTree/js/ztreeSearch.js' %}"></script>
+<script src="{% static 'virvo/resources/js/bootstrap/js/bootstrap-table.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'virvo/wro/bd-echatrs.js' %}"></script>
+
+<script src="{% static 'virvo/wro/watermeterdatastatic.js' %}"></script>
+
+{% endblock %}

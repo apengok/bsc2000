@@ -1,0 +1,297 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+<title>{% if page_title %} {{ page_title }} {% else %} 首页 {% endif %}</title>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10" />
+<meta http-equiv="Expires" content="0"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-store"/>
+<meta http-equiv="refresh" content="36000; url=/login?type=timeout" />
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="{% static 'virvo/resources/js/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/resources/css/font-awesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/animate.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/main.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/dataTables.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/resources/js/zTree/css/zTreeStyle.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/wizard.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/adaptiveStyle.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/clockPlugins.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/resources/css/twinkle.css' %}">
+<script src="{% static 'virvo/resources/js/modernizr-2.6.2.min.js' %}"></script>
+<script src="{% static 'virvo/resources/js/jquery-1.10.2.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'virvo/resources/js/layui/layer/skin/layer.css' %}" id="layui_layer_skinlayercss" style="">
+<link rel="stylesheet" href="{% static 'virvo/resources/js/laydate/theme/default/laydate.css' %}" id="layuicss-laydate">
+
+<link rel="stylesheet" href="{% static 'virvo/resources/css/realTimeMonitoring.css' %}"/>
+
+<!-- 天地图 personalappl:1023dc0e55b6106f159463e6554dc251-->
+<script src="http://api.tianditu.gov.cn/api?v=4.0&tk=e0955897c7f8a5adeba75b55bb11b600" type="text/javascript"></script>
+
+{% block stylesheet %}
+<style type="text/css">
+        #container {
+            background-color: white !important;
+        }
+
+        #thetree {
+            height: 20000px;
+        }
+
+        #MapContainer {
+            height: 20000px;
+        }
+
+        #dataTableBind td {
+            padding: 7px 10px;
+        }
+        .toolOperateClick .map-call::before{
+            content:"";position:relative;display:inline-block;top:6px;left:0;width:22px;height:22px;background-image:url(/clbs/resources/img/call-off.png)!important;background-size:22px 22px
+        }
+        .toolOperateClick .map-call.active::before{content:"";position:relative;display:inline-block;top:6px;left:0;width:22px;height:22px;background-image:url(/clbs/resources/img/call-on.png)!important;background-size:22px 22px}
+
+
+.overlay2 {
+    display: none;
+    position: absolute;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.25);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 400px;
+    /*top: -76px;*/
+    left: -90px;
+    user-select: none;
+}
+
+.overlay2:after {
+    /*top: 100%;*/
+    border: 10px solid transparent;
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+    border-top-color: rgba(255,255,255,0.9);
+}
+
+.overlay button + button {
+    float: right;
+}
+    </style>
+{% endblock %}
+</head>
+<body>
+    <section id="container">
+    {% include '_vheader.html' %}
+      <script src="{% static 'virvo/resources/js/jquery-1.10.2.min.js' %}"></script>
+      <script src="{% static 'virvo/resources/js/jquery.cookie.js' %}"></script>
+      <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+      <script src="{% static 'virvo/resources/js/layui/layer/layer.js' %}"></script>
+      <script src="{% static 'virvo/resources/js/laydate/laydate.js' %}"></script>
+      <script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+      <script src="{% static 'virvo/resources/js/ungzip/pako.min.js' %}"></script>
+      <script src="{% static 'virvo/resources/js/ungzip/ungzip.js' %}"></script>
+      <script src="{% static 'virvo/resources/js/sockjs-1.1.1.min.js' %}"></script>
+      <script src="{% static 'virvo/resources/js/stomp.min.js' %}"></script>
+      <script src="{% static 'virvo/resources/js/webSocket.js' %}"></script> 
+
+
+<!-- openlayer -->
+    
+      <!-- <script src="{%  static 'gis/assets/js/ol-debug.js' %} "></script> -->
+
+      <!-- <script src="{%  static 'gis/assets/js/jquery.js' %} "></script>
+      <script src="{%  static 'gis/assets/js/jquery-ui.js' %} "></script> -->
+
+
+
+<script>
+var headers = {"access_token": "8ec340a5-b4d9-4ebb-9889-e014993a8099"};
+</script>
+{% comment %}
+<script src="/clbs/wro/topPublic.js"></script>
+{% endcomment %}
+      <section class="main-content-wrapper main-content-toggle-left">
+            <!--sidebar start-->
+            {% include 'sidenav.html' %}
+<!--sidebar end-->
+<!--权限控制 -->
+<input value="{{ user.groups.all.0 }}" id="permission" type="hidden"  />
+
+<input value="{{ user.is_admin|lower }}" id="isAdmin" type="hidden"  />
+            <section id="main-content">
+                <div class="row eightIsZero">
+                    <div class="col-md-12 realtime-content">
+                        {% block content_left %}
+                        <div id="content-left" class="col-md-2" style="padding-right: 0px; padding-left: 0px;">
+                            <div style="background-color: rgba(0, 153, 204, 1);" >
+                                <div style="font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';font-weight: 700;font-style: normal;font-size: 14px;color: white;margin: 10px 10px 0 20px;">全部站点({{ total_station_num }})
+                                </div>
+                            </div>
+                            <div style="background:#fff;">
+                                <div class="form-group">
+                                  <label class="col-md-6 control-label" style="margin-top:10px;color: #1627e0;">在线({{ online_station_num }})</label>
+                                  <label class="col-md-6 control-label" style="margin-top:10px;color: grey;">离线({{ offline_station_num }})</label>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-md-6 control-label" style="margin-top:10px;color: #f20804;">报警站点({{ alarm_station_num }})</label>
+                                  <label class="col-md-6 control-label" style="margin-top:10px;color: #02470e;">关注站点({{ focus_station_num }})</label>
+                                </div>
+                                <div class="form-group">
+                                  <label class="col-md-6 control-label" style="margin-top:10px;margin-bottom:20px;color: #8c4380;">大用户站点({{ biguser_station_num }})</label>
+                                  
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                      <h3 class="panel-title fwb">组织架构</h3>
+                                      <div class="actions  listActions">
+                                        <i class="fa fa-chevron-down"></i>
+                                      </div>
+                                    </div>
+                                    <div class="panel-body" style="padding: 0px;">
+                                      <div class="form-group" style="margin-top: 15px;">
+                                        <div class="col-md-12">
+                                          <input id="search_condition" name="search" class="form-control" style="margin-bottom: 10px;" type="text" placeholder="请输入组织名称" />
+                                        </div>
+                                      </div>
+                                      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="padding: 0px;height:80%!important">
+                                        <ul id="treeDemo" class="ztreee" style="overflow:auto;height:460px!important"></ul>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        {% endblock content_left %}
+
+                        {% block main_content %}
+                        
+                            
+                        {% endblock main_content %}
+
+                    </div>
+                </div>
+                
+            </section>
+        </section>
+    </section>
+    {% include 'footer.html' %}
+<script src="{% static 'virvo/resources/js/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/waypoints.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/jquery.nanoscroller.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/bootstrap-toggle.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/toastr.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/bootstrap-suggest.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'virvo/resources/js/inputClear.min.js' %}"></script>
+    <script src="{% static 'virvo/wro/common-footer.js' %}"></script>
+
+    <script src="{% static 'virvo/resources/js/distpicker.data.js' %}"></script>
+    
+
+    
+
+<div id="commonWin" tabIndex="-2" class="modal fade bs-example-modal-lg" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "commonWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+<div id="commonLgWin" tabIndex="-2" class="modal fade bs-example-modal-lg" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "commonLgWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+<div id="commonSmWin" class="modal fade" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "commonSmWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+<div id="uploaderWin" tabIndex="-2" class="modal fade bs-example-modal-lg" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "uploaderWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+{% block javascript %}
+  <script type="text/javascript">
+     
+    //var  statsinfo = {{ dmastasticinfo|safe }};
+    
+ </script>
+ 
+{% endblock %}
+</body>
+    <!-- <script>
+            $(function(){
+                $.ajax({
+                    url: '/clbs/inspectAuthorizationDate',
+                    type: 'POST',
+                    data: null,
+                    async:false,
+                    dataType: 'json',
+                    success: function (data) {
+                        if(data != null){
+                            if(data.success==true){
+                                if(data.obj.errMsg != null && data.obj.errMsg != ""){
+                                    layer.msg(data.obj.errMsg,{move:false});
+                                }
+                            }else{
+                                if(data != null && data != ""){
+                                    if(data.msg != null && data.msg !=""){
+                                        layer.msg(data.msg,{move:false});
+                                    }
+                                }
+                            }
+                        }
+                    },
+                });
+            });
+    </script> -->
+</html>

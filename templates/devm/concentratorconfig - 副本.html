@@ -1,0 +1,96 @@
+{% load staticfiles %}
+    <div class="modal-header">
+        <button id="doXEdit" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+            <input type="hidden" id="concentrator_id" value="{{ object.pk }}">
+            <input type="hidden" id="concentrator_commaddr" value="{{ object.commaddr }}">
+        <h4 class="modal-title">配置集中器<span>:{{ object.name }}</span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-12">
+            <label class="col-md-2" for="concentrator_time">集中器时间:</label>
+            <input class="col-md-2" type="text" id="concentrator_time" name="concentrator_time">
+            <button class="btn btn-primary col-md-1" style="margin-left: 10px;" id="readtime">读取</button>
+            <button class="btn btn-primary col-md-1" style="margin-left: 10px;" id="sendtime">发送</button>
+        </div>
+
+        <div class="col-md-12">
+            <label class="col-md-2" for="period_time">抄表间隔:</label>
+            <input class="col-md-2" type="text" id="read_period" name="read_period">
+            <button class="btn btn-primary col-md-1" style="margin-left: 10px;"  id="sendperiod">发送</button>
+        </div>
+
+        <div class="col-md-12">
+            <label class="col-md-2" for="ipaddress">IP地址:</label>
+            <input class="col-md-2" type="text" id="ipaddress" name="ipaddress">
+            <label class="col-md-1" for="portno">端口号:</label>
+            <input class="col-md-1" type="text" id="portno" name="portno">
+            <button class="btn btn-primary col-md-1" style="margin-left: 10px;"  id="readip">读取</button>
+            <button class="btn btn-primary col-md-1" style="margin-left: 10px;"  id="sendip">发送</button>
+        </div>
+
+        <div>
+            <button class="btn col-md-2" disabled="disabled" style="margin-left: 10px;"  id="downto">下载表计信息到集中器</button>
+            <button class="btn col-md-2" disabled="disabled" style="margin-left: 10px;"  id="readfrom">读取集中器内表计信息</button>
+            <button class="btn col-md-2" disabled="disabled" style="margin-left: 10px;"  id="readstart">启动抄表</button>
+            <button class="btn  col-md-1" style="margin-left: 10px;background-color: purple;color: white;"  id="readvalue">抄表</button>
+            <button class="btn btn-danger col-md-1" style="margin-left: 10px;"  id="closevalve">关阀</button>
+            <button class="btn btn-success  col-md-1" style="margin-left: 10px;"  id="openvalve">开阀</button>
+
+        </div>
+
+        <div>
+            <!-- <table id="dma2leakage" >
+                <thead >
+                    <tr>
+                        <th data-field="rank">排名</th>
+                        <th data-field="client_name">分区名称</th>
+                        <th data-field="belongto">所属组织</th>
+                        <th data-field="watertype">年度供水量</th>
+                        <th data-field="year_use">年度漏水量</th>
+                        <th data-field="zhanbi">漏损率</th>
+                    </tr>
+                </thead>
+            </table> -->
+            <table id="concentrator_watermeter"
+                class="table table-striped table-bordered table-hover checkTable"
+                cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>选择</th>
+                        <th>操作</th>
+                        <th>水表编号</th>
+                        <th>阀门状态</th>
+                        <th>抄表数</th>
+                        <th>最后一次抄表时间</th>
+                        <th>状态</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        
+        <!-- <button class="btn btn-primary" type="button" id="doSubmit">
+            <strong>提 交</strong>
+        </button> -->
+        <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+    
+
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+
+<script>
+    
+
+</script>
+
+<script src="{% static 'virvo/resources/js/bootstrap/js/bootstrap-table.min.js' %}"></script>
+
+<script src="{% static 'virvo/wro/concentratorConfig.js' %}"></script>

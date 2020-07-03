@@ -1,0 +1,34 @@
+<form id="vehiclePerForm"
+    role="form" action="/clbs/c/user/vehiclePer.gsp" method="post" class="form-horizontal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">分配分组 : 0951123456</h4>
+    </div>
+    <div class="modal-body-per">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="hidden" id="id" name="id" value="uid=0951123456,ou=ORG_8a4843cc-7c83-42d7-91c2-36a9f37d04b1,ou=ORG_187888e1-7a09-43cf-bd46-2717b3d4382d,ou=organization"/> 
+                <input id="vehicleTreeData" value="[{&quot;iconSkin&quot;:&quot;groupSkin&quot;,&quot;name&quot;:&quot;宁夏客户群&quot;,&quot;pId&quot;:&quot;ou=ORG_187888e1-7a09-43cf-bd46-2717b3d4382d,ou=organization&quot;,&quot;id&quot;:&quot;ou=ORG_8a4843cc-7c83-42d7-91c2-36a9f37d04b1,ou=ORG_187888e1-7a09-43cf-bd46-2717b3d4382d,ou=organization&quot;,&quot;type&quot;:&quot;group&quot;,&quot;uuid&quot;:&quot;e5c2e17c-63d1-1037-9f03-6f8760c3f14c&quot;,&quot;open&quot;:true}]" type="hidden"/> 
+                <input id="userVehicle" name="userVehicleList" type="hidden"/>
+                <h5 class="fwb">操作权限：</h5>
+                <ul id="vehicleGroupDemo" name="fenceTree" class="ztree"></ul>          
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-sm-7 col-md-7" style="text-align:left;margin-left:-17px;margin-top:-1px;">
+                                                            <i class="info-isCompany"></i>&nbsp;&nbsp;:&nbsp;&nbsp;企业<br>
+                                                            <i class="info-isGroup"></i>&nbsp;&nbsp;:&nbsp;&nbsp;分组，在分组管理中创建
+                                                            </div>
+    <!--    <div class="col-sm-5 col-md-5">     -->                                             
+        <button id="doSubmitVehiclePer" class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button type="button" style="margin-top:-1px;" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+        <!-- </div>    -->
+    </div>
+</form>
+<script src="/clbs/wro/userVehiclePer.js"></script>

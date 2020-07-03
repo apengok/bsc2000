@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>BSC2000智慧水务管控一体化平台</title>
+	<meta name="description" content="电磁水表，电磁流量计，DMA分区计量管理，大用户管理，产销差管理，GIS地理信息系统，智慧水务管控一体化平台，BSC2000专注于水司信息化建设" />
+	<meta name="keywords" content="电磁水表,智慧水务管控一体化平台,DMA分区计量管理,漏损控制,产销差管理,水司信息化建设" />
+
+	<link type="text/css" rel="stylesheet" href="style/css/style.css"/>
+
+	<script type="text/javascript" src="style/js/jquery.js"></script>
+	<script type="text/javascript" src="style/js/animate.js"></script>
+
+	<!--弹框-->
+
+	<link rel="stylesheet" type="text/css" href="style/css/component.css"/>
+	<link rel="stylesheet" type="text/css" href="style/css/content.css"/>
+
+	<!--弹框-->
+
+	<!-- 滑动验证-->
+	<link rel="stylesheet" href="style/css/verifying.css">
+	<!-- 滑动验证-->
+	<!--登录窗口-->
+
+	<link href="style/css/all.css" type="text/css" rel="stylesheet" media="all"/>
+
+
+
+</head>
+<body>
+<div class="top-bg">
+	<div class="top">
+		<div class="main">
+			<div class="banner-top">
+				<div class="logo"><img title="智慧水务一体化平台" src="style/images/logo.png"/>
+				</div>
+				<div class="link">
+					<ul>
+						<li>
+							<a href="javascript:void(0)" id="libdescIndex" title="功能介绍">功能介绍</a>
+						</li>
+						<li class="separated">
+							|
+						</li>
+						<li>
+							<a href="javascript:void(0)" id="DMA" title="管家论坛" >DMA分区</a>
+						</li>
+						<li class="separated">
+							|
+						</li>
+						<li>
+							<a href="javascript:void(0)" id="PT" title="管家论坛" >一体化平台</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="banner">
+				<div class="banner-animation">
+
+
+
+
+					<div class="banner-right-block">
+
+						<!--<img id="tab-show-1" src="style/images/tab-1.png" />
+
+						<img id="tab-show-2" src="style/images/tab-2.png" />
+
+						<img id="tab-show-3" src="style/images/tab-3.png" />
+
+						<img id="tab-show-4" src="style/images/tab-4.png" />
+
+						<img id="tab-show-5" src="style/images/tab-5.png" />
+
+						<img id="tab-show-6" src="style/images/tab-6.png" />-->
+
+					</div>
+				</div>
+				<div class="banner-download">
+					<div class="main_box">
+						<div class="main_cont">
+							<div class="wrapper">
+								<dl class="xl_info clearfix">
+									<dt >平台登录</dt>
+									<div class="form-group mg-t20 border-black radius4">
+										<i class="icon-user icon_font"></i>
+										<input type="email" class="login_input " id="Email1" placeholder="请输入用户名" />
+									</div>
+									<div class="form-group mg-t20 border-black radius4">
+										<i class="icon-lock icon_font"></i>
+										<input type="password" class="login_input" id="Password1" placeholder="请输入密码" />
+									</div>
+									<div class="verify " onselectstart="return false">
+										<span></span>
+										<div id="verify_box" class="radius4">
+											<div id="verify_xbox" class="radius4">
+												<div id="btn" class="radius4">
+													<img id="ded1" src="style/images/a.png" >
+												</div>
+											</div>
+											&nbsp; &nbsp; &nbsp; &nbsp;按住滑块，拖动到最右边
+										</div>
+									</div>
+
+									<dd><input class="button white radius4  " type="button" value="登录"
+											   style="width: 250px;margin-top: 5px"/></dd>
+									<dd>
+										<div class="morph-button morph-button-modal morph-button-modal-3 morph-button-fixed"
+											 style="width: 100% ;height: 40px;margin-top:0%;margin-left: 0% ">
+											<button class="button  blue radius4 " type="button">注册</button>
+
+											<div class="morph-content" >
+												<div>
+													<div class="content-style-form content-style-form-2">
+														<span class="icon icon-close"></span>
+														<span>注册</span>
+														<form>
+															<p><label>姓名</label><div class="form-group1 mg-t201 border-black1 radius4"><input type="email"  class="login_input1"/></div></p>
+															<p><label>联系电话</label><div class="form-group1 mg-t201 border-black1 radius4"><input type="email"  class="login_input1"/></div></p>
+															<p><label>邮箱</label><div class="form-group1 mg-t201 border-black1 radius4"><input type="email"  class="login_input1"/></div></p>
+															<p><label>企业名称</label><div class="form-group1 mg-t201 border-black1 radius4"><input type="email"  class="login_input1"/></div></p>
+															<p><label>企业需求</label><div class="form-group1 mg-t201 border-black1 radius4"><input type="email"  class="login_input1"/></div></p>
+															<p>
+																<button class="button blue radius4 ">提交</button>
+
+															</p>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+									<dd/>
+								</dl>
+							</div>
+							<div class="bg1" ></div>
+							<div class="bg"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="screen">
+	<div class="s2-title" >
+		<img id="libdesc"  src="style/images/s2-title.png"/>
+	</div>
+	<div class="screen-title-line s2-title-line"></div>
+	<div class="screen-description">
+		<p class="s2-desc">
+			BSC2000重新定义了一种全新的模式，简化流程、系统整合、彻底消灭信息孤岛
+		</p>
+		<p class="s2-desc">
+			解除捆绑，降低造价和维护成本，做到适合水司的合理化系统。
+		</p>
+	</div>
+
+	<div class="s2-icon">
+		<div class="list">
+			<div class="icon"><img id="screen2Image1" data-animate="0" title="数据采集" src="style/images/system-status.png"/>
+			</div>
+			<div class="lib-name">
+				数据采集
+			</div>
+			<div class="lib-desc">
+				通过无线方式，及时的采集到真实的数据
+			</div>
+		</div>
+		<div class="list">
+			<div class="icon"><img id="screen2Image2" title="系统整合" src="style/images/software-status.png"/>
+			</div>
+			<div class="lib-name">
+				系统整合
+			</div>
+			<div class="lib-desc">
+				多个系统的整合，将多维度的数据统一起来
+			</div>
+		</div>
+		<div class="list">
+			<div class="icon"><img id="screen2Image3" title="数据分析" src="style/images/safe-status.png"/>
+			</div>
+			<div class="lib-name">
+				数据分析
+			</div>
+			<div class="lib-desc">
+				最大限度挖掘数据的相关性，做最有价值的分析
+			</div>
+		</div>
+		<div class="list">
+			<div class="icon"><img id="screen2Image4" title="运维管理" src="style/images/anti-phishing.png"/>
+			</div>
+			<div class="lib-name">
+				运维管理
+			</div>
+			<div class="lib-desc">
+				对大数据的充分利用，最终实现企业的智慧运维
+			</div>
+		</div>
+	</div>
+</div>
+<div class="screen-line"></div>
+<div class="screen" style="overflow:visible; height: 725px;">
+	<div class="left-block s3-left">
+		<div class="image" id="screen3Image" data-animate="0">
+
+			<div class="graph">
+				<div class="histogram">
+					<div class="log-and-cache" 			id="histogram-0"></div>
+					<div class="devolop-rib" 			id="histogram-1"></div>
+					<div class="binray" 				id="histogram-2"></div>
+					<div class="broken-register-tab" 	id="histogram-3"></div>
+					<div class="application-rib" 		id="histogram-5"></div>
+					<div class="ios-upgrade-cache" 		id="histogram-4"></div>
+					<div class="language" 				id="histogram-6"></div>
+					<div class="browser-cache" 			id="histogram-7"></div>
+				</div>
+				<div class="histogram-icon">
+					<div class="log-and-cache-icon" 		id="histogram-icon-0"></div>
+					<div class="devolop-rib-icon" 			id="histogram-icon-1"></div>
+					<div class="binray-icon" 				id="histogram-icon-2"></div>
+					<div class="broken-register-tab-icon" 	id="histogram-icon-3"></div>
+					<div class="application-rib-icon" 		id="histogram-icon-4"></div>
+					<div class="ios-upgrade-cache-icon" 	id="histogram-icon-5"></div>
+					<div class="language-icon" 				id="histogram-icon-6"></div>
+					<div class="browser-cache-icon" 		id="histogram-icon-7"></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="right-block s3-right" style="position: relative;">
+		<div class="s3-title" style="height: 40px; position: relative;">
+			<img src="style/images/clean.png" style="position: absolute; top: 150px;" id="s3TitleImage"/>
+		</div>
+		<div class="screen-title-line s3-title-line"></div>
+		<div class="screen-description" style="position: absolute; top: 253px;" id="s3Description">
+			<p class="s3-desc">
+				BSC2000为你提供多元合一的解决方案，兼容多种现场仪表
+			</p>
+			<p class="s3-desc">
+				可独立部署，不受第三方控制，并提供方便的API接口，支持
+			</p>
+			<p class="s3-desc">
+				二次开发，
+			</p>
+		</div>
+		<div class="s3-icon" style="padding-top: 132px;" id="s3IconShandle">
+			<div class="list">
+				<div class="icon" id="shandle-0" data-index="0"><img src="style/images/1.png" />
+				</div>
+				<div class="icon" id="shandle-1"  data-index="1"><img src="style/images/3.png" />
+				</div>
+				<div class="icon" id="shandle-2"  data-index="2"><img src="style/images/2.png" />
+				</div>
+				<div class="icon" id="shandle-3"  data-index="3"><img src="style/images/5.png" />
+				</div>
+			</div>
+			<div class="list second">
+				<div class="icon" id="shandle-4"  data-index="4"><img src="style/images/7.png" />
+				</div>
+				<div class="icon" id="shandle-5"  data-index="5"><img src="style/images/6.png" />
+				</div>
+				<div class="icon" id="shandle-6"  data-index="6"><img src="style/images/4.png" />
+				</div>
+				<div class="icon" id="shandle-7"  data-index="7"><img src="style/images/8.png" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="screen-line"></div>
+<div class="screen" style="height: 720px; overflow: visible">
+	<div class="left-block s4-left" style="position: relative;">
+		<div class="s4-title" style="position: relative; height: 40px;">
+			<img src="style/images/software-manage.png" id="s4TitleImage" style="position: absolute;top:0 ; left:0;"/>
+		</div>
+		<div class="screen-title-line s4-title-line"></div>
+		<div class="s4-list" style="position: absolute;" id="s4List">
+			<div class="s4-item">
+				<div class="s4-icon">
+					<img src="style/images/9.png"/>
+				</div>
+				<div class="s4-desc">
+					<p class="s4-lib-name">
+						表务表况管理系统
+					</p>
+					<p class="s4-lib-desc">
+						水表类型、口径、厂家、年限、配表合理性等全方位统计，让资产管理更清晰
+					</p>
+				</div>
+			</div>
+
+			<div class="s4-item item-not-first">
+				<div class="s4-icon">
+					<img src="style/images/10.png"/>
+				</div>
+				<div class="s4-desc">
+					<p class="s4-lib-name">
+						大用户管理系统
+					</p>
+					<p class="s4-lib-desc">
+						为掌握大用户用水规律、管网负荷工况提供了详尽的数据来源，减少计量损失
+					</p>
+				</div>
+			</div>
+
+			<div class="s4-item item-not-first">
+				<div class="s4-icon">
+					<img src="style/images/11.png"/>
+				</div>
+				<div class="s4-desc">
+					<p class="s4-lib-name">
+						二次供水管理系统
+					</p>
+					<p class="s4-lib-desc">
+						动态可视化的方式监控二次加压泵房的水质、水压、流量、液位及安防系统
+					</p>
+				</div>
+			</div>
+
+			<div class="s4-item item-not-first">
+				<div class="s4-icon">
+					<img src="style/images/12.png"/>
+				</div>
+				<div class="s4-desc">
+					<p class="s4-lib-name">
+						管网水力模型系统
+					</p>
+					<p class="s4-lib-desc">
+						实现供水管网系统的科学化管理，仿真管网的实际运行状况，提供决策支持
+					</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="right-block s4-right">
+		<div class="s4-image">
+			<img id="screen4Image" data-animate="0" src="style/images/s4-bg.png"/>
+		</div>
+	</div>
+</div>
+<div class="screen-line"></div>
+
+<div   class="screen" style="overflow: visible; height: 605px;" id="screenIphoneOffset" >
+	<div class="left-block s5-left">
+		<div class="s5-image">
+			<img  id="screenIphoneImage"  data-animate="0" src="style/images/s32-bg.png" style="left:-100px; opacity: 0;"/>
+		</div>
+	</div>
+	<div class="right-block s5-right" style="position: relative;">
+		<div class="s5-title" style="position: relative; height: 40px;">
+			<img   src="style/images/title-32.png" id="IphoneTitleImage" style="position: absolute; left:0; top:-50px; opacity: 0;" />
+		</div>
+		<div class="screen-title-line s5-title-line"></div>
+		<div class="s5-desc" style="position: absolute; top: 337px; opacity: 0;" id="IphoneDescription">
+			<p class="part">
+				对区域内用水量、瞬时流量、最小流量进行详细准确的计
+			</p>
+			<p class="part">
+				量和分析，通过DMA的实施可掌握供水状况，进行科学
+			</p>
+			
+			<p class="part">
+				调度，及时发现漏水发生的区域，从而降低管网漏失率
+			</p>
+			
+		</div>
+	</div>
+</div>
+
+<div class="screen-line"></div>
+<div class="screen" style="overflow: visible; height: 605px;" id="screen5Offset">
+	
+	<div class="right-block s5-right" style="position: relative;">
+		<div class="s5-title" style="position: relative; height: 40px;">
+			<img src="style/images/software-hardware.png" id="s5TitleImage" style="position: absolute; left:0; top:0;" />
+		</div>
+		<div class="screen-title-line s5-title-line"></div>
+		<div class="s5-desc" style="position: absolute; top: 287px;" id="s5Description">
+			<p class="part">
+				GIS与CAD的无缝衔接，可完成管网的属性与拓扑完整性
+			</p>
+			<p class="part">
+				提供爆管处置、关阀搜索、消防栓搜索、设备预警、断面
+			</p>
+			<p class="part">
+				分析等专业功能，有效降低事故发生率
+			</p>
+		</div>
+	</div>
+	
+	<div class="left-block s5-left">
+		<div class="s5-image">
+			<img id="screen5Image" data-animate="0" src="style/images/s5-bg.png"/>
+		</div>
+	</div>
+	
+</div>
+<div class="screen-line"></div>
+<div class="screen" style="height: 752px;" id="screen6AnimateOffset">
+	<div class="left-block s6-left" style="width: 352px;">
+		<div class="s6-title" style="height: 41px; position: relative;">
+			<img src="style/images/box-fonts.png" style="position: absolute; left: 0; top: 270px;" id="s6TitleImage" />
+		</div>
+		<div class="screen-title-line s6-title-line"></div>
+		<div class="s6-desc" style="position: relative; height: 25px; width: 365px; float: none;">
+			<p class="part" id="s6Description" style="width: 365px; position: absolute;" >
+				我们为你提供更多简单好用的工具，超乎你的想象
+			</p>
+		</div>
+	</div>
+	<div class="right-block s6-right">
+		<div class="s6-image">
+			<img src="style/images/box-1.png" id="screen6Image1" data-animate="0" />
+			<img src="style/images/box-2.png" id="screen6Image2" style="top: 30px;" />
+			<img src="style/images/box-3.png" id="screen6Image3" />
+		</div>
+	</div>
+</div>
+
+<div class="screen-s7-bg" id="screen7AnimateOffset">
+	<div class="screen screen-s7">
+		<div class="screen" style="height: 433px;">
+			<div class="left-block s7-left" style="position: relative;">
+				<div class="s7-title" style="height: 40px; position: relative;">
+					<img src="style/images/mini.png" id="s7TitleImage" style="position: absolute; top: 90px;" />
+				</div>
+				<div class="screen-title-line s7-title-line"></div>
+				<div class="s7-desc" style="position: absolute; top: 205px;" id="s7Description">
+					<p class="part">
+						你可以随时随地的在任何移动设备上观看所有信息，全局的掌控任何可以想去运维的细节
+					</p>
+				</div>
+			</div>
+			<div class="right-block s7-right">
+				<div class="img-radius"><img id="screen7Image1" data-animate="0"  src="style/images/float-radius.png"/>
+				</div>
+			<!--	<div class="img-ri">
+					<div class="img-top"><img id="screen7Image2" data-animate="0" src="style/images/float-window-top.png"/>
+					</div>
+
+				</div>
+				<div class="img-ri1">
+					<div class="img img_7"><img id="screen7Image3" data-animate="0" src="style/images/float-window-bottom.png"/>
+					</div>
+				</div>-->
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="screen-s8-bg">
+	<div class="screen screen-s8">
+		<div class="screen">
+			<p class="s8-title">
+				简单、好用的智慧水务一体化软件
+			</p>
+			<p class="s8-desc">
+				现已升级成2.1
+			</p>
+
+		</div>
+	</div>
+</div>
+
+</body>
+
+<!--弹框-->
+<script type="text/javascript" src="style/js/modernizr.custom.js"></script>
+<script type="text/javascript" src="style/js/classie.js"></script>
+<script type="text/javascript" src="style/js/fixed.js"></script>
+
+<!--弹框-->
+<!-- 滑动验证-->
+<script type="text/javascript" src="style/js/slide.js"></script>
+<!-- 滑动验证-->
+</html>

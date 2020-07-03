@@ -1,0 +1,1524 @@
+<aside class="sidebar">
+    <div id="leftside-navigation" class="nano">
+        <ul class="nano-content">
+            <li class="sub-menu active">
+                <a href="/home/" class=""> 
+                    <i class="fa fa-home"></i><span>首页</span>
+                </a>
+            </li>
+            
+            {% if user.is_admin %}
+
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-user"></i><span>生产调度</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/prodschedule/factoryview/">
+                                <i class="fa fa-location-arrow"></i><span>厂区总览</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/hydromodel/">
+                                <i class="fa fa-location-arrow"></i><span>水力模型</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-user"></i><span>数据监控</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/monitor/mapstation/">
+                                <i class="fa fa-location-arrow"></i><span>站点地图</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/monitor/realcurlv/">
+                                <i class="fa fa-location-arrow"></i><span>实时曲线</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        <li class="second-menu">
+                            <a href="/monitor/realtimedata/">
+                                <i class="fa fa-location-arrow"></i><span>实时数据</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        <li class="second-menu">
+                            <a href="/monitor/vehicle/">
+                                <i class="fa fa-location-arrow"></i><span>车辆监控</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/monitor/vedio/">
+                                <i class="fa fa-location-arrow"></i><span>实时视频</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/monitor/secondwater/">
+                                <i class="fa fa-location-arrow"></i><span>二次供水</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/monitor/mapmonitor/">
+                                <i class="fa fa-location-arrow"></i><span>DMA在线监控</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-video-camera"></i><span>数据分析</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/analysis/dailyuse/">
+                                <i class="fa fa-location-arrow"></i><span>日用水分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/analysis/monthuse/">
+                                <i class="fa fa-location-arrow"></i><span>月用水分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/analysis/flownalys/">
+                                <i class="fa fa-location-arrow"></i><span>流量分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/analysis/comparenalys/">
+                                <i class="fa fa-location-arrow"></i><span>对比分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/analysis/peibiao/">
+                                <i class="fa fa-location-arrow"></i><span>配表分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/analysis/dmacxc/">
+                                <i class="fa fa-location-arrow"></i><span>产销差分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/analysis/mnf/">
+                                <i class="fa fa-location-arrow"></i><span>夜间小流分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                       
+                        
+                    </ul>
+                </li>
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class=" fa fa-dashboard"></i><span>报警中心</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/alarm/stationalarm/">
+                                <i class="fa fa-location-arrow"></i><span>站点报警设置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/alarm/dmaalarm/">
+                                <i class="fa fa-location-arrow"></i><span>DMA报警设置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/alarm/queryalarm/">
+                                <i class="fa fa-location-arrow"></i><span>报警查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-warning"></i><span>基准分析</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/baseanalys/dmaba/">
+                                <i class="fa fa-location-arrow"></i><span>DMA基准</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/baseanalys/mnfba/">
+                                <i class="fa fa-location-arrow"></i><span>MNF基准</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/baseanalys/dayuseba/">
+                                <i class="fa fa-location-arrow"></i><span>日用水基准</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-warning"></i><span>GIS系统</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/ggis/pipelinequery/">
+                                <i class="fa fa-location-arrow"></i><span>管网查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/ggis/pipelinestastic/">
+                                <i class="fa fa-location-arrow"></i><span>管网统计</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                       <li class="second-menu">
+                            <a href="/ggis/pipelineanalys/">
+                                <i class="fa fa-location-arrow"></i><span>管网分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/ggis/pipelineimexport/">
+                                <i class="fa fa-location-arrow"></i><span>导入导出</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-user"></i><span>企业管理</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/entm/usermanager/">
+                                <i class="fa fa-location-arrow"></i><span>组织与用户</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/entm/rolemanager/">
+                                <i class="fa fa-location-arrow"></i><span>角色管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                </li>
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class=" fa fa-dashboard"></i><span>设备管理</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/devm/metermanager/">
+                                <i class="fa fa-location-arrow"></i><span>表具管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/devm/pressuremanager/">
+                                <i class="fa fa-location-arrow"></i><span>压力管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/devm/fireboltmanager/">
+                                <i class="fa fa-location-arrow"></i><span>消防栓管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/devm/concentratormanager/">
+                                <i class="fa fa-location-arrow"></i><span>集中器管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/devm/simcardmanager/">
+                                <i class="fa fa-location-arrow"></i><span>SIM卡管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/devm/paramsmanager/">
+                                <i class="fa fa-location-arrow"></i><span>参数指令</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                </li>
+                
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-warning"></i><span>基础管理</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/dmam/stationsmanager/">
+                                <i class="fa fa-location-arrow"></i><span>站点管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/dmam/districtmanager/">
+                                <i class="fa fa-location-arrow"></i><span>DMA管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/dmam/secondmanager/">
+                                <i class="fa fa-location-arrow"></i><span>二供管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/dmam/vediomanager/">
+                                <i class="fa fa-location-arrow"></i><span>视频管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/dmam/vehiclemanager/">
+                                <i class="fa fa-location-arrow"></i><span>车辆管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/dmam/neighborhoodmanager/">
+                                <i class="fa fa-location-arrow"></i><span>小区管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-warning"></i><span>无线抄表</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/wirelessm/concentratormap/">
+                                <i class="fa fa-location-arrow"></i><span>抄表地图</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/wirelessm/wlquerydata/">
+                                <i class="fa fa-location-arrow"></i><span>数据查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/wirelessm/neighborhoodusedayly/">
+                                <i class="fa fa-location-arrow"></i><span>小区日用水</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <!-- <li class="second-menu">
+                            <a href="/wirelessm/neighborhoodusemonthly/">
+                                <i class="fa fa-location-arrow"></i><span>小区月用水</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li> -->
+                        <li class="second-menu">
+                            <a href="/wirelessm/neighborhoodmetermanager/">
+                                <i class="fa fa-location-arrow"></i><span>户表管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/wirelessm/contentratordatastastic/">
+                                <i class="fa fa-location-arrow"></i><span>数据统计</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-bar-chart-o"></i><span>统计报表</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/reports/querylog/">
+                                <i class="fa fa-location-arrow"></i><span>日志查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/reports/alarm/">
+                                <i class="fa fa-location-arrow"></i><span>报警报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/reports/flows/">
+                                <i class="fa fa-location-arrow"></i><span>历史数据</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/reports/biaowu/">
+                                <i class="fa fa-location-arrow"></i><span>表务表况</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/reports/waters/">
+                                <i class="fa fa-location-arrow"></i><span>水量报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/reports/vehicle/">
+                                <i class="fa fa-location-arrow"></i><span>车辆报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/reports/biguser/">
+                                <i class="fa fa-location-arrow"></i><span>大用户报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/reports/dmastatics/">
+                                <i class="fa fa-location-arrow"></i><span>DMA报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        <li class="second-menu">
+                            <a href="/reports/bigdata/">
+                                <i class="fa fa-location-arrow"></i><span>大数据报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-th-list"></i><span>系统管理</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        <li class="second-menu">
+                            <a href="/sysm/commconfig/">
+                                <i class="fa fa-location-arrow"></i><span>通讯管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/sysm/personalized/list/">
+                                <i class="fa fa-location-arrow"></i><span>平台个性化配置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/sysm/system/">
+                                <i class="fa fa-location-arrow"></i><span>系统设置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/sysm/retransit/">
+                                <i class="fa fa-location-arrow"></i><span>转发设置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        <li class="second-menu">
+                            <a href="/sysm/iconscfg/">
+                                <i class="fa fa-location-arrow"></i><span>图标配置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        
+                    </ul>
+                </li>
+                
+                
+
+            {% else %}
+
+
+                {% if  'prodschedule' in user.permissiontree %}
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-user"></i><span>生产调度</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'factoryview_prodschedule' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/factoryview/">
+                                <i class="fa fa-location-arrow"></i><span>厂区总览</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_prodschedule' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/hydromodel/">
+                                <i class="fa fa-location-arrow"></i><span>水力模型</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'monitor' in user.permissiontree %}
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-user"></i><span>数据监控</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'mapstation_monitor' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/monitor/mapstation/">
+                                <i class="fa fa-location-arrow"></i><span>站点地图</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'realcurlv_monitor' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/monitor/realcurlv/">
+                                <i class="fa fa-location-arrow"></i><span>实时曲线</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'realtimedata_monitor' in user.permissiontree %}
+
+                        <li class="second-menu">
+                            <a href="/monitor/realtimedata/">
+                                <i class="fa fa-location-arrow"></i><span>实时数据</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        {% endif %}
+                        {% if  'vehicle_monitor' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/monitor/vehicle/">
+                                <i class="fa fa-location-arrow"></i><span>车辆监控</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'vedio_monitor' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/monitor/vedio/">
+                                <i class="fa fa-location-arrow"></i><span>实时视频</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'secondwater_monitor' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/monitor/secondwater/">
+                                <i class="fa fa-location-arrow"></i><span>二次供水</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'mapmonitor_monitor' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/monitor/mapmonitor/">
+                                <i class="fa fa-location-arrow"></i><span>DMA在线监控</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        
+                        {% endif %}
+                        
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'analysis' in user.permissiontree %}
+
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-video-camera"></i><span>数据分析</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'dailyuse_analysis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/analysis/dailyuse/">
+                                <i class="fa fa-location-arrow"></i><span>日用水分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if  'monthlyuse_analysis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/analysis/monthuse/">
+                                <i class="fa fa-location-arrow"></i><span>月用水分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if  'flownalys_analysis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/analysis/flownalys/">
+                                <i class="fa fa-location-arrow"></i><span>流量分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if  'comparenalys_analysis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/analysis/comparenalys/">
+                                <i class="fa fa-location-arrow"></i><span>对比分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if  'peibiao_analysis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/analysis/peibiao/">
+                                <i class="fa fa-location-arrow"></i><span>配表分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if  'dmacxc_analysis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/analysis/dmacxc/">
+                                <i class="fa fa-location-arrow"></i><span>产销差分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if  'mnf_analysis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/analysis/mnf/">
+                                <i class="fa fa-location-arrow"></i><span>夜间小流分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'alarm' in user.permissiontree %}
+
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class=" fa fa-dashboard"></i><span>报警中心</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'stationalarm_alarm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/alarm/stationalarm/">
+                                <i class="fa fa-location-arrow"></i><span>站点报警设置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'dmaalarm_alarm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/alarm/dmaalarm/">
+                                <i class="fa fa-location-arrow"></i><span>DMA报警设置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'queryalarm_alarm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/alarm/queryalarm/">
+                                <i class="fa fa-location-arrow"></i><span>报警查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'baseanalys' in user.permissiontree %}
+
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-warning"></i><span>基准分析</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'dmaba_baseanalys' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/baseanalys/dmaba/">
+                                <i class="fa fa-location-arrow"></i><span>DMA基准</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'mnfba_baseanalys' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/baseanalys/mnfba/">
+                                <i class="fa fa-location-arrow"></i><span>MNF基准</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'dayuseba_baseanalys' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/baseanalys/dayuseba/">
+                                <i class="fa fa-location-arrow"></i><span>日用水基准</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'gis' in user.permissiontree %}
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-warning"></i><span>GIS系统</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'pipelinequery_gis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/ggis/pipelinequery/">
+                                <i class="fa fa-location-arrow"></i><span>管网查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'pipelinestastic_gis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/ggis/pipelinestastic/">
+                                <i class="fa fa-location-arrow"></i><span>管网统计</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'pipelineanalys_gis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/ggis/pipelineanalys/">
+                                <i class="fa fa-location-arrow"></i><span>管网分析</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'pipelineimexport_gis' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/ggis/pipelineimexport/">
+                                <i class="fa fa-location-arrow"></i><span>导入导出</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'entm' in user.permissiontree %}
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-user"></i><span>企业管理</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'usermanager_entm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/entm/usermanager/">
+                                <i class="fa fa-location-arrow"></i><span>组织与用户</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'rolemanager_entm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/entm/rolemanager/">
+                                <i class="fa fa-location-arrow"></i><span>角色管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'devm' in user.permissiontree %}
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class=" fa fa-dashboard"></i><span>设备管理</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'metermanager_devm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/devm/metermanager/">
+                                <i class="fa fa-location-arrow"></i><span>表具管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'pressuremanager_devm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/devm/pressuremanager/">
+                                <i class="fa fa-location-arrow"></i><span>压力管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'fireboltmanager_devm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/devm/fireboltmanager/">
+                                <i class="fa fa-location-arrow"></i><span>消防栓管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'concentratormanager_devm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/devm/concentratormanager/">
+                                <i class="fa fa-location-arrow"></i><span>集中器管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'simcardmanager_devm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/devm/simcardmanager/">
+                                <i class="fa fa-location-arrow"></i><span>SIM卡管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'paramsmanager_devm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/devm/paramsmanager/">
+                                <i class="fa fa-location-arrow"></i><span>参数指令</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'dmam' in user.permissiontree %}
+                
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-warning"></i><span>基础管理</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'stationmanager_dmam' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/dmam/stationsmanager/">
+                                <i class="fa fa-location-arrow"></i><span>站点管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'districtmanager_dmam' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/dmam/districtmanager/">
+                                <i class="fa fa-location-arrow"></i><span>DMA管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'secondmanager_dmam' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/dmam/secondmanager/">
+                                <i class="fa fa-location-arrow"></i><span>二供管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'vediomanager_dmam' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/dmam/vediomanager/">
+                                <i class="fa fa-location-arrow"></i><span>视频管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'vehiclemanager_dmam' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/dmam/vehiclemanager/">
+                                <i class="fa fa-location-arrow"></i><span>车辆管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'neighborhoodmanager_dmam' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/dmam/neighborhoodmanager/">
+                                <i class="fa fa-location-arrow"></i><span>小区管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'wirelessm' in user.permissiontree %}
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-warning"></i><span>无线抄表</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+
+                        {% if  'concentratormap_wirelessm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/wirelessm/concentratormap/">
+                                <i class="fa fa-location-arrow"></i><span>抄表地图</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+
+                        {% if  'wlquerydata_wirelessm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/wirelessm/wlquerydata/">
+                                <i class="fa fa-location-arrow"></i><span>数据查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'neighborhoodusedayly_wirelessm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/wirelessm/neighborhoodusedayly/">
+                                <i class="fa fa-location-arrow"></i><span>小区日用水</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'neighborhoodusemonthly_wirelessm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/wirelessm/neighborhoodusemonthly/">
+                                <i class="fa fa-location-arrow"></i><span>小区月用水</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'neighborhoodmetermanager_wirelessm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/wirelessm/neighborhoodmetermanager/">
+                                <i class="fa fa-location-arrow"></i><span>户表管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'contentratordatastastic_wirelessm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/wirelessm/contentratordatastastic/">
+                                <i class="fa fa-location-arrow"></i><span>数据统计</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'reports' in user.permissiontree %}
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-bar-chart-o"></i><span>统计报表</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'querylog_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/querylog/">
+                                <i class="fa fa-location-arrow"></i><span>日志查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'alarm_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/alarm/">
+                                <i class="fa fa-location-arrow"></i><span>报警报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'flows_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/flows/">
+                                <i class="fa fa-location-arrow"></i><span>历史数据</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'biaowu_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/biaowu/">
+                                <i class="fa fa-location-arrow"></i><span>表务表况</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'waters_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/waters/">
+                                <i class="fa fa-location-arrow"></i><span>水量报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'vehicle_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/vehicle/">
+                                <i class="fa fa-location-arrow"></i><span>车辆报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                        {% if  'biguser_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/biguser/">
+                                <i class="fa fa-location-arrow"></i><span>大用户报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'dmastatics_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/dmastatics/">
+                                <i class="fa fa-location-arrow"></i><span>DMA报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'bigdata_reports' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/reports/bigdata/">
+                                <i class="fa fa-location-arrow"></i><span>大数据报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if  'sysm' in user.permissiontree %}
+                
+                <li class="sub-menu">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-th-list"></i><span>系统管理</span>
+                        <i class="arrow fa fa-angle-right pull-right"></i>
+                    </a>
+                    <ul class="second-menu-ul">
+                        {% if  'commconfig_sysm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/sysm/commconfig/">
+                                <i class="fa fa-location-arrow"></i><span>通讯管理</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'personalized_sysm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/sysm/personalized/list/">
+                                <i class="fa fa-location-arrow"></i><span>平台个性化配置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'system_sysm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/sysm/system/">
+                                <i class="fa fa-location-arrow"></i><span>系统设置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'retransit_sysm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/sysm/retransit/">
+                                <i class="fa fa-location-arrow"></i><span>转发设置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'iconscfg_sysm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/sysm/iconscfg/">
+                                <i class="fa fa-location-arrow"></i><span>图标配置</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        
+                        
+                    </ul>
+                </li>
+                
+                {% endif %}
+
+            {% endif %}
+
+                
+            
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+</aside>

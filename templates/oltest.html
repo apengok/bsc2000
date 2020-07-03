@@ -1,0 +1,186 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html>
+  <head>
+    <title>Draw and Modify Features</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div id="map" class="map"><div id="popup"></div></div>
+    
+    <script>
+      //'http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600'
+      //'http://t0.tianditu.com/DataServer?T=cta_w&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600'
+      function crtLayerXYZ(type, proj, opacity){
+       var layer = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'http://t'+Math.round(Math.random()*7)+'.tianditu.com/DataServer?T='+type+'&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600',
+                projection: proj
+            }),
+            opacity: opacity
+        });
+        layer.id = type;
+        return layer;
+      }
+
+      var raster = new ol.layer.Tile({
+        source: new ol.source.OSM()
+      });
+
+      var vec_layer = crtLayerXYZ("vec_c","EPSG:4326",1);
+      var cta_wlayer = crtLayerXYZ("cta_c","EPSG:4326",1);
+      var cva_clayer = crtLayerXYZ("cva_c","EPSG:4326",1);
+      // var center = [118.39469563,29.888188578];
+      var center = [113.21873,29.04137];
+
+      var iconStyle = new ol.style.Style({
+        image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          src: 'https://openlayers.org/en/v3.20.1/examples/data/icon.png'
+        }))
+      });
+
+      var createMarker = function(station){
+        // console.log(station.lng,station.lat)
+        var marker = new ol.Feature({
+            geometry: new ol.geom.Point([station.lng,station.lat]),
+            name: station.username,
+            population: 4000,
+            rainfall: 500
+        });
+        marker.setStyle(iconStyle);
+
+        return marker;
+      }
+      
+      // mark1 = createMaker(118.39369563,29.884188578,'maker1');
+      // mark2 = createMaker(118.38369563,29.874188578,'maker2');
+      // mark3 = createMaker(118.37369563,29.864188578,'maker3');
+      // mark4 = createMaker(118.36369563,29.854188578,'maker4');
+
+      var makerlist = [];
+      // makerlist.push(mark1);
+      // makerlist.push(mark2);
+      // makerlist.push(mark3);
+      // makerlist.push(mark4);
+      
+
+      var vectorSource = new ol.source.Vector({
+        features: []
+      });
+
+      var vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+      });
+
+      
+
+            var controls = [
+              new ol.control.Attribution({collapsed: false}),
+              // new ol.control.FullScreen(),
+              new ol.control.MousePosition(),
+              // new ol.control.OverviewMap({collapsed: false, collapsible: false}),
+              // new ol.control.Rotate({autoHide: false}),
+              new ol.control.ScaleLine(),
+              new ol.control.Zoom(),
+              new ol.control.ZoomSlider(),
+              new ol.control.ZoomToExtent()
+          ];
+
+      var map = new ol.Map({
+        layers: [vec_layer,cta_wlayer,cva_clayer,vectorLayer],
+        // layers: [raster],
+        target: 'map',
+        controls:controls,
+        view: new ol.View({
+          // center: [-11000000, 4600000],
+          projection: 'EPSG:4326',
+          center:center,
+          // center:  new ol.proj.transform(center,"EPSG:4326","EPSG:3857"),
+          maxZoom : 18,
+          zoom: 14
+        })
+      });
+
+      var element = document.getElementById('popup');
+
+        var popup = new ol.Overlay({
+        element: element,
+        positioning: 'bottom-center',
+        stopEvent: false,
+        offset: [0, -50]
+        });
+        map.addOverlay(popup);
+        
+
+        // display popup on click
+      map.on('click', function(evt) {
+        //   console.log(evt);
+        var feature = map.forEachFeatureAtPixel(evt.pixel,
+            function(feature) {
+              return feature;
+            });
+        if (feature) {
+          var coordinates = feature.getGeometry().getCoordinates();
+          popup.setPosition(coordinates);
+          console.log(coordinates)
+          $(element).popover({
+            'placement': 'top',
+            'html': true,
+            'content': feature.get('name')
+          });
+          console.log(feature.get('name'))
+          $(element).popover('show');
+        } else {
+          $(element).popover('destroy');
+        }
+      });
+      
+      // vectorLayer.getSource().addFeatures(makerlist);
+
+      $.ajax({
+        type:"GET",
+        url:"/api/monitor/getmapstationlist/",//(默认: 当前页地址) 发送请求的地址
+        dataType:"json", //预期服务器返回的数据类型。"json"
+        async:true, // 异步同步，true  false
+        // data:data,
+        timeout : 30000, //超时时间设置，单位毫秒
+        // beforeSend:beforeSend, //发送请求
+        success:function(data){ //请求成功
+          console.log(data)
+          stations = data.obj;
+          for(var i =0;i<stations.length;i++)
+          {
+            if(isNaN(stations[i].lng) || isNaN(stations[i].lat)){
+              continue;
+            }
+            mark = createMarker(stations[i])
+            makerlist.push(mark)
+          }
+          vectorLayer.getSource().addFeatures(makerlist);
+          // map.getView().setCenter([113.21873,29.04137]);
+          // var extent = vectorLayer.getSource().getExtent();
+          var extent = map.getView().calculateExtent(map.getSize());
+          map.getView().fit(extent, {size:map.getSize(), maxZoom:16})
+          
+          // var polygon = makerlist[0].getGeometry();
+          // map.getView().fit(polygon, map.getSize()); 
+        },
+        // error:error,//请求出错
+        // complete:complete//请求完成
+      })
+      
+      // vectorLayer.getSource().addFeatures(makerlist);
+
+
+      
+    </script>
+  </body>
+</html>

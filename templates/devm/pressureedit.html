@@ -1,0 +1,178 @@
+{% load staticfiles %}
+<form id="editForm" role="form" action="{% url 'devm:pressureedit' object.pk %}" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button id="doXEdit" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">修改压力表信息</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="deviceNumberGroup" class="form-group">
+                    <label class="col-md-2 control-label"><label
+                        class="text-danger">*</label> 表具编号：</label>
+                    <div class="col-md-4">
+                        <input name="serialnumber" value="{{ form.serialnumber.value|default:'' }}" type="text" id= "serialnumber"
+                            class="form-control" />
+                        <label id="serialnumber-error" style="display: none" class="error" for="serialnumber">请输入表具编号</label>
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> SIM卡号：</label>
+                    <div class="col-sm-4 col-md-4 form-group" style="padding-top:10px; margin:0px;">
+                        <div style="position:relative;">
+                            <span style="overflow:hidden;">
+                                <input type="hidden" id="commaddr" name="commaddr" value="{{ form.commaddr.value|default:'' }}"/>
+                                </span>
+                                <div class="input-group">
+                                    <input value="{{ form.simid.value|default:'' }}"  type="text" placeholder="" class="form-control" maxlength="20" id="sims" name="simid" readonly="true">
+                                    
+                                    <div class="input-group-btn">
+                                        <!-- <input type="hidden" class="hidenSubmitControl"/> -->
+                                      <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                          <i class="fa fa-spinner loading-state"></i>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                      </ul>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label"> 型号：</label>
+                    <div class="col-md-4">
+                        <input name="version" value="{{ form.version.value|default:'' }}"  type="text" id= "version" class="form-control" />
+                        <!-- <label id="deviceNumber-error" style="display: none" class="error" for="deviceNumber">请输入终端号，范围：7~15</label> -->
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 所属组织：</label>
+                    <div class="has-feedback col-md-4">
+                        <input name="belongto" class="form-control" id="zTreeOrganSel"
+                            value="{{ form.belongto.value|default:'' }}" readonly="readonly" style="background-color: #fafafa; cursor: pointer;"  type="text"/>
+                        <span class="fa fa-chevron-down form-control-feedback" aria-hidden="true" id="zTreeCitySelSpan"></span>
+                        <div class="ztreeModelBox" id="zTreeContent">
+                            <ul id="ztreeDemo" class="ztree"></ul>
+                        </div>
+                        <input id = "groupId" name = "groupId" type="text" hidden="true" />
+                        <label id="error_label_add" class="error" style="display: none;"></label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 类型：</label>
+                    <div class="col-md-4">
+                        <!-- <input id = "metertype" name = "metertype" type="text" hidden="true" /> -->
+                        <select name="metertype" id="metertype" autocomplete="off" value="{{ form.metertype.value|default:'' }}"  class="form-control">
+                            <option  value="0">电磁水表</option>
+                            <option  value="1">超声水表</option>
+                            <option  value="2">机械水表</option>
+                            <option  value="3">插入电磁</option>
+                            
+                        </select>
+                    </div>
+                    <label class="col-md-2 control-label"><label class="text-danger">*</label> 通讯协议：</label>
+                    <div class="col-md-4">
+                        <select name="protocol" value="{{ form.protocol.value|default:'' }}" id="protocol" autocomplete="off"  class="form-control">
+                            <option  value="0">平台协议</option>
+                            <option  value="1">和达协议</option>
+                            <option  value="2">安信协议</option>
+                            <option  value="3">手抄协议01</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">制造厂商：</label>
+                    <div class="col-md-4">
+                        <input name="manufacturer" id="manufacturer" value="{{ form.manufacturer.value|default:'' }}" type="text" class="form-control" />
+                    </div>
+                    <label class="col-md-2 control-label"><label
+                        class="text-danger">*</label> 检修周期：</label>
+                    <div class="col-md-4">
+                        <select name="check_cycle" id="check_cycle" value="{{ form.check_cycle.value|default:'' }}" autocomplete="off" class="form-control">
+                            <option  value="1">1年</option>
+                            <option  value="2">2年</option>
+                            <option  value="3">3年</option>
+                            <option  value="4">4年</option>
+                            <option  value="5">5年</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                <br>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label"> 表名称：</label>
+                    <div class="col-md-4">
+                        <input name="username" id="username" value="{{ form.username.value|default:'' }}" type="text" class="form-control" />
+                    </div>
+                    <label class="col-md-2 control-label">坐标体系：</label>
+                    <div class="col-md-4">
+                        <!-- <input type="hidden" id="coorTypeVal" name="coortype" > -->
+                        <select id="coorType" class="form-control" name="coortype"  value="{{ form.coortype.value|default:'' }}">
+                            <option value="WGS84">地球坐标</option>
+                            <option value="GCJ-02">火星坐标</option>
+                            <option value="BD-09">百度坐标</option>
+                            <option value="IAG75">西安坐标</option>
+                            <option value="CGCS2000">大地坐标</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label"> 经度：</label>
+                    <div class="col-md-4">
+                        <input name="lng" value="{{ form.lng.value|default:'' }}" type="text" maxlength="50" class="form-control" id="lng">
+                    </div>
+                    <label class="col-md-2 control-label">纬度：</label>
+                    <div class="col-md-4">
+                        <input name="lat" value="{{ form.lat.value|default:'' }}" type="text" maxlength="50" class="form-control" id="lat">
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!-- <div id = "bindMsg" hidden="true" style="text-align:left;color:red;">
+            <p> 注 ： 该终端已和监控对象绑定，终端号和通讯类型不允许修改，如需修改请先解除绑定！</p>
+        </div> -->
+        <div class=" pull-left" style="margin-left: 100px;">
+
+            <label class="radio-inline"> <input type="radio" name="state" id="isRadio" value="1" > 启用</label>
+            <label class="radio-inline"> <input type="radio" name="state" id="noRadio" value="0"> 停用</label>
+        </div>
+        <button class="btn btn-primary" type="button" id="doSubmit">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseEdit" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+</form>
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+<script>
+    var deviceNumberNull = "\u7EC8\u7AEF\u53F7\u4E0D\u80FD\u4E3A\u7A7A";
+    var deviceNumberError = "\u8BF7\u8F93\u5165\u5B57\u6BCD/\u6570\u5B57\uFF0C\u8303\u56F4\uFF08\u8F66\uFF097~15\uFF08\u4EBA\uFF091~20";
+    var deviceNumberExists = "\u7EC8\u7AEF\u53F7\u5DF2\u5B58\u5728";
+    var deviceTypeNull="\u901A\u8BAF\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A";
+
+    var publicSize6="\u957F\u5EA6\u4E0D\u8D85\u8FC76\u4F4D";
+    var publicSize10="\u957F\u5EA6\u4E0D\u8D85\u8FC710\u4F4D";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize50="\u957F\u5EA6\u4E0D\u8D85\u8FC750\u4F4D";
+    var publicSize64="\u957F\u5EA6\u4E0D\u8D85\u8FC764\u4F4D";
+    var publicSize100="\u957F\u5EA6\u4E0D\u8D85\u8FC7100\u4F4D";
+    var phoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u624B\u673A\u53F7\u5462";
+    var publicNull = "\u4E0D\u80FD\u4E3A\u7A7A";
+    var metertype = "{{ form.metertype.value }}"
+    var protocol = "{{ form.protocol.value }}"
+    var check_cycle = "{{ form.check_cycle.value }}"
+    var dn = "{{ form.dn.value }}"
+    var R = "{{ form.R.value }}"
+    var q3 = "{{ form.q3.value }}"
+    var metertype = "{{ form.metertype.value }}"
+    var state = "{{ form.state.value }}"
+    var coorType_old ="{{ form.coortype.value }}"
+</script>
+<script src="{% static 'virvo/wro/pressureEdit.js' %}"></script>

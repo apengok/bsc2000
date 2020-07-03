@@ -1,0 +1,275 @@
+{% load staticfiles %}
+
+<form id="addForm" role="form" action="{% url 'dmam:stationadd' %}" class="form-horizontal" method="post">{% csrf_token %}
+    <div class="modal-header">
+        <button type="button" id="doXEdit" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">新增站点</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                
+                <input id="groupname" type="text" hidden="true" name="groupname" value="{{ groupname }}" />
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><label class="text-danger">*</label> 站点名称：</label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入站点名"
+                            type="text" class="form-control" id="username" name="username"  />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> 站点描述：</label>
+                    <div class="col-md-7">
+                        <input id="description" name="description"  class="form-control"/>
+                    </div>
+                </div>
+                
+                <input id="groupIds" name="groupId" type="text"
+                    hidden="true" value="{{ object.belongto.cid }}" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><label class="text-danger">*</label> 所属组织：</label>
+                    <div class="has-feedback col-md-7">
+                        <input name="belongto" value="{{ groupname }}" 
+                            class="form-control" id="zTreeStationSelEdit" placeholder="所属组织" readonly="readonly" style="background-color: #fafafa; cursor: pointer;"
+                            type="text"  />
+                            <span id="zTreeCitySelSpan" class="fa fa-chevron-down form-control-feedback" aria-hidden="true"></span>
+                        <div id="zTreeContentEdit" class="ztreeModelBox" style="top:36px!important">
+                            <ul id="ztreeOrganEdit" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">用水性质：</label>
+                    <div class=" col-md-7">
+                        <div class="input-group">
+                            <input name="usertype" type="text" class="form-control" id="usertype">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-white dropdown-toggle"
+                                    data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <input id="metertypeEdit" name="metertype" type="text" hidden="true"  />
+                    <div class="col-md-7">
+                        <label class="radio-inline"><input type="radio" name="meter_type" value="水表" id="metertype"> 水表</label>
+                        <label class="radio-inline"><input type="radio" name="meter_type" value="流量计" id="metertype"> 流量计</label>
+                    </div>
+                </div> 
+
+                
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><label class="text-danger">*</label> 关联表具：</label>
+                    <div class="col-sm-7 col-md-7 form-group" style="padding-top:10px; margin:0px;">
+                        <div style="position:relative;">
+                            <span style="overflow:hidden;">
+                                <input type="hidden" id="meterID" name="meterID" value=""/>
+                                </span>
+                                <div class="input-group">
+                                    <input value=""  type="text" placeholder="" class="form-control" maxlength="20" id="relate_meter" name="meter">
+                                    
+                                    <div class="input-group-btn">
+                                        <!-- <input type="hidden" class="hidenSubmitControl"/> -->
+                                      <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                          <i class="fa fa-spinner loading-state"></i>
+                                      </button>
+                                      <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                      </ul>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-md-7">
+                        <div class="input-group">
+                            <input name="meter" type="text" class="form-control" id="relate_meter">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-white dropdown-toggle"
+                                    data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div> -->
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> 表具编号：</label>
+                    <div class="col-md-7">
+                        <input placeholder="serialnumber" type="text" 
+                            class="form-control" id="serialnumber" name="serialnumber" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">SIM卡号：</label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入SIM卡号" type="text" 
+                            class="form-control" id="simid" name="simid" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">口径：</label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入口径" type="text"
+                            class="form-control" id="dn" name="dn" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">安装日期：</label>
+                    <div class="col-md-7">
+                        <input style="cursor: pointer;  background-color: #fafafa;" class="form-control layer-date laydate-icon"
+                                id="madedate" name="madedate" />
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-6">
+                <div style="border: 1px solid black;height: 375px;" id="map"></div>
+                <div class="form-group" style="margin-top: 10px;">
+                  
+                    <label class = "col-sm-3 control-label">经度:</label>
+                      
+                    <div class = "col-sm-3">
+                       <input type = "text" class = "form-control " id = "lng" name="lng" >
+                       
+                    </div>
+                 
+                    <label class= "col-sm-3 control-label">纬度:</label>
+                      
+                    <div class = "col-sm-3">
+                       <input type = "text" class = "form-control" id = "lat" name="lat" >
+                    </div>
+                </div>
+               
+
+               <div class = "form-group">
+                    <label class="col-sm-3 control-label" >位置信息:</label>
+                    <input id="installationsite" name="installationsite" type="text" hidden="true"  />
+                    <div class="has-feedback col-md-7">
+                        <select class="form-control" id="locatesel" >
+                            <option>室外底下</option>
+                            <option>室外地上</option>
+                            <option>室内</option>
+                        </select>
+                    </div>
+                  
+               </div>
+
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="col-md-2"><button type="button" class="btn btn-primary">载入现场图片</button></div>
+                <div class="col-md-2" style="border: 1px solid grey;height: 100px;">
+                    <!-- <table width="50%" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <td align="left">
+                                <div id="localImag-ico" style="margin-bottom: 10px;"><img id="preview-ico" src="" style="display: block;"></div>
+                                <input id="photograph-ico" name="photograph-ico" type="hidden" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="inpFilePhoto">
+                                        <input type="file" accept="image/png" name="file" id="doc-ico" style="width:202px;" >
+                                        点击选择照片
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> -->
+                </div>
+                <div class="col-md-2" style="border: 1px solid grey;height: 100px;"></div>
+                <div class="col-md-2" style="border: 1px solid grey;height: 100px;"></div>
+                <div class="col-md-2" style="border: 1px solid grey;height: 100px;"></div>
+                <div class="col-md-2" style="border: 1px solid grey;height: 100px;"></div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" name="focus" id="focusVal">
+        <input type="hidden" name="biguser" id="biguserVal">
+        <div class="form-group pull-left">
+            <button type="button" id="focusBtn" class="btn btn-default" ><strong>重点关注</strong></button>
+
+            <button type="button" id="biguserBtn" class="btn btn-default" ><strong>大用户</strong></button>
+        </div>
+        <button id="doSubmitEdit" class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseEdit" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+</form>
+<input value="{{ user.idstr }}" id="currentUserId" type="hidden"/>
+<script>
+    var userNameNull = "站点名称不能为空";
+    var userNameError = "\u8BF7\u8F93\u5165\u5B57\u6BCD/\u6570\u5B57/\u4E0B\u5212\u7EBF/\u77ED\u6760\uFF0C\u5982\uFF1Alove\u3001\u5C0F\u9C7C\u30011234\u3001F3-808";
+    var userNameMinLength = "\u9601\u4E0B\u81F3\u5C11\u8981\u8F93\u51654\u4F4D\uFF0C\u5982\uFF1Alove\u3001\u5C0F\u9C7C";
+    var usernameExists = "\u8BE5\u7528\u6237\u540D\u5DF2\u88AB\u4F7F\u7528,\u8BF7\u91CD\u65B0\u6DFB\u52A0";
+    var usernameAuthorizationDateNull = "\u6388\u6743\u622A\u6B62\u65E5\u671F\u4E0D\u80FD\u4E3A\u7A7A";
+    var usernameAuthorizationToday = "\u6388\u6743\u622A\u6B62\u65E5\u671F\u5FC5\u987B\u5927\u4E8E/\u7B49\u4E8E\u4ECA\u5929";
+    var passWordNull = "\u4E0D\u8981\u548C\u6211\u6BD4\u61D2\uFF0C\u4E0D\u8F93\u5165\u5BC6\u7801\uFF0C\u6211\u61D2\u5F97\u548C\u4F60\u6BD4";
+    var passwordMinLength = "\u4E0D\u80FD\u5C11\u4E8E6\u4E2A\u5B57\u7B26\uFF0C\u5982\u679C\u5B9E\u5728\u4E0D\u591F\u957F\uFF0C\u53BB\u9762\u58C1\u601D\u8FC7\u5427\uFF0C\u591F\u957F\u4E86\u518D\u6765";
+    var passwordCompareNull = "\u8F93\u5165\u5BC6\u7801\u7684\u59FF\u52BF\u72C2\u62FD\u5E05\u6C14\u540A\u70B8\u5929\uFF0C\u5DEE\u4E00\u70B9\u5C31\u4E24\u6B21\u5BC6\u7801\u90FD\u4E00\u81F4\u4E86";
+    var emailError = "\u60A8\u7684\u90AE\u7BB1\u683C\u5F0F\u8F93\u5165\u9519\u8BEF\u5566";
+    var phoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u624B\u673A\u53F7\u5462";
+    var publicMinSize2Length="\u957F\u5EA6\u4E0D\u80FD\u5C0F\u4E8E2\u4F4D";
+    var publicSelectGroupNull="\u8BF7\u9009\u62E9\u6240\u5C5E\u4F01\u4E1A";
+    var publicMinSize6Length="\u957F\u5EA6\u4E0D\u80FD\u5C0F\u4E8E6\u4F4D";
+    var publicSize25="\u957F\u5EA6\u4E0D\u8D85\u8FC725\u4F4D";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize60="\u957F\u5EA6\u4E0D\u8D85\u8FC760\u4F4D";
+    var publicNull = "\u4E0D\u80FD\u4E3A\u7A7A";
+    var publicEditSuccess = "\u4FEE\u6539\u6210\u529F";
+    var publicEditError = "\u4FEE\u6539\u5931\u8D25";
+    var userGroupSelectNull = "\u8BF7\u9009\u62E9\u7EC4\u7EC7";
+
+    $("#focusBtn").on('click',function(){
+        var nowcss = $(this).attr("class").indexOf("btn btn-default"); 
+        if(nowcss != (-1)){
+            $(this).removeClass("btn btn-default").attr("class","btn btn-primary")
+            $("#focusVal").attr("value","1")
+        }else{
+            $(this).removeClass("btn btn-primary").attr("class","btn btn-default")
+            $("#focusVal").attr("value","0")
+
+        }
+        
+    })
+
+    $("#biguserBtn").on('click',function(){
+        var nowcss = $(this).attr("class").indexOf("btn btn-default"); 
+        if(nowcss != (-1)){
+            $(this).removeClass("btn btn-default").attr("class","btn btn-primary")
+            $("#biguserVal").attr("value","1")
+        }else{
+            $(this).removeClass("btn btn-primary").attr("class","btn btn-default")
+            $("#biguserVal").attr("value","0")
+
+        }
+        
+    })
+</script>
+
+
+<script src="{% static 'virvo/wro/stationAdd.js' %}"></script>
+
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>

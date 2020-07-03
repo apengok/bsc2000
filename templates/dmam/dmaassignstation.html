@@ -1,0 +1,101 @@
+{% load staticfiles %}
+
+<style type="text/css">
+  /*div.dataTables_wrapper{overflow:hidden;user-select:text!important;-ms-user-select:text!important;-moz-user-select:text!important;-webkit-user-select:text!important}*/
+  .hidevalue {
+    display: none;
+  }
+</style>
+<!-- 新增站点管理 -->
+  
+    <form id="dmastationform" role="form" action="" method="post" class="form-horizontal">{% csrf_token %}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          <h4 class="modal-title">DMA分区站点配置 -- 当前分区 <label id="current_dma"><span>{{ dma_name }}</span></label></h4>
+          <input value="{{ dma_pk }}" id="dma_pk" type="hidden"  />
+          <input value="{{ dma_no }}" id="dma_no" name="dma_no" type="hidden"  />
+          <input value="{{ dma_name }}" id="dma_name" name="dma_name" type="hidden"  />
+          <input value="{{ dma_group }}" id="dma_group" name="dma_group" type="hidden"  />
+          <input  id="dmastation_json" name="stationassign" type="hidden"  />
+          <input  id="dmastation_list" name="dmastation_list" value="{{ dmastation_list }}" type="hidden"  />
+
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3" style="padding-right: 0px; padding-left: 0px;">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h3 class="panel-title fwb">站点列表</h3>
+                          
+                        </div>
+                        <div class="panel-body" style="padding: 0px;">
+                          <div class="form-group" style="margin-top: 15px;">
+                            <div class="col-md-12">
+                              <input id="search_station_condition" name="search" class="form-control" style="margin-bottom: 10px;" type="text" placeholder="请输入组织名称" />
+                            </div>
+                          </div>
+                          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="padding: 0px;height:80%!important">
+                            <ul id="stationtreeDemo" class="ztreee" style="overflow:auto;height:600px!important"></ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+            
+                    <div class="col-md-1" style="padding-right: 0px; padding-left:0px;">
+                        <div style="margin-top: 100px;margin-left: 20px;"><button id="export" type="button" style="background-color: white;border-width: 0px;"><img src="/static/virvo/images/export.png"></button></div>
+                        <div style="margin-top: 10px;margin-left: 20px;"><button id="import" type="button" style="background-color: white;border-width: 0px;"><img src="/static/virvo/images/import.png"></button></div>
+                        
+
+                    </div>
+                    <div class="col-md-8 real-time-command-list" style="padding-right: 0px; padding-left:10px;">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="stretch2">
+                                <h3 class="panel-title fwb">计量分区内站点列表</h3>
+                                
+                            </div>
+                            <div class="panel-body mileage-Content"  id="stretch2-body">
+                              <div class="ToolPanel">
+                                
+                                <div class="columns btn-group pull-right refShowRight">
+                                    <button type="button" id="saveDmaStation" class="btn btn-primary">保存</button>
+                                    <button type="button" class="btn btn-default btn-off" data-dismiss="modal" id="closeAddDialog">取消</button>
+                                </div>
+                              </div>
+                              
+                                <table id="stationdataTable" 
+                                    class="table table-striped table-bordered table-hover CheckTable"
+                                    cellspacing="0" width="100%">
+                                    <thead>
+                                      <tr>
+                                        <!-- <th><input type="checkbox" id="checkAll"  onclick="dmaStation.checkAll(this)"></th> -->
+                                        <th><input name="select_all" value="1" type="checkbox"></th>
+                                        <th>序号</th>
+                                        <th>分区名称</th>
+                                        <th>站点名称</th>
+                                        <th>类型</th>
+                                        <th style="display: none;">commaddr</th>
+                                        <th style="display: none;">flag</th>
+                                      </tr>
+                                    </thead>
+                                  </table>
+                                
+                               
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+            </div>
+        </div>
+        
+    </form>
+      
+
+<script src="{% static 'virvo/resources/js/zTree/js/ztreeSearch.js' %}"></script>
+
+<script src="{% static 'virvo/wro/districtassignstation.js' %}"></script>

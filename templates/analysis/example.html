@@ -1,0 +1,1129 @@
+{% extends '_vbase.html' %}
+
+
+{% load staticfiles %}
+
+{% block main_content %}
+
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-12 col-sm-12" style="padding-right: 0px; padding-left:0px;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="stretch">
+                                    <h3 class="panel-title fwb">查询</h3>
+                                    <div class="actions pull-right listActions">
+                                        <i class="fa chevron-down" id="stretch-chevron"></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body" id="stretch-body">
+                                    <div class="col-md-12 alarmSearchToolPanel">
+                                        <form id="hourslist" class="form-horizontal" action="#"
+                                            method="post" role="form">
+                                            <div class="form-group">
+                                                <label class="col-md-1 col-sm-3 control-label">组织：</label> 
+                                                <input class="form-control hidden" />
+                                                <div class="has-feedback col-md-2 col-sm-8">
+                                                    <input style="cursor: pointer; background-color: #fafafa;" placeholder="请选择组织" name="groupSelect" class="form-control"
+                                                         id="groupSelect" readonly />
+                                                    <span class="fa fa-chevron-down form-control-feedback" style="top: 0; right: 15px;cursor:pointer;" aria-hidden="true" id="groupSelectSpan"></span>
+                                                    <div id="menuContent" class="menuContent">
+                                                        <ul id="treeDemo" class="ztree"></ul>
+                                                    </div>
+                                                </div>
+                                                <label class="col-md-1 col-sm-3 control-label searchListSelect">时间：</label>
+                                                <div class="col-md-4 col-sm-8 searchListSelect">
+                                                    <input style="cursor: pointer; background-color: #fafafa;"
+                                                        class="form-control layer-date laydate-icon"
+                                                        id="timeInterval" name="timeInterval" readonly />
+                                                    <label id="timeInterval-error" class="error" for="timeInterval" style="display: none;">开始时间请不要超过上个月一号</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-md-12 control-label" id="dateSearchData">
+                                                    <button id="todayClick" type="button" class="btn btn-primary" name="0" onclick="onlineReport.inquireClick(0)">今天</button>
+                                                    <button id="yesterdayClick" type="button"class="btn btn-primary" name="-1" onclick="onlineReport.inquireClick(-1)">前一天  </button>
+                                                    <button id="nearlyThreeDays" type="button"class="btn btn-primary" name="-3" onclick="onlineReport.inquireClick(-3)">前三天  </button>
+                                                    <!--<button id="nearlySevenDays" type="button"class="btn btn-primary" name="-7" onclick="onlineReport.inquireClick(-7)">前七天 </button>-->
+                                                    <button id="inquireClick" type="button" class="btn btn-primary search-btn" name="1" onclick="onlineReport.inquireClick(1)"><i class="glyphicon glyphicon-search"></i>  查询</button>
+                                                    <button id="exportOnline" type="button" class="btn btn-purple export-btn" onclick="onlineReport.exportOnline()"><i class="glyphicon glyphicon-log-out"></i>  导出</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12" style="padding-right: 0px; padding-left:0px;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="stretch2">
+                                    <h3 class="panel-title fwb">图形分析</h3>
+                                    <div class="actions pull-right listActions">
+                                        <i class="fa chevron-down" id="stretch2-chevron"></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body mileage-Content" style="display:none;" id="stretch2-body">
+                                    <div id="onlineGraphics" style="height:600px;width:100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12" style="padding-right: 0px; padding-left:0px;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="stretch3">
+                                    <h3 class="panel-title fwb">上线率</h3>
+                                    <div class="actions pull-right listActions">
+                                        <i class="fa chevron-down" id="stretch3-chevron"></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body fixed-table-body" id="stretch3-body">
+                                    <div class="ToolPanel">
+                                        <div class="bars pull-left">
+                                            <div class="btn-group pull-left barsMargin" role="group">
+                                                 <form role="form"> 
+                                                   <label><input type="text" class="Inlinesearch form-control" id="simpleQueryParam" name="simpleQueryParam" style="width:300px" placeholder="请输入监控对象关键字"></label>
+                                                   <button type="button" id="search_button" class="btn btn-outline btn-default">搜索</button>
+                                                   <input id="hiddenText" type="text" style="display:none" />
+                                                 </form> 
+                                            </div>
+                                        </div>
+                                        <div class="columns btn-group pull-right fuelConsumptionS">
+                                            <button id="refreshTable" class="btn btn-default" type="button" name="refresh"
+                                                    title="刷新">
+                                                <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                                            </button>
+                                            <div class="keep-open btn-group" title="定制显示列">
+                                                <button id="customizeColumns" type="button" class="btn btn-default dropdown-toggle btn-border-radius" data-toggle="dropdown">
+                                                    <i class="glyphicon glyphicon-th icon-th"></i> <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" id="Ul-menu-text">                
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table id="dataTable"
+                                        class="table table-striped table-bordered table-hover noCheckTable"
+                                        cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">序号</th>
+                                                <th class="text-center">监控对象</th>
+                                                <th class="text-center">车牌颜色</th>                           
+                                                <th class="text-center">上线天数</th>
+                                                <th class="text-center">总天数</th>
+                                                <th class="text-center">上线率</th>
+                                                <th class="text-center">所属分组</th>
+                                                <th class="text-center">从业人员</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+{% endblock %}
+
+
+<section id="main-content">
+                <div class="row eightIsZero">
+                    <div class="col-md-12">
+                        <ul class="breadcrumb">
+                            <li><a href="/clbs/">首页</a></li>
+                            <li class="active">企业管理</li>
+                            <li class="active">组织与用户管理</li>
+                        </ul>
+                        <h1 class="h1 ">组织与用户管理</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-2" style="padding-right: 0px; padding-left: 0px;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title fwb">组织架构</h3>
+                                    <div class="actions pull-right listActions">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="padding: 0px;">
+                                    <div class="form-group" style="margin-top: 15px;">
+                                        <div class="col-md-12">
+                                            <input id="search_condition" name="search" class="form-control" style="margin-bottom: 10px;" type="text" placeholder="请输入组织名称" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="padding: 0px;height:699px!important">
+                                        <ul id="treeDemo" class="ztreee" style="overflow:auto;height:684px!important"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10" style="padding-right: 0px; padding-left: 10px;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" style="cursor:pointer;" id="stretch" >
+                                    <h3 class="panel-title fwb">运营资质类别<span class="caret"></span></h3>
+                                    <div class="actions pull-right listActions">
+                                        <i class="fa chevron-up"  id="stretch-chevron" ></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body fixed-table-body" style="display: none;"  id="stretch-body">
+                                    <!--工具面板-->
+                                    <div class="ToolPanel">
+                                        <div class="bars pull-left">
+                                            <div class="btn-group pull-left barsMargin" role="group">
+                                                <form role="form" id="ipScForm">
+                                                    <label id="formLabDis"> <input type="text"
+                                                        class="Inlinesearch form-control" id="operationType"
+                                                        name="operationType" onkeydown="groupUserManage.findDownKey(event)" placeholder="请输入运营资质类别">
+                                                    </label>
+                                                    <button type="button" id="search_operation"
+                                                        class="btn btn-outline btn-default">搜索</button>
+                                                    <input id="operationText" type="text" style="display: none" />
+                                                </form>
+                                            </div>
+                                            <div class="dropdown pull-left">
+                                                <button class="btn btn-default dropdown-toggle"
+                                                    type="button" id="dropdownMenu1Two" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="true">
+                                                    操作菜单<span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                    <li><a id="addIdTwo" data-toggle="modal" data-target="#addType"><i
+                                                            class="glyphicon glyphicon-plus icoPaddingLeft"></i>新增</a></li>
+                                                    <li><a id="del_modelTwo"><i
+                                                            class="glyphicon glyphicon-save icoPaddingLeft"></i>批量删除</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <table id="dataTables"
+                                        class="table table-striped table-bordered table-hover text-center checkTable"
+                                        cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center"></th>
+                                                <th class="text-center"><input type="checkbox" id="checkAllTwo"  onclick="groupUserManage.checkAllTwo(this)"></th>
+                                                <th class="text-center">操作设置</th>
+                                                <th class="text-center">运营资质类别</th>
+                                                <th class="text-center">备注</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="padding-right: 0px; padding-left:0px;"></div>
+                        <div class="col-md-10 real-time-command-list" style="padding-right: 0px; padding-left:10px;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="stretch2" >
+                                    <h3 class="panel-title fwb">用户信息</h3>
+                                    <div class="actions pull-right listActions">
+                                        <i class="fa chevron-down"  id="stretch2-chevron" ></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body fixed-table-body"  id="stretch2-body">
+                                    <input value="true" id="permission" type="hidden" />
+                                    <input value="uid=13911755733,ou=ORG_187888e1-7a09-43cf-bd46-2717b3d4382d,ou=organization" id="currentUserId" type="hidden" />
+                                    <div class="ToolPanel">
+                                        <div class="bars pull-left" id="barsPuLeft">
+                                            <div class="btn-group pull-left barsMargin" role="group">
+                                                <form role="form" id="operationForm">
+                                                    <label id="formLabDi"> <input type="text"
+                                                        class="Inlinesearch form-control" id="simpleQueryParam"
+                                                        name="simpleQueryParam" placeholder="请输入用户名/真实姓名/电话号码/邮箱">
+                                                    </label>
+                                                    <button type="button" id="search_button"
+                                                            onclick="myTable.requestData()"
+                                                            class="btn btn-outline btn-default">搜索</button>
+                                                    <input id="hiddenText" type="text" style="display: none" />
+                                                </form>
+                                            </div>
+                                            <div class="dropdown pull-left">
+                                                <button class="btn btn-default dropdown-toggle"
+                                                    type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="true">
+                                                    操作菜单<span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                    <li><a href="/clbs/c/user/newuser" id="addId"
+                                                        data-toggle="modal" data-target="#commonWin"><i
+                                                            class="glyphicon glyphicon-plus icoPaddingLeft"></i>新增</a></li>
+                                                    <li><a href="javascript:void(0);" id="del_model"><i
+                                                            class="glyphicon glyphicon-trash icoPaddingLeft"></i>批量删除</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="columns btn-group pull-right refShowRight">
+                                            <button id="refreshTable" class="btn btn-default"
+                                                type="button" name="refresh" title="刷新">
+                                                <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                                            </button>
+                                            <div class="keep-open btn-group" title="定制显示列">
+                                                <button id="customizeColumns" type="button"
+                                                    class="btn btn-default dropdown-toggle"
+                                                    data-toggle="dropdown">
+                                                    <i class="glyphicon glyphicon-th icon-th"></i> <span
+                                                        class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" id="Ul-menu-text">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table id="dataTable"
+                                        class="table table-striped table-bordered table-hover checkTable"
+                                        cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>
+                                                <input type="checkbox" id="checkAll"  onclick="groupUserManage.checkAll(this)"></th>
+                                                <th>操作设置</th>
+                                                <th>用户名</th>
+                                                <th>真实姓名</th>
+                                                <th>性别</th>
+                                                <th>电话号码</th>
+                                                <th>邮箱</th>
+                                                <th>启停状态</th>
+                                                <th>授权截止日期</th>
+                                                <th>所属企业</th>
+                                                <th>角色</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!----------新增运营资质类别--------->
+                        <div class="modal fade" id="addType" tabindex="-1" aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog form-horizontal" role="document">
+                                <div class="modal-content">
+                                <form id="eadOperation" role="form" action="/clbs/c/group/addOperational" method="post" class="form-horizontal">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title">新增运营资质类别</h4>
+                                        <input class="hidden" id="vid9" name="vid" value="">
+                                        <input class="hidden" name="orderType" value="9">
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">
+                                                <label class="text-danger">*</label> 运营资质类别：</label>
+                                                <div class=" col-md-7">
+                                                    <input type="text" placeholder="请输入运营资质类别"  name="addproperationtype" class="form-control"  id = "addproperationtype"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">备注：</label>
+                                                <div class=" col-md-7">
+                                                    <textarea rows="3" cols="20" placeholder="请输入运营资质类别说明" name="adddescription" class="form-control" id = "adddescription"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="addoperation" class="btn btn-primary">提交</button>
+                                        <button type="button" class="btn btn-default btn-off" data-dismiss="modal" id="closeAddDialog">关闭</button>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!----------修改运营资质类别--------->
+                        <div class="modal fade" id="updateType" tabindex="-1" aria-hidden="true" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="editOperation" role="form" action="/clbs/c/group/updateOperation" method="post" class="form-horizontal">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                        <h4 class="modal-title" id="goOverspeedSettingBrand" name="goOverspeedSettingBrand">修改运营资质类别</h4>
+                                              <input class="hidden" name="vid" value="">
+                                              <input class="hidden" name="orderType" value="9">
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">运营资质类别：</label>
+                                                <div class=" col-md-7">
+                                                    <input type="text" placeholder="请输入运营资质类别"  class="form-control" name="updateOperationType" id = "updateOperationType"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 control-label">备注：</label>
+                                                <div class=" col-md-7">
+                                                    <textarea rows="3" cols="20" placeholder="请输入运营资质类别"  name="updateDescription" class="form-control" id = "updateDescription"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="updateOperation" class="btn btn-primary">提交</button>
+                                        <button type="button" class="btn btn-default btn-off" data-dismiss="modal" id="updateClose">关闭</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+
+{% block javascript %}
+<script>
+  var userGroupDeleteConfirm = "\u60A8\u786E\u5B9A\u8981\u5220\u9664\u8BE5\u7EC4\u7EC7\u5417";
+  var systemError = "\u5BF9\u4E0D\u8D77\uFF0C\u7CFB\u7EDF\u8D70\u4E22\u4E86\uFF0C\u8BF7\u8054\u7CFB\u7BA1\u7406\u5458";
+  var userNodeNameNull = "\u8282\u70B9\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A";
+  var userSupermanagerDeleteTip = "\u4E0D\u80FD\u5220\u9664\u8D85\u7EA7\u7BA1\u7406\u5458";
+  var userDeleteChooseNull = "\u8BF7\u81F3\u5C11\u52FE\u9009\u4E00\u9879";
+  var selectItem = "\u4E0D\u80FD\u56E0\u4E3A\u4F60\u957F\u7684\u597D\u770B\uFF0C\u5C31\u53EF\u4EE5\u4EC0\u4E48\u90FD\u4E0D\u9009\u5427\uFF0C\u600E\u4E48\u4E5F\u8981\u9009\u4E00\u4E2A\u5427:)";
+  var publicAddSuccess="\u6DFB\u52A0\u6210\u529F";
+  var publicDelete="\u5220\u6389\u5C31\u6CA1\u5566\uFF0C\u8BF7\u8C28\u614E\u4E0B\u624B";
+  var publicError="\u7CFB\u7EDF\u7684\u60C5\u7EEA\u4E0D\u7A33\u5B9A\uFF0C\u5E76\u5411\u4F60\u6254\u4E86\u4E00\u4E2A\u9519\u8BEF~";
+  var publicDeleteSuccess="\u5220\u9664\u6210\u529F";
+  var publicPerverseData="\u8BF7\u8F93\u5165\u5408\u6CD5\u7684\u5185\u5BB9";
+  var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+  var publicSize30="\u957F\u5EA6\u4E0D\u8D85\u8FC730\u4F4D";
+  var publicMinSize2Length="\u957F\u5EA6\u4E0D\u80FD\u5C0F\u4E8E2\u4F4D";
+  var userQualificationNull="\u8FD0\u8425\u8D44\u8D28\u7C7B\u522B\u4E0D\u80FD\u4E3A\u7A7A";
+  var userQualificationExists="\u8BE5\u8FD0\u8425\u8D44\u8D28\u7C7B\u522B\u5DF2\u7ECF\u5B58\u5728,\u8BF7\u52FF\u91CD\u590D\u6DFB\u52A0";
+</script>
+<script src="{% static 'virvo/resources/js/zTree/js/ztreeSearch.js' %}"></script>
+<script type="text/javascript" src="{% static 'virvo/wro/bd-echatrs.js' %}"></script>
+<script src="{% static 'virvo/wro/mnf.js' %}"></script>
+{% endblock %}
+
+<script type="text/javascript">
+    (function (window, $) {
+    var dataListArray = [];
+    var endTime;// 当天时间
+    var sTime;
+    var eTime;
+    var key = true;
+    var vid;
+    var carLicense = [];
+    var activeDays = [];
+    var myTable;
+    var bflag = true;
+    var zTreeIdJson = {};
+    var barWidth;
+    var number;
+    var checkFlag = false; //判断组织节点是否是勾选操作
+    var size;//当前权限监控对象数量
+    onlineReport = {
+        init: function () {
+            //车辆树
+            var setting = {
+                async: {
+                    url: onlineReport.getOnlineReportTreeUrl,
+                    type: "post",
+                    enable: true,
+                    autoParam: ["id"],
+                    dataType: "json",
+                    otherParam: {"type": "multiple", "icoType": "0"},
+                    otherParam: {"icoType": "0"},
+                    dataFilter: onlineReport.ajaxDataFilter
+
+                },
+                check: {
+                    enable: true,
+                    chkStyle: "checkbox",
+                    chkboxType: {
+                        "Y": "s",
+                        "N": "s"
+                    },
+                    radioType: "all"
+                },
+                view: {
+                    dblClickExpand: false,
+                    nameIsHTML: true,
+                    countClass: "group-number-statistics"
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    beforeClick: onlineReport.beforeClickVehicle,
+                    beforeCheck: onlineReport.zTreeBeforeCheck,
+                    onCheck: onlineReport.onCheckVehicle,
+                    onExpand: onlineReport.zTreeOnExpand,
+                    //beforeAsync: onlineReport.zTreeBeforeAsync,
+                    onAsyncSuccess: onlineReport.zTreeOnAsyncSuccess,
+                    onNodeCreated: onlineReport.zTreeOnNodeCreated,
+                }
+            };
+            $.fn.zTree.init($("#treeDemo"), setting, null);
+        },
+        getOnlineReportTreeUrl: function (treeId, treeNode) {
+            if (treeNode == null) {
+                return "/clbs/m/personalized/ico/vehicleTree";
+            } else if (treeNode.type == "assignment") {
+                return "/clbs/m/functionconfig/fence/bindfence/putMonitorByAssign?assignmentId=" + treeNode.id + "&isChecked=" + treeNode.checked + "&monitorType=vehicle";
+            }
+        },
+        zTreeBeforeAsync: function () {
+            return bflag;
+        },
+        beforeClickVehicle: function (treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.checkNode(treeNode, !treeNode.checked, true, true);
+            return false;
+        },
+        zTreeOnAsyncSuccess: function () {
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            if (size <= 100) {
+                treeObj.checkAllNodes(true);
+            }
+            onlineReport.getCharSelect(treeObj);
+        },
+        zTreeOnNodeCreated: function (event, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            var id = treeNode.id.toString();
+            var list = [];
+            if (zTreeIdJson[id] == undefined || zTreeIdJson[id] == null) {
+                list = [treeNode.tId];
+                zTreeIdJson[id] = list;
+            } else {
+                zTreeIdJson[id].push(treeNode.tId)
+            }
+        },
+        //组织树预处理加载函数
+        ajaxDataFilter: function (treeId, parentNode, responseData) {
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            if (responseData.msg) {
+                var obj = JSON.parse(ungzip(responseData.msg));
+                var data;
+                if (obj.tree != null && obj.tree != undefined) {
+                    data = obj.tree;
+                    size = obj.size;
+                } else {
+                    data = obj
+                }
+                for (var i = 0; i < data.length; i++) {
+                    data[i].open = true;
+                }
+            }
+            return data;
+        },
+        zTreeBeforeCheck: function (treeId, treeNode) {
+            var flag = true;
+            if (!treeNode.checked) {
+                if (treeNode.type == "group" || treeNode.type == "assignment") { //若勾选的为组织或分组
+                    var zTree = $.fn.zTree.getZTreeObj("treeDemo"), nodes = zTree
+                        .getCheckedNodes(true), v = "";
+                    var nodesLength = 0;
+
+                    json_ajax("post", "/clbs/m/personalized/ico/getCheckedVehicle",
+                        "json", false, {"parentId": treeNode.id, "type": treeNode.type}, function (data) {
+                            if (data.success) {
+                                nodesLength += data.obj;
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        });
+
+                    //存放已记录的节点id(为了防止车辆有多个分组而引起的统计不准确)
+                    var ns = [];
+                    //节点id
+                    var nodeId;
+                    for (var i = 0; i < nodes.length; i++) {
+                        nodeId = nodes[i].id;
+                        if (nodes[i].type == "people" || nodes[i].type == "vehicle") {
+                            //查询该节点是否在勾选组织或分组下，若在则不记录，不在则记录
+                            var nd = zTree.getNodeByParam("tId", nodes[i].tId, treeNode);
+                            if (nd == null && $.inArray(nodeId, ns) == -1) {
+                                ns.push(nodeId);
+                            }
+                        }
+                    }
+                    nodesLength += ns.length;
+                } else if (treeNode.type == "people" || treeNode.type == "vehicle") { //若勾选的为监控对象
+                    var zTree = $.fn.zTree.getZTreeObj("treeDemo"), nodes = zTree
+                        .getCheckedNodes(true), v = "";
+                    var nodesLength = 0;
+                    //存放已记录的节点id(为了防止车辆有多个分组而引起的统计不准确)
+                    var ns = [];
+                    //节点id
+                    var nodeId;
+                    for (var i = 0; i < nodes.length; i++) {
+                        nodeId = nodes[i].id;
+                        if (nodes[i].type == "people" || nodes[i].type == "vehicle") {
+                            if ($.inArray(nodeId, ns) == -1) {
+                                ns.push(nodeId);
+                            }
+                        }
+                    }
+                    nodesLength = ns.length + 1;
+                }
+                if (nodesLength > 100) {
+                    // layer.msg(maxSelectItem);
+                    layer.msg('最多勾选100个监控对象');
+                    flag = false;
+                }
+            }
+            if (flag) {
+                //若组织节点已被勾选，则是勾选操作，改变勾选操作标识
+                if (treeNode.type == "group" && !treeNode.checked) {
+                    checkFlag = true;
+                }
+            }
+            return flag;
+        },
+        onCheckVehicle: function (e, treeId, treeNode) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            //若为取消勾选则不展开节点
+            if (treeNode.checked) {
+                zTree.expandNode(treeNode, true, true, true, true); // 展开节点
+            }
+            onlineReport.getCharSelect(zTree);
+            onlineReport.getCheckedNodes();
+        },
+        zTreeOnExpand: function (event, treeId, treeNode) {
+            //判断是否是勾选操作展开的树(是则继续执行，不是则返回)
+            if (treeNode.type == "group" && !checkFlag) {
+                return;
+            }
+            //初始化勾选操作判断表示
+            checkFlag = false;
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            if (treeNode.type == "group") {
+                var url = "/clbs/m/functionconfig/fence/bindfence/putMonitorByGroup";
+                json_ajax("post", url, "json", false, {
+                    "groupId": treeNode.id,
+                    "isChecked": treeNode.checked,
+                    "monitorType": "vehicle"
+                }, function (data) {
+                    var result = data.obj;
+                    if (result != null && result != undefined) {
+                        $.each(result, function (i) {
+                            var pid = i; //获取键值
+                            var chNodes = result[i] //获取对应的value
+                            var parentTid = zTreeIdJson[pid][0];
+                            var parentNode = treeObj.getNodeByTId(parentTid);
+                            if (parentNode.children === undefined) {
+                                treeObj.addNodes(parentNode, chNodes);
+                            }
+                        });
+                    }
+                })
+            }
+        },
+        getCharSelect: function (treeObj) {
+            var nodes = treeObj.getCheckedNodes(true);
+            var allNodes = treeObj.getNodes();
+            if (nodes.length > 0) {
+                $("#groupSelect").val(allNodes[0].name);
+            } else {
+                $("#groupSelect").val("");
+            }
+        },
+        //获取到选择的节点
+        getCheckedNodes: function () {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"), nodes = zTree.getCheckedNodes(true), v = "", vid = "";
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                if (nodes[i].type == "vehicle") {
+                    v += nodes[i].name + ",";
+                    vid += nodes[i].id + ",";
+                }
+            }
+            allVid = vid;
+            vnameList = v;
+        },
+
+        tableFilter: function () {
+            //显示隐藏列
+            var menu_text = "";
+            var table = $("#dataTable tr th:gt(1)");
+            menu_text += "<li><label><input type=\"checkbox\" checked=\"checked\" class=\"toggle-vis\" data-column=\"" + parseInt(2) + "\" disabled />" + table[0].innerHTML + "</label></li>"
+            for (var i = 1; i < table.length; i++) {
+                menu_text += "<li><label><input type=\"checkbox\" checked=\"checked\" class=\"toggle-vis\" data-column=\"" + parseInt(i + 2) + "\" />" + table[i].innerHTML + "</label></li>"
+            }
+            ;
+            $("#Ul-menu-text").html(menu_text);
+        },
+        //开始时间
+        startDay: function (day) {
+            var timeInterval = $('#timeInterval').val().split('--');
+            var startValue = timeInterval[0];
+            var endValue = timeInterval[1];
+            if (startValue == "" || endValue == "") {
+                var today = new Date();
+                var targetday_milliseconds = today.getTime() + 1000 * 60 * 60
+                    * 24 * day;
+
+                today.setTime(targetday_milliseconds); //注意，这行是关键代码
+
+                var tYear = today.getFullYear();
+                var tMonth = today.getMonth();
+                var tDate = today.getDate();
+                tMonth = onlineReport.doHandleMonth(tMonth + 1);
+                tDate = onlineReport.doHandleMonth(tDate);
+                var num = -(day + 1);
+                startTime = tYear + "-" + tMonth + "-" + tDate + " "
+                    + "00:00:00";
+                var end_milliseconds = today.getTime() + 1000 * 60 * 60 * 24
+                    * parseInt(num);
+                today.setTime(end_milliseconds); //注意，这行是关键代码
+                var endYear = today.getFullYear();
+                var endMonth = today.getMonth();
+                var endDate = today.getDate();
+                endMonth = onlineReport.doHandleMonth(endMonth + 1);
+                endDate = onlineReport.doHandleMonth(endDate);
+                endTime = endYear + "-" + endMonth + "-" + endDate + " "
+                    + "23:59:59";
+            } else {
+                var startTimeIndex = startValue.slice(0, 10).replace("-", "/").replace("-", "/");
+                var vtoday_milliseconds = Date.parse(startTimeIndex) + 1000 * 60 * 60 * 24 * day;
+                var dateList = new Date();
+                dateList.setTime(vtoday_milliseconds);
+                var vYear = dateList.getFullYear();
+                var vMonth = dateList.getMonth();
+                var vDate = dateList.getDate();
+                vMonth = onlineReport.doHandleMonth(vMonth + 1);
+                vDate = onlineReport.doHandleMonth(vDate);
+                startTime = vYear + "-" + vMonth + "-" + vDate + " "
+                    + "00:00:00";
+                if (day == 1) {
+                    endTime = vYear + "-" + vMonth + "-" + vDate + " "
+                        + "23:59:59";
+                } else {
+                    var endNum = -1;
+                    var vendtoday_milliseconds = Date.parse(startTimeIndex) + 1000 * 60 * 60 * 24 * parseInt(endNum);
+                    var dateEnd = new Date();
+                    dateEnd.setTime(vendtoday_milliseconds);
+                    var vendYear = dateEnd.getFullYear();
+                    var vendMonth = dateEnd.getMonth();
+                    var vendDate = dateEnd.getDate();
+                    vendMonth = onlineReport.doHandleMonth(vendMonth + 1);
+                    vendDate = onlineReport.doHandleMonth(vendDate);
+                    endTime = vendYear + "-" + vendMonth + "-" + vendDate + " "
+                        + "23:59:59";
+                }
+            }
+        },
+        doHandleMonth: function (month) {
+            var m = month;
+            if (month.toString().length == 1) {
+                m = "0" + month;
+            }
+            return m;
+        },
+        //当前时间
+        getsTheCurrentTime: function () {
+            var nowDate = new Date();
+            startTime = nowDate.getFullYear()
+                + "-"
+                + (parseInt(nowDate.getMonth() + 1) < 10 ? "0"
+                    + parseInt(nowDate.getMonth() + 1)
+                    : parseInt(nowDate.getMonth() + 1))
+                + "-"
+                + (nowDate.getDate() < 10 ? "0" + nowDate.getDate()
+                    : nowDate.getDate()) + " " + "00:00:00";
+            endTime = nowDate.getFullYear()
+                + "-"
+                + (parseInt(nowDate.getMonth() + 1) < 10 ? "0"
+                    + parseInt(nowDate.getMonth() + 1)
+                    : parseInt(nowDate.getMonth() + 1))
+                + "-"
+                + (nowDate.getDate() < 10 ? "0" + nowDate.getDate()
+                    : nowDate.getDate())
+                + " "
+                + ("23")
+                + ":"
+                + ("59")
+                + ":"
+                + ("59");
+            var atime = $("#atime").val();
+            if (atime != undefined && atime != "") {
+                startTime = atime;
+            }
+        },
+        unique: function (arr) {
+            var result = [], hash = {};
+            for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+                if (!hash[elem]) {
+                    result.push(elem);
+                    hash[elem] = true;
+                }
+            }
+            return result;
+        },
+        inquireClick: function (num) {
+            $(".mileage-Content").css("display", "block");  //显示图表主体
+            number = num;
+            if (number == 0) {
+                onlineReport.getsTheCurrentTime();
+            } else if (number == -1) {
+                onlineReport.startDay(-1)
+            } else if (number == -3) {
+                onlineReport.startDay(-3)
+            } else if (number == -7) {
+                onlineReport.startDay(-7)
+            }
+            ;
+            if (num != 1) {
+                $('#timeInterval').val(startTime + '--' + endTime);
+            }
+            if (!onlineReport.validates()) {
+                return;
+            }
+            onlineReport.estimate();
+            dataListArray = [];
+            var url = "/clbs/m/reportManagement/onlineReport/online";
+            var data = {"vehicleList": vid, 'startTime': sTime, "endTime": eTime};
+            json_ajax("POST", url, "json", false, data, onlineReport.findOnline);     //发送请求
+        },
+        validates: function () {
+            return $("#hourslist").validate({
+                rules: {
+                    startTime: {
+                        required: true
+                    },
+                    endTime: {
+                        required: true,
+                        compareDate: "#timeInterval",
+                    },
+                    groupSelect: {
+                        zTreeChecked: "treeDemo"
+                    }
+                },
+                messages: {
+                    startTime: {
+                        required: "请选择开始日期！",
+                    },
+                    endTime: {
+                        required: "请选择结束时间！",
+                        compareDate: endtimeComStarttime,
+                    },
+                    groupSelect: {
+                        zTreeChecked: vehicleSelectBrand,
+                    }
+                }
+            }).form();
+        },
+        exportOnline: function () {
+            onlineReport.estimate();
+            var starTime = sTime;
+            var endsTime = eTime;
+            var data = {"vehicleList": vid, 'startTime': starTime, "endTime": endsTime};
+            var url = "/clbs/m/reportManagement/onlineReport/onlineExport";
+            if (key == true) {
+                json_ajax("POST", url, "json", false, data, onlineReport.exportCallback);     //发送请求
+            }
+        },
+        estimate: function () {
+            var timeInterval = $('#timeInterval').val().split('--');
+            sTime = timeInterval[0];
+            eTime = timeInterval[1];
+            onlineReport.getsTheCurrentTime();
+            if (eTime > endTime) {                              //查询判断
+                layer.msg(endTimeGtNowTime, {move: false});
+                key = false
+                return;
+            }
+            if (sTime > eTime) {
+                layer.msg(endtimeComStarttime, {move: false});
+                key = false;
+                return;
+            }
+            var nowdays = new Date();                       // 获取当前时间  计算上个月的第一天
+            var year = nowdays.getFullYear();
+            var month = nowdays.getMonth();
+            if (month == 0) {
+                month = 12;
+                year = year - 1;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var firstDay = year + "-" + month + "-" + "01 00:00:00";//上个月的第一天
+            if (sTime < firstDay) {                                 //查询判断开始时间不能超过       上个月的第一天
+                $("#timeInterval-error").html(starTimeExceedOne).show();
+                /*layer.msg(starTimeExceedOne, {move: false});
+                key = false;*/
+                return;
+            }
+            $("#timeInterval-error").hide();
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");       //遍历树节点，获取vehicleID 存入集合
+            var nodes = treeObj.getCheckedNodes(true);
+            vid = "";
+            for (var j = 0; j < nodes.length; j++) {
+                if (nodes[j].type == "vehicle") {
+                    vid += nodes[j].id + ",";
+                }
+            }
+            key = true;
+        },
+        findOnline: function (data) {//回调函数    数据组装
+            var list = [];
+            var myChart = echarts.init(document.getElementById('onlineGraphics'));
+            var online = "";
+            if (data.obj != null && data.obj != "") {
+                online = data.obj.online;
+            }
+            if (data.success == true) {
+                carLicense = [];
+                activeDays = [];
+                for (var i = 0; i < online.length; i++) {
+                    list =
+                        [i + 1, online[i].carLicense,
+                            online[i].color,
+                            online[i].activeDays == null ? 0 : online[i].activeDays,
+                            online[i].allDays == null ? "0" : online[i].allDays,
+                            online[i].ratio == null ? "0" : online[i].ratio,
+                            online[i].assignmentName == null ? "无" : online[i].assignmentName,
+                            online[i].professionalNames == "" ? "无" : online[i].professionalNames,
+                        ]
+
+                    dataListArray.push(list);                                       //组装完成，传入  表格
+                }
+                ;
+                for (var j = 0; j < dataListArray.length; j++) {// 排序后组装到图表
+                    carLicense.push(dataListArray[j][1]);
+                    activeDays.push(dataListArray[j][3]);
+                }
+                onlineReport.reloadData(dataListArray);
+                $("#simpleQueryParam").val("");
+                $("#search_button").click();
+            } else {
+                if (data.msg != null) {
+                    layer.msg(data.msg, {move: false});
+                }
+                carLicense = [];
+                activeDays = [];
+                carLicense.push("");
+                activeDays.push("");
+            }
+            var start;
+            var end;
+            var length;
+            length = online.length;
+            if (length < 4) {
+                barWidth = "30%";
+            } else if (length < 6) {
+                barWidth = "20%";
+            } else {
+                barWidth = null;
+            }
+            ;
+            if (length <= 20) {
+                start = 0;
+                end = 100;
+            } else {
+                start = 0;
+                end = 100 * (20 / length);
+            }
+            ;
+            // wjk
+            //carLicense = onlineReport.platenumbersplitFun(carLicense);
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                    textStyle: {
+                        fontSize: 20
+                    },
+                    formatter: function (a) {
+                        var relVal = "";
+                        //var relValTime = a[0].name;
+                        var relValTime  =carLicense[a[0].dataIndex];
+                        if (a[0].data == 0) {
+                            relVal = "无相关数据";
+                            relVal += "<br/><span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:" + a[0].color + "'></span>" + a[0].seriesName + "：" + a[0].value + " 天";
+                        } else {
+                            relVal = relValTime;
+                            relVal += "<br/><span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:" + a[0].color + "'></span>" + a[0].seriesName + "：" + a[0].value + " 天";
+                        }
+                        ;
+                        return relVal;
+                    }
+                },
+                legend: {
+                    data: ['上线天数'],
+                    left: 'auto',
+                },
+                toolbox: {
+                    show: false
+                },
+                grid: {
+                    left: '120',
+                    bottom:'100'
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: true,
+                    name: "车牌号",
+                    axisLabel: {
+                        show: true,
+                        interval: 0,
+                        rotate: 45
+                    },
+                    data: onlineReport.platenumbersplitFun(carLicense)
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '上线天数',
+                        scale: false,
+                        position: '',
+                        axisLabel: {
+                            formatter: '{value}'
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                ],
+                dataZoom: [{
+                    type: 'inside',
+                    start: start,
+                    end: end
+                }, {
+
+                    show: true,
+                    height: 20,
+                    type: 'slider',
+                    top: 'top',
+                    xAxisIndex: [0],
+                    start: 0,
+                    end: 10,
+                    showDetail: false,
+                }],
+                series: [
+                    {
+                        name: '上线天数',
+                        yAxisIndex: 0,
+                        type: 'bar',
+                        smooth: true,
+                        symbol: 'none',
+                        sampling: 'average',
+                        itemStyle: {
+                            normal: {
+                                color: '#6dcff6'
+                            }
+                        },
+                        data: activeDays
+                    }
+                ]
+            };
+            myChart.setOption(option);
+            window.onresize = myChart.resize;
+        },
+        exportCallback: function (reuslt) {
+            if (reuslt == true) {
+                var url = "/clbs//m/reportManagement/onlineReport/export";
+                window.location.href = url;
+            } else {
+                layer.msg(exportFail, {move: false});
+            }
+        },
+        //表格初始化
+        getTable: function (table) {
+            $('.toggle-vis').prop('checked', true);
+            myTable = $(table).DataTable({
+                "destroy": true,
+                "dom": 'tiprl',// 自定义显示项
+                "lengthChange": true,// 是否允许用户自定义显示数量
+                "bPaginate": true, // 翻页功能
+                "bFilter": false, // 列筛序功能
+                "searching": true,// 本地搜索
+                "ordering": false, // 排序功能
+                "Info": true,// 页脚信息
+                "autoWidth": true,// 自动宽度
+                "stripeClasses": [],
+                "lengthMenu": [10, 20, 50, 100, 200],
+                "pagingType": "full_numbers", // 分页样式
+                "dom": "t" + "<'row'<'col-md-3 col-sm-12 col-xs-12'l><'col-md-4 col-sm-12 col-xs-12'i><'col-md-5 col-sm-12 col-xs-12'p>>",
+                "oLanguage": {// 国际语言转化
+                    "oAria": {
+                        "sSortAscending": " - click/return to sort ascending",
+                        "sSortDescending": " - click/return to sort descending"
+                    },
+                    "sLengthMenu": "显示 _MENU_ 记录",
+                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录。",
+                    "sZeroRecords": "我本将心向明月，奈何明月照沟渠，不行您再用其他方式查一下？",
+                    "sEmptyTable": "我本将心向明月，奈何明月照沟渠，不行您再用其他方式查一下？",
+                    "sLoadingRecords": "正在加载数据-请等待...",
+                    "sInfoEmpty": "当前显示0到0条，共0条记录",
+                    "sInfoFiltered": "（数据库中共为 _MAX_ 条记录）",
+                    "sProcessing": "<img src='../resources/user_share/row_details/select2-spinner.gif'/> 正在加载数据...",
+                    "sSearch": "模糊查询：",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": " 上一页 ",
+                        "sNext": " 下一页 ",
+                        "sLast": " 尾页 "
+                    }
+                },
+                "order": [
+                    [0, null]
+                ],
+                "columnDefs": [{
+                    "targets": [0, 2, 3, 4, 5, 6, 7],
+                    "searchable": false
+                }]
+            });
+            myTable.on('order.dt search.dt', function () {
+                myTable.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+            $('.toggle-vis').off('change').on('change', function (e) {
+                var column = myTable.column($(this).attr('data-column'));
+                column.visible(!column.visible());
+                $(".keep-open").addClass("open");
+            });
+            $("#search_button").on("click", function () {
+                var tsval = $("#simpleQueryParam").val();
+                myTable.search(tsval, false, false).draw();
+            });
+        },
+        reloadData: function (dataList) {
+            var currentPage = myTable.page()
+            myTable.clear()
+            myTable.rows.add(dataList)
+            myTable.page(currentPage).draw(false);
+        },
+        //刷新列表
+        refreshTable: function () {
+            onlineReport.inquireClick(1, false);
+        },
+        // wjk 车牌号太长显示不完截取
+        platenumbersplitFun:function(arr){
+            var newArr = [];
+            arr.forEach(function(item){
+                if (item.length > 8) {
+                    item = item.substring(0,7) + '...'
+                }
+                newArr.push(item)
+            })
+            return newArr
+        }
+    }
+    $(function () {
+        $('input').inputClear();
+        onlineReport.init();                                                                //初始化页面
+        $('#timeInterval').dateRangePicker({dateLimit:3});
+        onlineReport.tableFilter();
+        onlineReport.getTable('#dataTable');
+        onlineReport.getsTheCurrentTime();                                                  //当前时间
+        $("#groupSelect").bind("click", showMenuContent);               //组织下拉显示
+        $(window).resize(onlineReport.windowResize);                                        //监听窗口变化 重新加载图表
+        $("#toggle-left").bind("click", function () {                                       //左侧菜单切换重新绘制图表
+            $("body").css("overflow-x", "hidden");
+            setTimeout(function () {
+                onlineReport.MileageGraphics();
+            }, 500)
+        });
+        $("#refreshTable").bind("click", onlineReport.refreshTable);
+    });
+})(window, $)
+
+</script>

@@ -1,0 +1,248 @@
+
+{% load staticfiles %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'virvo/resources/js/fullcalendar/css/common.css' %}"/>
+
+<style type="text/css">
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+        
+        
+    .seqnumber{
+        width: 30px;
+    }
+
+
+        #showInfo table tr{
+            height: 36px;
+            text-align: center;
+            color: #0a0a0c;
+        }
+
+        .col-md-3{
+            width: 24%;
+        }
+        .col-md-5{
+            width: 42.555%;
+        }
+
+        #showInfo table {
+          table-layout: fixed;
+          width: 100%;
+          border-collapse: collapse;
+          text-align: center;
+          /*border: 3px solid purple;*/
+            border:1px solid #CDCDCD;
+
+        }
+
+       #showInfo th, td {
+          padding: 0px;
+          height: 22px;
+        }
+
+        
+        
+    </style>
+{% endblock %}
+
+  <div class="modal-header">
+      <input id="objId" name="objId" value="{{ wateraddr }}" class="form-control" type="hidden"/>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      
+      <div class="modal-title container">
+          <div class="row">
+            <div class="col-md-4">
+                户号:<span id="numbersth" >{{ numbersth }}</span>
+            </div>
+            
+          </div>
+      </div>
+  </div>
+  <div class="modal-body" id="modal-body">
+      <div>
+        <table id="alarmtable"
+        class="table table-striped table-bordered table-hover noCheckTable"
+        cellspacing="0" width="100%">
+        <thead>
+          <tr>
+                <th >序号</th>
+                <th >报警时间</th>
+                <th >报警内容</th>
+                
+          </tr>
+      </thead>
+      </table>
+      </div>
+    
+  </div>
+              
+              
+              
+              
+
+  <div class="modal-footer">
+    
+    <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal"  style="width: 80px;border-radius:7px">
+        <strong>关 闭</strong>
+    </button>
+  </div>
+            
+
+<script type="text/javascript">
+  (function(window,$){
+    var selectTreeId = '';
+    var selectTreepId="";
+    var selectTreeType = '';
+
+    var selectCommunity = "";
+    var selectBuilding = "";
+    var communityid = "";
+    //显示隐藏列
+    var menu_text = "";
+    var table = $("#alarmtable tr th:gt(1)");
+    //单选
+    var subChk = $("input[name='subChk']");
+    
+    wlqData = {
+        init: function(){
+            // menu_text += "<li><label><input type=\"checkbox\" checked=\"checked\" class=\"toggle-vis\" data-column=\"" + parseInt(2) +"\" disabled />"+ table[0].innerHTML +"</label></li>"
+            // for(var i = 1; i < table.length; i++){
+            //     menu_text += "<li><label><input type=\"checkbox\" checked=\"checked\" class=\"toggle-vis\" data-column=\"" + parseInt(i+2) +"\" />"+ table[i].innerHTML +"</label></li>"
+                
+            // };
+            // $("#Ul-menu-text").html(menu_text);
+            //表格列定义
+            var columnDefs = [ {
+                //第一列，用来显示序号
+                "searchable" : false,
+                "orderable" : false,
+                "targets" : 0
+            } ];
+            var columns = [
+                    {
+                        //第一列，用来显示序号
+                        "data" : null,
+                        "className":"seqnumber",
+                        // "class" : "text-center"
+                    },
+                    
+                    {
+                        "data" : "alarmtime",
+                        "class" : "text-center", 
+                        // render : function(data, type, row, meta) {
+                        //     return row.details.community
+                        // }
+                    }, {
+                        "data" : "alarmcontent",
+                        "class" : "text-center",
+                        // render : function(data, type, row, meta) {
+                        //     return row.details.buildingname
+                        // }
+                    }];
+            //ajax参数
+            var ajaxDataParamFun = function(d) {
+                d.wateraddr = $('#objId').val(); //模糊查询
+                
+
+            };
+            //表格setting
+            var setting = {
+                suffix  : '/',
+                listUrl : '/api/wirelessm/watermeter/comunitiwateralarm/',
+                // editUrl : '/wirelessm/watermeter/edit/',
+                // deleteUrl : '/wirelessm/watermeter/delete/',
+                // deletemoreUrl : '/wirelessm/watermeter/deletemore/',
+                // enableUrl : '/wirelessm/watermeter/enable_',
+                // disableUrl : '/wirelessm/watermeter/disable_',
+                columnDefs : columnDefs, //表格列定义
+                columns : columns, //表格列
+                dataTableDiv : 'alarmtable', //表格
+                ajaxDataParamFun : ajaxDataParamFun, //ajax参数
+                pageable : true, //是否分页
+                showIndexColumn : true, //是否显示第一列的索引列
+                enabledChange : true
+            };
+            //创建表格
+            myTable = new TG_Tabel.createNew(setting);
+            //表格初始化
+            myTable.init();
+
+        
+            
+        },
+         //加载完成后执行
+        refreshTable: function(){
+            $("#simpleQueryParam").val("");
+//            selectTreeId = '';
+//            selectTreeType = '';
+//            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+//            zTree.selectNode("");
+//            zTree.cancelSelectedNode();
+            myTable.requestData();
+            
+        },
+        
+        
+        
+
+    }
+
+    $(function(){
+        $('input').inputClear();
+        wlqData.init();
+
+        
+        // $('#timeInterval').dateRangePicker({dateLimit:30});
+        // wlqData.getsTheCurrentTime();  
+        // wlqData.startDay(-7);  
+        // $('#timeInterval').val(startTime + '--' + endTime);
+
+        $('input').inputClear().on('onClearEvent',function(e,data){
+            var id = data.id;
+            if(id == 'search_condition'){
+                search_ztree('commubitytreeDemo', id,'assignment');
+            };
+        });
+
+        
+        //IE9
+        if(navigator.appName=="Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g,"")=="MSIE9.0") {
+            var search;
+            $("#search_condition").bind("focus",function(){
+                search = setInterval(function(){
+                    search_ztree('commubitytreeDemo', 'search_condition','assignment');
+                },500);
+            }).bind("blur",function(){
+                clearInterval(search);
+            });
+        }
+        
+        $('#alarm-body').on('shown', function() {
+            $("#modal-body").removeAttr("style");
+        })
+        
+        // $("#addId").bind("click",function(){
+        //     $("#addDistrictForm").modal("show")
+        // })
+    })
+})(window,$)
+</script>            
+
+<!-- <script src="{% static 'virvo/wro/showalarm.js' %}"></script> -->

@@ -1,0 +1,363 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html class="no-js">
+<head>
+<title>{% if page_title %} {{ page_title }} {% else %} 首页 {% endif %}</title>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10" />
+<meta http-equiv="Expires" content="0"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-store"/>
+<meta http-equiv="refresh" content="36000; url=/login?type=timeout" />
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="{% static 'virvo/resources/js/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/resources/css/font-awesome.min.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/animate.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/main.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/dataTables.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/resources/js/zTree/css/zTreeStyle.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/wizard.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/adaptiveStyle.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/wro/clockPlugins.css' %}">
+<link rel="stylesheet" href="{% static 'virvo/resources/css/twinkle.css' %}">
+<script src="{% static 'virvo/resources/js/modernizr-2.6.2.min.js' %}"></script>
+<script src="{% static 'virvo/resources/js/jquery-1.10.2.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'virvo/resources/js/layui/layer/skin/layer.css' %}" id="layui_layer_skinlayercss" style="">
+<link rel="stylesheet" href="{% static 'virvo/resources/js/laydate/theme/default/laydate.css' %}" id="layuicss-laydate">
+
+{% block stylesheet %}
+
+{% endblock %}
+</head>
+<body>
+<section id="container">
+    {% include '_vheader.html' %}
+
+<label id="_error_label" class='error' style='display: none;'></label>
+<script src="{% static 'virvo/resources/js/jquery-1.10.2.min.js' %}"></script>
+            <script src="{% static 'virvo/resources/js/jquery.cookie.js' %}"></script>
+            <!-- <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script> -->
+            <script src="{% static 'virvo/resources/js/layui/layer/layer.js' %}"></script>
+            <script src="{% static 'virvo/resources/js/laydate/laydate.js' %}"></script>
+            <script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+            <script src="{% static 'virvo/resources/js/ungzip/pako.min.js' %}"></script>
+            <script src="{% static 'virvo/resources/js/ungzip/ungzip.js' %}"></script>
+            <script src="{% static 'virvo/resources/js/sockjs-1.1.1.min.js' %}"></script>
+            <script src="{% static 'virvo/resources/js/stomp.min.js' %}"></script>
+            <script src="{% static 'virvo/resources/js/webSocket.js' %}"></script> 
+<script>
+    var headers = {"access_token": "6fc2770a-1ef9-47dc-9bc9-5da694726df3"};
+</script>
+<script src="{% static 'virvo/wro/topPublic.js' %}"></script>
+<script>
+$(function () {
+    $('#goTrace9301,#goTrace9302').on('shown.bs.modal',function () {
+        var audio = document.getElementById("laid-off");
+        audio.play();
+    })
+    $('#goTrace9301,#goTrace9302').on('hidden.bs.modal',function () {
+        var audio = document.getElementById("laid-off");
+        audio.pause();
+        audio.currentTime = 0;
+    })
+})
+</script>
+    <section class="main-content-wrapper">
+        <!--sidebar start-->
+{% include 'sidenav.html' %}
+<!--sidebar end-->
+<!--权限控制 -->
+<!-- 用户所属组织id -->
+        <input id="userGroupId" value="{{ user.belongto.cid }}" type="text" hidden="true">
+        <!-- 用户所属组织name -->
+        <input id="userGroupName" value="{{ user.belongto }}" type="text" hidden="true">
+        <!-- 用户是否为admin -->
+        <input id="isAdmin" value="{{ user.is_admin|lower }}" type="text" hidden="true">
+        <!-- 用户授权截止日期 -->
+        <input id="userAuthorizationDate" value="{{ user.expire_date }}" type="text" hidden="true">
+        <!-- 用户被分配的角色 -->
+        <input id="allUserRole" value="{{ user.Role.rid }}" type="text" hidden="true">
+        <!-- 用户菜单权限的url -->
+        <input id="permissionUrls" value="{{ user.permissiontree }}" type="text" hidden="true">
+        <!--权限控制 -->
+        <input value="{{ user.groups.all.0 }}" id="permission" type="hidden"  />
+
+        <section id="main-content">
+            {% block breadcrumb %}
+            <div class="row eightIsZero">
+                <div class="col-md-12">
+                    <ul class="breadcrumb">
+                        <li><a href="#">首页</a></li>
+                        {% if page_menu %}
+                            <li class="active">{{ page_menu }}</li>
+                            <li class="active">{{ page_title }}</li>
+                        {% endif %}
+                    </ul>
+                    <h1 class="h1 ">{{ page_title }}</h1>
+                </div>
+            </div>
+            {% endblock %}
+            {% block main_content %}
+            <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="stretch">
+                                    <h3 class="panel-title fwb">首页</h3>
+                                    <div class="actions pull-right">
+                                        <i class="fa chevron-down" id="stretch-chevron"></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body" id="stretch-body">
+                                     <div class="row homeText">
+                                         <!-- <div class="col-md-3 col-md-offset-3">
+                                            <div class="fastCarUrl">
+                                                 <a th:href="${session.home1}? @{/m/infoconfig/infoFastInput/add} : '#'">
+                                                 <div class="IcocarBG"></div>
+                                                 <h2>快速录入</h2>
+                                                 </a>
+                                             </div>    
+                                         </div> -->
+                                         <div class="col-md-3 pc-realtime">
+                                            <div class="fenceUrl">
+                                                <a href="#">
+                                                 <div class="IcoBG"></div>
+                                                 <h2>实时监控</h2>
+                                                </a>
+                                             </div>   
+                                         </div>
+                                         <div class="col-md-3 pc-realtime">
+                                            <div class="fenceUrl2">
+                                                <a href="#">
+                                                 <div class="IcoBG"></div>
+                                                 <h2>企业管理</h2>
+                                                </a>
+                                             </div>   
+                                         </div>
+                                         <div class="col-md-3 pc-realtime">
+                                            <div class="fenceUrl3">
+                                                <a href="#">
+                                                 <div class="IcoBG"></div>
+                                                 <h2>DMA管理</h2>
+                                                </a>
+                                             </div>   
+                                         </div>
+                                          <div class="col-md-3 pc-realtime">
+                                            <div class="fenceUrl4">
+                                                <a href="#">
+                                                 <div class="IcoBG"></div>
+                                                 <h2>实时数据</h2>
+                                                </a>
+                                             </div>   
+                                         </div>
+                                     </div>
+                                     <div class="row homeList">
+                                        <div class="form-group">
+                                            <div class="col-md-3 blockTitleList">
+                                                    <a href="#">
+                                                     <div class="block innerShadowGrey">
+                                                        <span>报警管理</span>
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                            <div class="col-md-3 blockTitleList">
+                                                <a href="#">
+                                                     <div class="block innerShadowGrey">
+                                                        <span>系统管理</span>
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                            <div class="col-md-3 blockTitleList">
+                                                <a href="#">
+                                                     <div class="block innerShadowGrey">
+                                                        <span>数据分析</span>
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                            <div class="col-md-3 blockTitleList">
+                                                <a href="#">
+                                                     <div class="block innerShadowGrey">
+                                                        <span>基础管理</span>
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-3 homeListBottom">
+                                                <a href="#">
+                                                    <div class="block innerShadowGrey">
+                                                        <span>基准分析</span>
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                            <div class="col-md-3 homeListBottom">
+                                                <a href="#">
+                                                     <div class="block innerShadowGrey">
+                                                        <span>报警中心</span>
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                            <div class="col-md-3 homeListBottom">
+                                                <a href="#">
+                                                     <div class="block innerShadowGrey">
+                                                        <span>大数据报表</span>
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                            <div class="col-md-3 homeListBottom">
+                                                <a href="#">
+                                                     <div class="block innerShadowGrey noChoseIcon">
+                                                        <span></span>
+                                                    </div>
+                                                 </a>
+                                            </div>
+                                            <!-- <div class="col-md-3 homeListBottom">
+                                                <a href="#">
+                                                     <div class="block innerShadowGrey noChoseIcon">
+                                                        <span></span>
+                                                    </div>
+                                                 </a>
+                                            </div> -->
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% endblock %}
+        </section>
+    </section>
+</section>
+{% include 'footer.html' %}
+<!-- <footer>
+    <div class="imitateMenuBg"></div>
+    <div class="defaultFootBg">
+        <p><span id="copyRight"></span>&nbsp;<a href="" target="_blank" id="website"></a><br/><a href="http://www.miitbeian.gov.cn/" target="_blank" id="record"></a>adff</p>
+    </div>
+</footer> -->
+<script src="{% static 'virvo/resources/js/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/waypoints.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/jquery.nanoscroller.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/bootstrap-toggle.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/toastr.min.js' %}"></script>
+    <script src="{% static 'virvo/resources/js/bootstrap-suggest.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'virvo/resources/js/inputClear.min.js' %}"></script>
+    <script src="{% static 'virvo/wro/common-footer.js' %}"></script>
+<div id="commonWin" tabIndex="-2" class="modal fade bs-example-modal-lg" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width: 60%;">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "commonWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+<div id="commonLgWin" tabIndex="-2" class="modal fade bs-example-modal-lg" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document" style="width:80%">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "commonLgWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+                $("body.modal-open").removeAttr("style");
+            });
+            $('#commonLgWin').on('shown.bs.modal', function() {
+                $("body.modal-open").removeAttr("style");
+            });
+            // $('#modal-content').on('shown', function() {
+            //     $("body.modal-open").removeAttr("style");
+            // })
+        });
+        /*]]>*/
+    </script>
+</div>
+
+<div id="commonSIWin" tabIndex="-2" class="modal fade bs-example-modal-lg" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document" style="width: 1074px;height: 560;">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "commonSIWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+                $("body.modal-open").removeAttr("style");
+            });
+            $('#commonLgWin').on('shown.bs.modal', function() {
+                $("body.modal-open").removeAttr("style");
+            });
+            $("#" + windowId).on("hidden.bs.modal", function(){
+                $(".modal-body").html("");
+            });
+            // $('#modal-content').on('shown', function() {
+            //     $("body.modal-open").removeAttr("style");
+            // })
+        });
+        /*]]>*/
+    </script>
+</div>
+
+<div id="commonSmWin" class="modal fade" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "commonSmWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+<div id="uploaderWin" tabIndex="-2" class="modal fade bs-example-modal-lg" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "uploaderWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+<div id="chatWin" tabIndex="-2" class="modal fade bs-example-modal-lg" aria-hidden="true" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog modal-lg" style="width:990px;max-height:730px">
+        <div class="modal-content" style="box-shadow:none;-webkit-box-shadow:none;background-color:transparent;border:none;border-radius:0px;">
+            <iframe frameborder="0" allowtransparency="true" width="990px" height="720px" id="talk_box" src=""></iframe>
+        </div>
+    </div>
+    <script>
+        /*<![CDATA[*/
+        $(function() {
+            var windowId = "chatWin";
+            $("#" + windowId).on("hidden.bs.modal", function() {
+                $(this).removeData("bs.modal");
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+{% block javascript %}
+
+
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+{% load staticfiles %}
+<style type="text/css">
+    /*div.dataTables_wrapper{overflow:hidden;user-select:text!important;-ms-user-select:text!important;-moz-user-select:text!important;-webkit-user-select:text!important}*/
+    .hidevalue {
+      display: none;
+    }
+
+    .modal-body {
+        position: relative;
+        padding: 20px;
+        height: 200px;
+        overflow-y: scroll;
+    }
+  </style>
+  
+    <div class="modal-header">
+        <button id="doXEdit" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+            <input type="hidden" id="concentrator_id" value="{{ object.commaddr}}">
+            <input type="hidden" id="concentrator_commaddr" value="{{ object.commaddr }}">
+        <h4 class="modal-title">配置集中器-NB<span>:{{ object.name }}</span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6" style="border:1px solid olive;">
+                <div>
+                    <input  class="groupchecks" type="checkbox" value="group1" id="group1"  onclick="configCentrator.checkGroup(this.value)" checked>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <label for="discrete_start">离散上报起始时间:</label>
+
+                    </div>
+                    <div class="col-md-7">
+                        <input type="text" id="discrete_start" name="discrete_start" value="0"><span>点</span>
+                        <label id="discrete_start-error" style="display: none" class="error" for="name">请输入0-23</label>
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <label for="discrete_time">离散上报时长:</label>
+
+                    </div>
+                    <div class="col-md-7">
+                        <input type="text" id="discrete_time" name="discrete_time" value="0"><span>分</span>
+                        <label id="discrete_time-error" style="display: none" class="error" for="name">请输入0-255</label>
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <div class="col-md-5">
+
+                        <label for="report_period">上报间隔:</label>
+                    </div>
+                    <div class="col-md-7">
+                        <input type="text" id="report_period" name="report_period" value="1"><span>时</span>
+                        <label id="report_period-error" style="display: none" class="error" for="name">请输入1-25</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-5">
+                        <label for="sample_period">采样间隔:</label>
+                    </div>
+                    <div class="col-md-7">
+                        <input type="text" id="sample_period" name="sample_period" value="0"><span>分</span>
+                        <label id="sample_period-error" style="display: none" class="error" for="sample_period">请输入0-255</label>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+            
+            <div class="col-md-6">
+                <div style="border:1px solid olive;">
+                    <div>
+                        <input type="checkbox" class="groupchecks" value="group2" id="group2"   onclick="configCentrator.checkGroup(this.value)" />
+                    </div>
+                    
+                    <div >
+                        <label  for="valve-wash" > 洗阀：</label>
+                        <!-- <div class="col-md-9"> -->
+                            <!-- <input name="model" id="model" type="text" class="form-control" /> -->
+                            <select name="valve-wash" id="valve-wash" autocomplete="off"   >
+                                <!-- <option  value="">- 请选择类型 -</option> -->
+                                <option value="0">允许</option>
+                                <option value="1">禁止</option>
+                                
+                            </select>
+                        <!-- </div> -->
+                    </div>
+                    
+                    <div >
+                        <label  > 控阀：</label>
+                        <!-- <div class="col-md-9"> -->
+                            <!-- <input name="model" id="model" type="text" class="form-control" /> -->
+                            <select name="valve-control" id="valve-control" autocomplete="off"  >
+                                <!-- <option  value="">- 请选择类型 -</option> -->
+                                <option value="0">开阀</option>
+                                <option value="1">关阀</option>
+                                
+                            </select>
+                        <!-- </div> -->
+                    </div>
+                
+    
+                </div>
+
+                <!-- group3 -->
+                <div style="border:1px solid olive;">
+                    <div>
+                        <input class="groupchecks" type="checkbox"  value="group3" id="group3"   onclick="configCentrator.checkGroup(this.value)">
+                    </div>
+                    <div class="form-group" >
+                        
+                        <label class="control-label"> 校准水量：</label>
+                        <input type="text" id="calibration" name="calibration"><span>m³</span>
+                    </div>
+    
+                    
+                </div>
+
+                <!-- send btn -->
+                <div style="margin-top: 20px;">
+            
+                    <button class="btn btn-default " style="margin-left: 10px;"  id="sendBtn">发送</button>
+        
+                </div>
+
+                
+            </div>
+
+            
+            
+        </div>    
+        <!-- end row --> 
+        
+        
+        
+
+        <div style="overflow: auto">
+            
+            <table id="concentrator_watermeter"
+                class="table table-striped table-bordered table-hover checkTable"
+                cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <!-- <th><input name="select_all" value="1" type="checkbox"></th> -->
+                        <th><input type="checkbox" id="checkAll"  onclick="configCentrator.checkAll(this)"></th>
+                        <th>操作</th>
+                        <th>水表编号</th>
+                        <th>状态</th>
+                        <th style="display: none;">deviceid</th>
+                        <th style="display: none;">运营商</th>
+                        <th style="display: none;">wateraddr</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        
+        <!-- <button class="btn btn-primary" type="button" id="doSubmit">
+            <strong>提 交</strong>
+        </button> -->
+        <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+    
+
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+
+<script>
+    
+
+</script>
+
+<script src="{% static 'virvo/resources/js/bootstrap/js/bootstrap-table.min.js' %}"></script>
+<script src="{% static 'virvo/resources/js/layui/layer/layer.js' %}"></script>
+<script src="{% static 'virvo/wro/concentratorConfig-nb.js' %}"></script>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+<title>首页</title>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10" />
+
+</head>
+<body>
+<div class="text-center" style="margin-top: 200px;margin-left: 500px;margin-right: 700px;">
+    <form class="form-signin" method='POST'>{% csrf_token %}
+      
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+      <label for="inputuser" class="sr-only">User name</label>
+      <input type="text" id="inputuser" name="user_name" class="form-control" placeholder="User name" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      
+    </form>
+</div>
+</body>  
+</html>

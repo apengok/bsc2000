@@ -1,0 +1,146 @@
+<form id="userRolesForm"
+    role="form" action="{% url 'entm:roleList_' object.id %}" method="post" class="form-horizontal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">分配角色 : {{ user.user_name }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <input name="userId" value="{{ object.id }}" type="hidden" /> 
+            <input name="uid" value="{{ object.user_name }}" type="hidden" />
+            <div class="col-xs-12">
+                <ul class="widget-todo">
+                    {% for r in role_list %}
+                    
+                    {% if user.Role == r %}
+                    <li class="clearfix">
+                        <label class="checkbox-outline"> 
+                            <input type="checkbox"
+                                name="name" disabled
+                                id="{{ r.name }}" value="{{ r.id }}" />
+                            <label readonly style="text-decoration: none;">{{ r.name }}</label>
+                        </label> 
+                     
+                    </li>
+                    {% else %}
+                    
+                    <li class="clearfix">
+                        <label class="checkbox-outline"> 
+                            <input type="checkbox" 
+                                name="name" 
+                                id="{{ r.name }}" value="{{ r.id }}" />
+                            <label  style="text-decoration: none;" onclick = "checkValue(this)">{{ r.name }}</label>
+                        </label> 
+                     
+                    </li>
+                    {% endif %}
+
+                    {% endfor %}
+
+                    <!-- <li class="clearfix">
+                        <label class="checkbox-outline"> 
+                            <input type="checkbox"
+                                name="roleNames" disabled
+                                id="普通管理员" value="POWER_USER" />
+                            <label readonly style="text-decoration: none;">普通管理员</label>
+                        </label> 
+                    </li>
+
+                    <li class="clearfix">
+                        <label class="checkbox-outline"> 
+                            <input type="checkbox"
+                                name="roleNames" id="一般管理员" value="ROLE_1e3bb126-b6d1-4670-9e51-5d5e8235f807" />
+                            <label style="text-decoration: none;" onclick = "checkValue(this)">一般管理员</label>
+                        </label> 
+                        
+                    </li> -->
+                    
+                </ul>
+                <input id="roleIds" name="roleIds" type="hidden" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="doSubmitRoles" class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+</form>
+<script>
+function checkValue(clickLable){
+    var checkbox = $(clickLable).parent().find('input')[0];
+    if (checkbox.checked == true) {
+        checkbox.checked = false;
+    }else {
+        checkbox.checked = true;
+    }
+}
+
+
+// the selector will match all input controls of type :checkbox
+// and attach a click event handler 
+// permit excluded choice select.
+$("input:checkbox").on('click', function() {
+  // in the handler, 'this' refers to the box clicked on
+  var $box = $(this);
+  if ($box.is(":checked")) {
+    // the name of the box is retrieved using the .attr() method
+    // as it is assumed and expected to be immutable
+    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    // the checked state of the group/box on the other hand will change
+    // and the current value is retrieved using .prop() method
+    $(group).prop("checked", false);
+    $box.prop("checked", true);
+  } else {
+    $box.prop("checked", false);
+  }
+});
+
+
+(function($,window){
+    var Ids;
+    var userRoles = {
+        doSubmit: function(){
+            var roleIds = [];
+            $("input[name='name']:checked").each(function(index,item){
+                var roleName = $(this).attr("value");
+                roleIds.push(roleName);
+             });
+            if(roleIds.join(",") == Ids){
+                $("#commonSmWin").modal("hide");//关闭弹窗
+                return;
+            }else{
+                $("#roleIds").val(roleIds.join(","));
+                console.log(roleIds);
+//              $("#userRolesForm").submit();
+                $("#userRolesForm").ajaxSubmit(function (data) {
+                    if(typeof(data) == "object" &&
+                        Object.prototype.toString.call(data).toLowerCase() == "[object object]" && !data.length){//如果后台返回的数据是json数据,则直接过去msg
+                        layer.msg(data.msg,{move:false});
+                    }else{
+                        var dataset = eval(data);// $.parseJSON(data);//转为json对象
+                        layer.msg(dataset.msg,{move:false});
+                    }
+                    $("#commonSmWin").modal("hide");//关闭弹窗
+                    myTable.refresh();//刷新列表
+                });
+            }
+        },
+    }
+  
+    $(function(){
+        myTable.add('commonSmWin', 'userRolesForm', null, null);
+        $("#doSubmitRoles").on("click",userRoles.doSubmit);
+        var startRoleIds = [];//窗体加载时多选框的值
+        $("input[name='name']:checked").each(function(index,item){
+            var roleName = $(this).attr("value");
+            startRoleIds.push(roleName);
+        });
+        Ids = startRoleIds.join(",");
+    })
+})($,window)
+</script>

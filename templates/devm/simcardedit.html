@@ -1,0 +1,194 @@
+{% load staticfiles %}
+<form id="editForm" role="form" action="{% url 'devm:simcardedit' object.pk %}" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button id="doXEdit" type="button" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">修改SIM卡信息</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label
+                            class="text-danger">*</label> SIM卡号：</label>
+                    <div class="col-md-4">
+                        <input name="simcardNumber" value="{{ form.simcardNumber.value|default:'' }}" type="text" id="simcardNumber"
+                               class="form-control "/>
+                        <input value="{{ form.simcardNumber.value|default:'' }}" id="scn" type="hidden"/>
+                    </div>
+                    <label class="col-md-2 control-label"><label
+                            class="text-danger">*</label> 所属企业：</label>
+                    <div class="has-feedback col-md-4">
+                        <input name="belongto" class="form-control" id="zTreeOrganSel"
+                               value="{{ form.belongto.value|default:'' }}" readonly="readonly"
+                               style="background-color: #fafafa; cursor: pointer;" type="text"/>
+                        <span class="fa fa-chevron-down form-control-feedback"
+                              aria-hidden="true" id="zTreeOrganSelSpan"></span>
+                        <div class="ztreeModelBox" id="zTreeContent">
+                            <ul id="ztreeDemo" class="ztree"></ul>
+                        </div>
+                        <input id="groupId" name="groupId" type="text" hidden="true"/>
+                        <label id="error_label_add" class="error" style="display: none;"></label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">启停状态：</label>
+                    <div class="col-md-4">
+                        <label class="radio-inline"> 
+                            <input type="radio" name="isStart" id="isRadio" value="1" > 启用
+                        </label> 
+                        <label class="radio-inline"> 
+                            <input type="radio" name="isStart" id="noRadio" value="0"> 停用
+                        </label>
+                    </div>
+                    <label class="col-md-2 control-label"><label
+                            class="text-danger"></label> ICCID：</label>
+                    <div class="col-md-4">
+                        <input name="iccid" value="{{ form.iccid.value|default:'' }}" type="text" id="iccid"
+                               class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><label
+                            class="text-danger"></label> IMEI：</label>
+                    <div class="col-md-4">
+                        <input name="imei" value="{{ form.imei.value|default:'' }}" type="text" id="imei"
+                               class="form-control"/>
+                    </div>
+                    <label class="col-md-2 control-label"><label
+                            class="text-danger"></label> IMSI：</label>
+                    <div class="col-md-4">
+                        <input name="imsi" value="{{ form.imsi.value|default:'' }}" type="text" id="imsi"
+                               class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">运营商：</label>
+                    <div class="col-md-4">
+                        <select id="operator"  name="operator" value="{{ form.operator.value|default:'' }}" class="form-control">
+                            <option value="中国移动">中国移动</option>
+                            <option value="中国联通">中国联通</option>
+                            <option value="中国电信">中国电信</option>
+                        </select>
+                    </div>
+                    <label class="col-md-2 control-label">套餐流量(M)：</label>
+                    <div class="col-md-4">
+                        <input name="simFlow" value="{{ form.simFlow.value|default:'' }}" type="text"
+                               class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')"/>
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label class="col-md-2 control-label">当日流量(M)：</label>
+                    <div class="col-md-4">
+                        <input name="dayRealValue" placeholder="当日流量" type="text"
+                               class="form-control" readonly />
+                    </div>
+                    <label class="col-md-2 control-label">当月流量(M)：</label>
+                    <div class="col-md-4">
+                        <input name="monthRealValue" placeholder="当月流量" type="text"
+                               class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">流量最后更新时间：</label>
+                    <div class="col-md-4">
+                        <input name="monthTrafficDeadline" placeholder="流量最后更新时间" type="text"
+                               class="form-control"  readonly />
+                    </div>
+                    <label class="col-md-2 control-label">修正系数：</label>
+                    <div class="col-md-4">
+                        <input name="correctionCoefficient" value="100" placeholder="请输入修正系数" type="text"
+                               class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">预警系数：</label>
+                    <div class="col-md-4">
+                        <input id="forewarningCoefficient" value="90" name="forewarningCoefficient" placeholder="请输入预警系数" type="text"
+                               class="form-control" />
+                    </div>
+                    <label class="col-md-2 control-label">月预警流量(M)：</label>
+                    <div class="col-md-4">
+                        <input name="alertsFlow" placeholder="月预警流量 = 月流量阈值(M) * 预警系数" type="text"
+                             id="alertsFlow" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">流量月结日：</label>
+                    <div class="col-md-4">
+                        <input name="monthlyStatement" readonly  placeholder="默认为每月1号" type="text"
+                               class="form-control"/>
+                    </div>
+                    <label class="col-md-2 control-label">小时流量阈值(M)：</label>
+                    <div class="col-md-4">
+                        <input name="hourThresholdValue" placeholder="请输入小时流量阈值" type="text"
+                               class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">日流量阈值(M)：</label>
+                    <div class="col-md-4">
+                        <input name="dayThresholdValue" placeholder="请输入日流量阈值" type="text"
+                               class="form-control"/>
+                    </div>
+                    <label class="col-md-2 control-label">月流量阈值(M)：</label>
+                    <div class="col-md-4">
+                        <input id="monthThresholdValue" name="monthThresholdValue"  placeholder="月流量阈值" type="text"
+                               class="form-control"/>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label class="col-md-2 control-label">激活日期：</label>
+                    <div class="col-md-4 has-feedback">
+                        <input id="openCardTimeEdit" name="openCardTime" placeholder="请输入激活日期"  class="form-control layer-date laydate-icon" value="">
+                    </div>
+                    <label class="col-md-2 control-label">到期时间：</label>
+                    <div class="col-md-4">
+                        <input id="endTimeEdit" name="endTime" placeholder="请输入到期时间"
+                            class="form-control layer-date laydate-icon" value="" />
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-md-2 control-label">备注：</label>
+                    <div class="col-md-4">
+                        <input name="remark" type="text" class="form-control" value="{{ form.remark.value|default:'' }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div id = "bindMsg" hidden="true" style="text-align:left;color:red;">
+            <p> 注 ： 该SIM卡已和监控对象绑定，SIM卡号不允许修改，如需修改请先解除绑定！</p>
+        </div>
+        <button class="btn btn-primary" type="button" id="doSubmit">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseEdit" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+</form>
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+<script>
+    var simNumberNull = "\u8BF7\u8F93\u5165SIM\u5361\u53F7\u6570\u5B57\uFF0C\u8303\u56F4\uFF1A7~13";
+    var simNumberError = "\u8BF7\u8F93\u5165\u6570\u5B57\uFF0C\u8303\u56F4\uFF1A7~13";
+    var simNumberExists = "SIM\u5361\u53F7\u5DF2\u5B58\u5728";
+    var simMax200Length = "\u8D85\u8FC7\u4E86\u7CFB\u6570\u8303\u56F4\uFF0C\u8BF7\u8F93\u51651\u5230200\u7684\u6574\u6570";
+    var simHourTrafficLength = "\u8F93\u5165\u7684\u6570\u5B57\u5FC5\u987B\u57280~6553\u4E4B\u95F4";
+    var simDayTrafficLength = "\u8F93\u5165\u7684\u6570\u5B57\u5FC5\u987B\u57280~429496729\u4E4B\u95F4";
+    var simMonthTrafficLength = "\u8F93\u5165\u7684\u6570\u5B57\u5FC5\u987B\u57280~429496729\u4E4B\u95F4";
+    var simCompareOpenCardTime = "\u5230\u671F\u65E5\u671F\u5FC5\u987B\u5927\u4E8E\u6FC0\u6D3B\u65E5\u671F";
+    var publicSize6="\u957F\u5EA6\u4E0D\u8D85\u8FC76\u4F4D";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize50="\u957F\u5EA6\u4E0D\u8D85\u8FC750\u4F4D";
+    var phoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u624B\u673A\u53F7\u5462";
+    var publicNull = "\u4E0D\u80FD\u4E3A\u7A7A";
+    var publicNumberFloat = "\u5FC5\u987B\u4E3A\u6570\u5B57";
+    var publicNumberInt = "\u5FC5\u987B\u4E3A\u6B63\u6574\u6570";
+    var isStart = "{{ form.isStart.value }}"
+    var operator = "{{ form.operator.value }}"
+
+</script>
+<script src="{% static 'virvo/wro/simCardEdit.js' %}"></script>

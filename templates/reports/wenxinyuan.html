@@ -1,0 +1,241 @@
+{% extends '_vbase_tmp.html' %}
+
+
+{% load staticfiles %}
+
+{% block stylesheet %}
+<style type="text/css">
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  /*border: 3px solid purple;*/
+}
+
+/*thead th:nth-child(1) {
+  width: 30%;
+}
+
+thead th:nth-child(2) {
+  width: 20%;
+}
+
+thead th:nth-child(3) {
+  width: 15%;
+}
+
+thead th:nth-child(4) {
+  width: 35%;
+}*/
+
+th, td {
+  padding: 0px;
+  height: 50px;
+}
+</style>
+{% endblock %}
+
+{% block main_content %}
+
+<div class="row">
+          <div class="col-md-12">
+              
+
+            <div class="col-md-12" style="padding-right: 0px; padding-left: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="cursor:pointer;" id="stretch" >
+                        <h3 class="panel-title fwb">主分区信息</h3>
+                        <div class="actions pull-right listActions">
+                            <i class="fa chevron-up"  id="stretch-chevron" ></i>
+                        </div>
+                    </div>
+                    <div class="panel-body fixed-table-body"   id="stretch-body">
+                        <!--工具面板-->
+                        <div class="col-md-12 alarmSearchToolPanel" style="padding: 0px;">
+                            <form id="hourslist" class="form-horizontal" action="#"  method="post" role="form" >{% csrf_token %}
+                                <div class="form-group" >
+                                    <label class="col-md-2  control-label" style="margin-left: 0px;">组织/分区名称：</label> 
+                                    <div class="col-md-2">
+                                      <input id="organ_name" class="form-control" value="{{ organ }}"  readonly="" type="text">
+                                    </div>
+                                    <label class="col-md-2  control-label searchListSelect" style="margin-left: 0px;">统计截止时间：</label>
+                                    <div class="col-md-4">
+                                        <input style="cursor: pointer;  background-color: #fafafa;" class="form-control" readonly=""
+                                               id="endtime" name="endtime" placeholder=""/>
+                                    </div>
+                                    <!-- <div class="col-md-3">
+                                      <input id="station_name" class="form-control" value="{{ station }}" readonly="" type="text">
+                                    </div>
+                                    <label class="col-md-1 col-sm-3 control-label searchListSelect">时间：</label>
+                                    <div class="col-md-4 col-sm-8 searchListSelect">
+                                        <input style="cursor: pointer; background-color: #fafafa;"
+                                            class="form-control layer-date laydate-icon"
+                                            id="timeInterval" name="timeInterval" readonly />
+                                        <label id="timeInterval-error" class="error" for="timeInterval" style="display: none;">开始时间请不要超过上个月一号</label>
+                                    </div> -->
+                                    <div class="col-md-1 control-label pull-right" id="dateSearchData">
+                                        
+                                        <!-- <button id="yesterdayClick" type="button"class="btn btn-primary" name="-2" onclick="analysisCxc.inquireClick(-2)">两月内  </button>
+                                        <button id="nearlyThreeDays" type="button"class="btn btn-primary" name="-3" onclick="analysisCxc.inquireClick(-3)">三月内  </button> -->
+                                        <!--<button id="nearlySevenDays" type="button"class="btn btn-primary" name="-7" onclick="analysisCxc.inquireClick(-7)">前七天 </button>-->
+                                        <!-- <button id="inquireClick" type="button" class="btn btn-primary search-btn" name="1" onclick="analysisCxc.inquireClick(1)"><i class="glyphicon glyphicon-search"></i>  查询</button> -->
+                                        
+                                    </div>
+                                </div>
+                                
+                            </form>
+                        </div>
+
+                        <div class="col-md-6" style="height: 300px;">
+                            <table border="1" >
+                                <tr ><td colspan="7">水量平衡表</td></tr>
+                                <tr>
+                                    <td ><p>进水总量</p></td>
+                                    <td > 供水量<br/>(万m3)</td>
+                                    <td colspan="2"> 水量统计<br/>(万m3)</td>
+                                    <td > 产销差水量<br/>(万m3)</td>
+                                    <td > 产销差率</td>
+
+                                    <td > 漏损率</td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td id="influx"></td>
+                                    <td id="total" rowspan="3"></td>
+                                    <td>售水量</td>
+                                    <td id="sale"></td>
+                                    <td >/</td>
+                                    <td >/</td>
+                                    <td id="leak_percent" rowspan="3"></td>
+
+                                </tr>
+                                <tr>
+                                    <td>出水总量</td>
+                                    <td>未计量水量</td>
+                                    <td id="uncharg"></td>
+                                    <td id="cxc" rowspan="2"></td>
+                                    <td id="cxc_percent" rowspan="2"></td>
+
+                                </tr>
+                                <tr>
+                                    <td id="outflux"></td>
+                                    <td>漏水量</td>
+                                    <td id="leak"></td>
+                                </tr>
+                            </table>
+                            <table border="1" style="margin-top: 10px;">
+                                <tr>
+                                    <td >MNF</td>
+                                    <td id="mnf"></td>
+                                    <td>背景漏水量</td>
+                                    <td id="bg_leak"></td>
+                                    <td >破管漏水量</td>
+                                    <td id="broken_pipe"></td>
+
+                                    <td > 漏损率</td>
+                                    
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6" style="height: 313px;border: 1px solid grey;">
+                            <div id="onlineGraphics" style="height:310px;width:100%;"></div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" style="padding-right: 0px; padding-left:0px;"></div>
+            <div class="col-md-12 real-time-command-list" style="padding-right: 0px; padding-left:10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" id="stretch2">
+                        <h3 class="panel-title fwb">子分区信息</h3>
+                        <div class="actions pull-right listActions">
+                            <i class="fa chevron-down" id="stretch2-chevron"></i>
+                        </div>
+                    </div>
+                    <div class="panel-body mileage-Content"  id="stretch2-body">
+                      <div class="ToolPanel">
+                        
+                        <div class="columns btn-group pull-right refShowRight">
+                          <button id="refreshTable" class="btn btn-default"
+                            type="button" name="refresh" title="刷新">
+                            <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                          </button>
+                          <div class="keep-open btn-group" title="定制显示列">
+                            <button id="customizeColumns" type="button"
+                              class="btn btn-default dropdown-toggle"
+                              data-toggle="dropdown">
+                              <i class="glyphicon glyphicon-th icon-th"></i> <span
+                                class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" id="Ul-menu-text">
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      
+                        <table id="dataTable"
+                            class="table table-striped table-bordered table-hover noCheckTable"
+                            cellspacing="0" width="100%">
+                            <thead>
+                              <tr>
+                                <th>分区<br/>编号</th>
+                                <th>组织<br/>分区名称</th>
+                                <th>供水量<br/>(万m3)</th>
+                                <th>售水量<br/>(万m3)</th>
+                                <th>未计量<br/>(万m3)</th>
+                                <th>漏水量<br/>(万m3)</th>
+                                <th>产销差<br/>(万m3)</th>
+                                <th>产销差率<br/>(%)</th>
+                                <th>环比</th>
+                                <th>漏损率<br/>(%)</th>
+                                <th>同比</th>
+                                <th>MNF<br/>(m3/h)</th>
+                                <th>背景漏损<br/>(万m3)</th>
+                                <th>其他漏损<br/>(万m3)</th>
+                                <th>统计截止日期</th>
+                              </tr>
+                            </thead>
+                          </table>
+                        
+                       
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+    </div>
+
+</div>
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<script>
+  var userGroupDeleteConfirm = "\u60A8\u786E\u5B9A\u8981\u5220\u9664\u8BE5\u7EC4\u7EC7\u5417";
+  var systemError = "\u5BF9\u4E0D\u8D77\uFF0C\u7CFB\u7EDF\u8D70\u4E22\u4E86\uFF0C\u8BF7\u8054\u7CFB\u7BA1\u7406\u5458";
+  var userNodeNameNull = "\u8282\u70B9\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A";
+  var userSupermanagerDeleteTip = "\u4E0D\u80FD\u5220\u9664\u8D85\u7EA7\u7BA1\u7406\u5458";
+  var userDeleteChooseNull = "\u8BF7\u81F3\u5C11\u52FE\u9009\u4E00\u9879";
+  var selectItem = "\u4E0D\u80FD\u56E0\u4E3A\u4F60\u957F\u7684\u597D\u770B\uFF0C\u5C31\u53EF\u4EE5\u4EC0\u4E48\u90FD\u4E0D\u9009\u5427\uFF0C\u600E\u4E48\u4E5F\u8981\u9009\u4E00\u4E2A\u5427:)";
+  var publicAddSuccess="\u6DFB\u52A0\u6210\u529F";
+  var publicDelete="\u5220\u6389\u5C31\u6CA1\u5566\uFF0C\u8BF7\u8C28\u614E\u4E0B\u624B";
+  var publicError="\u7CFB\u7EDF\u7684\u60C5\u7EEA\u4E0D\u7A33\u5B9A\uFF0C\u5E76\u5411\u4F60\u6254\u4E86\u4E00\u4E2A\u9519\u8BEF~";
+  var publicDeleteSuccess="\u5220\u9664\u6210\u529F";
+  var publicPerverseData="\u8BF7\u8F93\u5165\u5408\u6CD5\u7684\u5185\u5BB9";
+  var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+  var publicSize30="\u957F\u5EA6\u4E0D\u8D85\u8FC730\u4F4D";
+  var publicMinSize2Length="\u957F\u5EA6\u4E0D\u80FD\u5C0F\u4E8E2\u4F4D";
+  var userQualificationNull="\u8FD0\u8425\u8D44\u8D28\u7C7B\u522B\u4E0D\u80FD\u4E3A\u7A7A";
+  var userQualificationExists="\u8BE5\u8FD0\u8425\u8D44\u8D28\u7C7B\u522B\u5DF2\u7ECF\u5B58\u5728,\u8BF7\u52FF\u91CD\u590D\u6DFB\u52A0";
+</script>
+<script src="{% static 'virvo/resources/js/zTree/js/ztreeSearch.js' %}"></script>
+<script type="text/javascript" src="{% static 'virvo/wro/bd-echatrs.js' %}"></script>
+
+<script src="{% static 'virvo/wro/wxy.js' %}"></script>
+{% endblock %}

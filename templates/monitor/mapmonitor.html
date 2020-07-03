@@ -1,0 +1,706 @@
+{% extends '_vbase_amap.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheet %}
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+
+<link rel="stylesheet" href="{% static 'virvo/resources/js/fullcalendar/css/common.css' %}"/>
+
+<style type="text/css">
+        .amap-info-sharp {
+            margin: 0 auto !important;
+        }
+
+        #treeDemo {
+            height: 20000px;
+        }
+
+        #map {
+            height: 20000px;
+        }
+
+        #mapDropSetting {
+            border: 1px solid #c4c4c4;
+            box-shadow: 2px 2px 2px #c4c4c4;
+            background-color: #fff;
+            margin: 5px 16px 0 0;
+            padding: 0 6px 2px;
+            border-radius: 3px;
+            font-size: 14px;
+            display: inline-block;
+            color: #5c5e62;
+        }
+
+        #mapDropSetting .map-drop-sett::before {
+            content: "";
+            position: relative;
+            display: inline-block;
+            top: 4px;
+            left: 0;
+            width: 19px;
+            height: 19px;
+            background-image: url(/static/virvo/resources/img/map-drop-sett.svg) !important;
+            background-size: 19px 19px;
+        }
+        .realtimebtn-group,.trackPlay-group{position:absolute;right:0;font-size:18px;padding:4px 5px 0 0;top:0;z-index:3;opacity:.9}
+
+        .monitoringSelect {
+            vertical-align: top;
+        }        
+
+        table tr:nth-child(odd){
+
+            background: #F1F1F1;
+
+        }
+        table tr:nth-child(even){
+
+            background: #fffffF;
+
+
+        }
+
+
+
+        table tr{
+            height: 40px;
+            text-align: center;
+            color: #0a0a0c;
+        }
+
+        .col-md-3{
+            width: 24%;
+        }
+        .col-md-5{
+            width: 42.555%;
+        }
+
+        table {
+          table-layout: fixed;
+          width: 100%;
+          border-collapse: collapse;
+          text-align: center;
+          /*border: 3px solid purple;*/
+            border:1px solid #CDCDCD;
+
+        }
+
+        th, td {
+          padding: 0px;
+          height: 20px;
+        }
+
+        .leakcolor10{
+          color:#329e07;
+        }
+
+        .leakcolor12{
+          color:#ce6016;
+        }
+
+        .leakcolor20{
+          color:#880f8c;
+        }
+
+        .leakcolor30{
+          color:#60462c;
+        }
+
+        .leakcolor30b{
+          color:#ba6b1a;
+        }
+
+        .leakcolorwarning{
+          color:#ea1526;
+        }
+
+.content-window-card {
+            position: relative;
+            box-shadow: none;
+            bottom: 0;
+            left: 0;
+            width: 240px;
+            padding: 0;
+
+            
+        }
+
+        .content-window-card p {
+            height: 2rem;
+        }
+
+        .custom-info {
+            border: solid 1px silver;
+        }
+
+          div.info-top {
+            position: relative;
+            background: none repeat scroll 0 0 #F9F9F9;
+            border-bottom: 1px solid #CCC;
+            border-radius: 5px 5px 0 0;
+        }
+
+        div.info-top div {
+            display: inline-block;
+            color: #333333;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 31px;
+            padding: 0 10px;
+        }
+
+        div.info-top img {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition-duration: 0.25s;
+        }
+
+        div.info-top img:hover {
+            box-shadow: 0px 0px 5px #000;
+        }
+
+        div.info-middle {
+            font-family:'微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';
+            font-weight:700;
+            font-style:normal;
+            font-size:12px;
+            /*color:#0099CC;*/
+            margin-left: 0px;
+            padding: 10px 6px;
+            line-height: 20px;
+        }
+
+        div.info-bottom {
+            height: 0px;
+            width: 100%;
+            clear: both;
+            text-align: center;
+        }
+
+        div.info-bottom img {
+            position: relative;
+            z-index: 104;
+        }
+
+        span {
+            margin-left: 5px;
+            font-size: 11px;
+        }
+
+        .info-middle img {
+            float: left;
+            margin-right: 6px;
+        }
+        
+    </style>
+{% endblock %}
+
+
+{% block content_left %}
+<div id="content-left" class="col-md-2" style="padding-right: 0px; padding-left: 0px; z-index: 99">
+    <div id="operationMenu" class="panel panel-default panDefMenu">
+        <div class="panel-heading" style="padding:10px;background-color:#ffffff;color:#767676;">
+            <h3 class="panel-title fwb">分区总数(<span id="all_dma_num"></span>)</h3>
+            <!-- <div class="actions pull-right" style="position: absolute;right:10px;top:10px;">
+                <i id="goHidden" class="fa fa-chevron-left"></i>
+            </div> -->
+            <!-- <div id="trackBlackToReal" class="actions3 pull-right"
+                 style="top:-26px!important;left:12px!important" data-toggle="tooltip"
+                 data-placement="left" title="实时监控">
+                <a><img src="/static/virvo/resources/img/shishijiankong.svg"></a>
+            </div> -->
+            <div id="goHidden" class="actions2 pull-right"
+                 style="top:-22px!important;left:55px!important">
+                <i class="fa fa-chevron-left"></i>
+            </div>
+        </div>
+        <div class="col-md-12" style="padding-top:10px;">
+            <!-- <div class="form-group">
+                <div class="col-md-12" id="disable" style="padding-left:5px;padding-right:5px;">
+                    <div class="calendar calendar3"></div>
+                </div>
+            </div> -->
+            <!-- <div class="form-group">
+              <div class="form-group">
+                <div class="col-md-10">
+                    <input id="citySel" name="search" placeholder="请输入关键字" style="cursor:auto"
+                           type="text" class="form-control"/>
+                </div>
+                <div class="col-md-1">
+                  <button id="refreshTable" class="btn btn-default form-control"
+                        type="button" name="refresh" title="刷新">
+                        <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                      </button>
+                </div>
+              </div>
+              <input id="savePid" value="" type="text" style="display:none;"/>
+            </div> -->
+            <!--  -->
+            
+            <!--  -->
+            <!-- <div class="form-group"> -->
+              <div class="form-group" style="margin-bottom:0;">
+                <div class="col-md-10 col-sm-8 col-xs-4" style="padding: 0px 5px 0px 0px;">
+                    <input id="citySel" name="search" class="form-control"
+                           style="margin-bottom:10px;" type="text"
+                           placeholder="请输入关键字"/>{% csrf_token %}
+                </div>
+                <div class="col-md-1 col-sm-8 col-xs-4"
+                     style="padding: 0px 5px 0px 0px;">
+                    <button id="refreshTable" class="btn btn-default" type="button"
+                            title="刷新">
+                        <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                    </button>
+                </div>
+              </div>
+                <div class="col-md-12">
+                    <ul id="treeDemo" class="ztree ztreeLoadH" style="overflow: auto"></ul>
+                </div>
+            <!-- </div> -->
+            <div class="form-group">
+                <div class="col-md-12" id="disable" style="padding-left:5px;padding-right:5px;">
+                    <div class="col-md-4" style="margin-top: 5px;">一级(<span id="dma_level1_num"></span>)</div>
+                    <div id="dma_level2_div" class="col-md-4" style="margin-top: 5px;">二级(<span id="dma_level2_num"></span>)</div>
+                    <div id="dma_level3_div" class="col-md-4" style="margin-top: 5px;">三级(<span id="dma_level3_num"></span>)</div>
+                </div>
+                <div class="col-md-12 leakcolor10" style="margin-left: 30px;margin-top: 10px;">漏损率(<10%): <span id="dma_leak10"></span>个</div>
+                <div class="col-md-12 leakcolor12" style="margin-left: 30px;margin-top: 10px;">漏损率(<12%): <span id="dma_leak12"></span>个</div>
+                <div class="col-md-12 leakcolor20" style="margin-left: 30px;margin-top: 10px;">漏损率(<20%): <span id="dma_leak20"></span>个</div>
+                <div class="col-md-12 leakcolor30" style="margin-left: 30px;margin-top: 10px;">漏损率(<30%): <span id="dma_leak30"></span>个</div>
+                <div class="col-md-12 leakcolor30b" style="margin-left: 30px;margin-top: 10px;">漏损率(>30%): <span id="dma_leak30b"></span>个</div>
+                <div class="col-md-12 leakcolorwarning" style="margin-left: 30px;margin-top: 10px;">报警分区: <span id="dma_warning_num"></span>个</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content_left %}
+
+{% block main_content %}
+
+
+<div id="content-right" class="col-md-10 content-right" >
+    <div  >
+        <!-- <div id="js-map" class="map"></div> -->
+        <!-- <div id="map" class="map"></div> -->
+      
+      <div id="map" style="-webkit-user-select:none;">
+          
+          
+          <!-- playcard here delete -->
+          
+      </div>
+      <!-- <div id="layerControl">
+
+      </div> -->
+
+      <div class="realTimeCanArea rtcaHidden" id="realTimeCanArea" style="position: absolute;">
+              <div class="form-group" style="height: 57px;border-bottom:10px">
+                <!--  <div class="col-md-12 searchListSelect">-->
+                  <div class=" col-md-12 searchListSelect" style="margin-left: -20px;margin-top: -10px;width: 360px" id="searchInput" >
+
+                      <input style="cursor: pointer; background-color: #fafafa;"
+                             class="form-control layer-date laydate-icon"
+                             id="timeInterval" name="timeInterval" readonly />
+                  </div>
+                  <button id="trackPlayQuery" type="button" class="btn "  style="margin-top: 5px;margin-right: -10px; background-color:#CD3299;color: #fffffF;float: right;" name="0" >查询</button> &nbsp;
+                  <!--<button type="button" class="btn btn-primary"  id="trackPlayQuery">查询-->
+                      <!--</button>-->
+              </div>
+              <!-- <div class="form-group">
+                  <div class="col-md-12 control-label">
+                      <button type="button" class="btn btn-primary"
+                              id="specialTimePlayBack">定时定区域查询
+                      </button>
+                      <button type="button" class="btn btn-primary"
+                              id="trackPlayQuery">查询
+                      </button>
+                  </div>
+              </div> -->
+              <div class="areaTool"><i class="fa fa-search"></i><span>查<br/>询</span>
+              </div>
+          </div>
+
+      <div id="goShow" style="top:-4px">
+          <i id="goHidden" class="fa fa-chevron-right"></i>
+      </div>
+      <div style="display: none;">
+        <div id="overlay" ></div>
+      </div>
+      <!-- <div id="Demo1" class="progressTime">
+          <div id="Main1">
+              <div id="progressBar">
+                  <div id="progressBar_Track"></div>
+              </div>
+          </div>
+      </div> -->
+
+      <div id="dragDIV" style="height:2px;width:100%;cursor:n-resize;background-color:#ffffff;"></div>
+        <ul id="myTab" class="nav nav-tabs">
+            <li id="v-travelData" class="active"><a href="#GPSData" data-toggle="tab">实时数据</a>
+            </li>
+            
+            <li id="tableAlarmDate"><a href="#warningData" data-toggle="tab"
+                                       id="AlarmData">报警记录</a></li>
+            
+            <div id="dmapredetail" style="float:right;margin-top:9px;" >
+                <li style="display:inline-block;">(分区名称：<span id="dma_selected"></span>
+                </li>&nbsp;&nbsp;
+                <li style="display:inline-block;">本月供水量：<span id="month_water_out"></span>
+                </li>
+                <li style="display:inline-block;">本月售水量：<span id="current_month_sale"></span>m³
+                </li>
+                <li style="display:inline-block;">本月漏损率：<span id="month_leaky">1.68% </span>)
+                </li>
+                <!-- <li style="display:inline-block;margin:0px 0px 0px 20px; color: #6dcff6;vertical-align: middle;">
+                    <span id="tableDataExport" class="glyphicon glyphicon-share"></span>
+                </li> -->
+                <li style="display:inline-block;margin:0px 20px 0px 15px"><i
+                        id="scalingBtn" class="fa  fa-chevron-down"></i></li>
+            </div>
+        </ul>
+        <div id="myTabContent" class="tab-content" style="overflow:auto;">
+            <div class="tab-pane fade in active trackPlaybackTable tableFEStyle"
+                 id="GPSData">
+                
+                <div class="col-md-5">
+                        <table id="dataTableBind" border="1">
+                          
+                          <tbody>
+                            <tr>
+                              <td colspan="3" style="font-weight: bold">月供水(万m³)</td>
+                              <td colspan="5" style="font-weight: bold">日供水(万m³)</td>
+                              
+                            </tr>
+                            <tr>
+                              <td style="font-weight: bold">前月</td>
+                              <td style="font-weight: bold">上月</td>
+                              <td style="font-weight: bold">本月</td>
+                              <td style="font-weight: bold">类型</td>
+                              <td style="font-weight: bold" id="bbbday_str">11月29日</td>
+                              <td style="font-weight: bold">前日</td>
+                              <td style="font-weight: bold">昨日</td>
+                              <td style="font-weight: bold">今日</td>
+                            </tr>
+                            <tr>
+                              <td id="bbcurrent_mon_p"></td>
+                              <td id="bcurrent_mon_p"></td>
+                              <td id="current_mon_p"></td>
+                              <td >供水</td>
+                              <td id="bbbcurrent_day_p"></td>
+                              <td id="bbcurrent_day_p"></td>
+                              <td id="bcurrent_day_p"></td>
+                              <td id="current_day_p"></td>
+                            </tr>
+                            <tr>
+                              <td id="bbcurrent_mon_in"></td>
+                              <td id="bcurrent_mon_in"></td>
+                              <td id="current_mon_in"></td>
+                              <td >进水</td>
+                              <td id="bbbcurrent_day_in"></td>
+                              <td id="bbcurrent_day_in"></td>
+                              <td id="bcurrent_day_in"></td>
+                              <td id="current_day_in"></td>
+                            </tr>
+                            <tr>
+                              <td id="bbcurrent_mon_out"></td>
+                              <td id="bcurrent_mon_out"></td>
+                              <td id="current_mon_out"></td>
+                              <td >出水</td>
+                              <td id="bbbcurrent_day_out"></td>
+                              <td id="bbcurrent_day_out"></td>
+                              <td id="bcurrent_day_out"></td>
+                              <td id="current_day_out"></td>
+                            </tr>
+                            <tr>
+                              <td id="bbcurrent_mon_leak"></td>
+                              <td id="bcurrent_mon_leak"></td>
+                              <td id="current_mon_leak"></td>
+                              <td >漏水量</td>
+                              <td id="bbbcurrent_day_leak"></td>
+                              <td id="bbcurrent_day_leak"></td>
+                              <td id="bcurrent_day_leak"></td>
+                              <td id="current_day_leak"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col-md-3">
+                        <table border="1">
+                          
+                          <tbody>
+                            <tr>
+                              <td colspan="4" style="font-weight: bold">夜间最小流量MNF(万m³)</td>
+                              
+                            </tr>
+                            <tr>
+                              <td style="font-weight: bold">11月29日</td>
+                              <td style="font-weight: bold">前日</td>
+                              <td style="font-weight: bold">昨日</td>
+                              <td style="font-weight: bold">今日</td>
+                            </tr>
+                            <tr>
+                              <td>96.37</td>
+                              <td>96.34</td>
+                              <td>90.45</td>
+                              <td>85.63</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" style="font-weight: bold">报警设定值</td>
+
+                            </tr>
+                          </tbody>
+                        </table>
+                        <table border="1"  style="border-top:0px">
+
+                          <tbody>
+                            
+
+                            <tr>
+                              <td style="font-weight: bold">日用水基准</td>
+                              <td style="font-weight: bold">产销差基准</td>
+                              <td style="font-weight: bold">MNF基准</td>
+                              
+                            </tr>
+                            <tr>
+                              <td>11563</td>
+                              <td>11043</td>
+                              <td>584</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col-md-4" >
+                        <table  style="border-bottom: 0px" >
+                          
+                          <tbody>
+                            <tr>
+                              <td style="font-weight: bold">实时流量</td>
+                              <td style="background: #fffffF">12.45 m³/h</td>
+                              <td style="font-weight: bold">实时压力</td>
+                              <td style="background: #fffffF">0.45 MPa</td>
+                              <td>2018-12-01</td>
+                            </tr>
+                            
+                          </tbody>
+                        </table>
+                        <div id="recent7flowpress" style="height:201px;width:100%;border:1px solid #CDCDCD"></div>
+                      </div>
+                      
+            </div>
+            
+            
+           
+            <div class="tab-pane fade trackPlaybackTable tableFEStyle" id="warningData">
+                <table id="gpsTable3"
+                       class="table table-striped table-bordered table-hover"
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">报警时间</th>
+                        <th class="text-center">处理状态</th>
+                        <th class="text-center">报警类型</th>
+                        <th class="text-center">处理人</th>
+                        <th class="text-center">处理时间</th>
+                        <th class="text-center">处理方法</th>
+                        
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                                      
+            </div>
+        </div>
+    </div>
+       
+      
+    <input type="hidden" id="current_dma_no" name="">
+    <input type="hidden" id="current_organ_id" name="">
+
+      
+        
+
+    </div>
+
+    
+
+    <!-- dma绑定 -->
+    <div style="cursor: default;" class="modal fade" id="fenceBind" aria-hidden="true" data-backdrop="static" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document" style="width:80%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">起始时间：2018-11-15 12：00:00  结束时间：2018-12-10 12：00:00</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- <div class="form-horizontal"> -->
+                        <div class="row">
+                            <input id="fenceID" name="search" class="form-control" type="hidden"/>
+                            <input id="fenceName" name="search" class="form-control" type="hidden"/>
+                            <input id="fenceInfoId" name="search" class="form-control" type="hidden"/>
+                            
+                            
+                            <div class="col-md-4">
+                              <table border="1" >
+                                
+                                <tbody>
+                                  <tr>
+                                    <td width="10%" >序号</td>
+                                    <td width="50%" >内容</td>
+                                    <td width="40%">项目值</td>
+                                    
+                                  </tr>
+                                  <tr>
+                                    <td>1</td>
+                                    <td style="text-align: left;padding-left: 10px">时段最小流量(m³/h)</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>2</td>
+                                    <td style="text-align: left;padding-left: 10px" >时段最小流量出现时间</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>3</td>
+                                    <td style="text-align: left;padding-left: 10px">夜间允许流量</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>4</td>
+                                    <td style="text-align: left;padding-left: 10px">时段供水量(m³)</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>5</td>
+                                    <td style="text-align: left;padding-left: 10px">时段漏失总量(m³/h)</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>6</td>
+                                    <td style="text-align: left;padding-left: 10px">单位管长漏失水量</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>7</td>
+                                    <td style="text-align: left;padding-left: 10px">时段漏失率</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>8</td>
+                                    <td style="text-align: left;padding-left: 10px">时段售水量(m³)</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>9</td>
+                                    <td style="text-align: left;padding-left: 10px">时段产销差水量(m³)</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>10</td>
+                                    <td style="text-align: left;padding-left: 10px">时段产销差率</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>11</td>
+                                    <td style="text-align: left;padding-left: 10px">时段MNF/ADD最小值</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>12</td>
+                                    <td style="text-align: left;padding-left: 10px">时段最大流量(m³/h)</td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td>13</td>
+                                    <td style="text-align: left;padding-left: 10px">时段最大流量出现时间</td>
+                                    <td></td>
+                                  </tr>
+                                   
+                                    
+
+                                  
+                                </tbody>
+                              </table>
+                              
+                            </div>
+                            <div class="col-md-8" >
+                              <div style="border:1px solid #CDCDCD;">
+                              <div id="bindflowpress" style="height:530px;width:90%;margin: 15px"></div>
+                            </div>
+                            </div>
+                        </div>
+                    <!-- </div> -->
+                </div>
+                <div class="modal-footer">
+        
+                  <button class="btn" type="button" id="doSubmit" style="background-color:#CD3299;color: #fffffF;width: 80px;padding-top: 10px;border-radius:7px">
+                      <strong>导 出</strong>
+                  </button>
+                    &nbsp;
+                  <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal"  style="width: 80px;border-radius:7px">
+                      <strong>关 闭</strong>
+                  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+    
+{% endblock main_content %}
+
+ 
+
+{% block javascript %}
+  <script type="text/javascript">
+     
+    (function() {
+      var lastTime = 0;
+      var vendors = ['webkit', 'moz'];
+      for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+          window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+          window.cancelAnimationFrame =
+            window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+      }
+
+      if (!window.requestAnimationFrame)
+          window.requestAnimationFrame = function(callback, element) {
+              var currTime = new Date().getTime();
+              var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+              var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                timeToCall);
+              lastTime = currTime + timeToCall;
+              return id;
+          };
+
+      if (!window.cancelAnimationFrame)
+          window.cancelAnimationFrame = function(id) {
+              clearTimeout(id);
+          };
+  }());
+
+    
+ </script>
+    <!-- <script src="http://webapi.amap.com/maps?v=1.4.6&key=f034871b532a7bfb2d93f18e915b322c&plugin=AMap.DistrictSearch"></script> -->
+    <!-- <script src="http://webapi.amap.com/maps?v=1.4.6&key=f034871b532a7bfb2d93f18e915b322c&plugin=AMap.DistrictSearch,AMap.MouseTool,AMap.Driving,AMap.Autocomplete,AMap.Geocoder,AMap.PlaceSearch,AMap.PolyEditor,AMap.CircleEditor,AMap.MarkerClusterer"></script>
+ -->
+
+<script type="text/javascript" src="{% static 'virvo/wro/bd-echatrs.js' %}"></script>
+
+<!-- <script src="{% static 'virvo/wro/mapmonitor.js' %}"></script> -->
+
+<script type="text/javascript" src="{% static '/pipeline/js/ol-debug321.js' %}"></script>
+<!-- <script type="text/javascript" src="{% static '/pipeline/js/p-ol3.debug.js' %}"></script>    -->
+<script type="text/javascript" src="{% static '/pipeline/js/layerswitch.js' %}"></script>   
+<script type="text/javascript" src="{% static '/pipeline/js/layercontrol_.js' %}"></script>   
+<script src="{% static 'virvo/wro/mapmonitor_ol3.js' %}"></script>
+ 
+{% endblock %}

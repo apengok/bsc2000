@@ -1,0 +1,80 @@
+{% load staticfiles %}
+
+<form id="addForm" role="form" action="/entm/role/add/" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button type="button" id="doXAdd" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">新增角色</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><label
+                        class="text-danger">*</label> 角色名称： </label>
+                    <div class="col-md-7">
+                        <input name="name" placeholder="请输入角色名称" type="text" 
+                            class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注：</label>
+                    <div class="col-md-7">
+                        <textarea name="notes" rows="4" class="form-control" 
+                            placeholder="最多输入140字"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-7">
+                        <input id="permissionTree" name="permissionTree" type="text"
+                            hidden="true" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> 操作权限：</label>
+                    <div class="col-md-7">
+                        <div class="treeArea">
+                            <ul id="permissionDemo" name="fenceTree" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="doSubmitAdd" class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+</form>
+
+<script src="{% static 'virvo/wro/roleAdd.js' %}"></script>
+
+<script>
+    var roleNameNull = "\u89D2\u8272\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize140="\u957F\u5EA6\u4E0D\u8D85\u8FC7140\u4F4D";
+</script>
+
+<script>
+    
+    // $('#role_update_form').ajaxForm(form_options);
+    // $("#doSubmitAdd").on("click",function(){
+    //     $('#addForm').ajaxSubmit(function(data){
+    //         $("#commonSmWin").modal("hide");
+    //     });
+    // });
+
+    // jQuery('.modal-content .calendar').datepicker({ dateFormat: "yy-mm-dd" });
+
+
+    // var form_options = {
+    //     target: '#modal',
+    //     success: function() { console.log('create success...'); }
+    // }
+    // $('#addForm').ajaxForm(form_options);
+</script>

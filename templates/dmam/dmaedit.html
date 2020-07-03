@@ -1,0 +1,249 @@
+{% load staticfiles %}
+<form id="editForm" role="form" action="{% url 'dmam:districtedit' object.pk %}" method="post" class="form-horizontal">{% csrf_token %}
+    <div class="modal-header">
+        <button type="button" id="doXAdd" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">修改DMA分区</h4>
+    </div>
+    <div class="modal-body">
+        <input  type="text" class="hidden" id="cid" name="cid" value="{{ cid }}" />
+        <input  type="text" class="hidden" id="pid" name="pId" value="{{ pId }}"/>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 分区编号：</label>
+                    <div class="col-md-4">
+                        <input name="dma_no" value="{{ form.dma_no.value }}" placeholder="请输入分区编号" type="text"  maxlength="50" class="form-control" id="dma_no"/>
+                    </div>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 分区名称：</label>
+                    <div class="col-md-4">
+                        <input name="dma_name" value="{{ form.dma_name.value }}" placeholder="请输入分区名称" type="text" maxlength="50" class="form-control" id="dma_name"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" style="text-align: right;"><label class="text-danger">*</label> 负责人：</label>
+                    <div class="col-md-4">
+                        <input name="creator" value="{{ form.creator.value }}" placeholder="请输入负责人姓名" type="text" maxlength="50" class="form-control" id="creator"/>
+                    </div>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;">建立日期：</label>
+                    <div class="col-md-4">
+                        <input style="cursor: pointer;  background-color: #fafafa;" class="form-control layer-date laydate-icon"
+                               id="registerDate" name="create_date" value="{{ form.create_date.value }}" placeholder=""/>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="submitEdit"  class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+    <input  type="hidden" value="ef6c759b-ef14-46f7-bec1-5819d0c322fa" name="avoidRepeatSubmitToken" id="avoidRepeatSubmitToken">
+</form>
+<!-- <script type="text/javascript" src="/clbs/resources/js/sendAjax.js"></script> -->
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+<script>
+
+
+    (function($,window){
+        var dma_no = $("#dma_no").val();
+        var dma_name = $("#dma_name").val();
+        var creator = $("#creator").val();
+        var create_date = $("#registerDate").val();
+        var edit_dma_no = '';
+        var edit_dma_name = '';
+        var edit_creator = '';
+        var edit_create_date = '';
+        var flag1 = false;
+        districtEdit = {
+            init: function(){
+                // $.ajax({
+                //     url: 'group/findOperations',
+                //     type: 'POST',
+                //     data: "",
+                //     async:false,
+                //     dataType: 'json',
+                //     success: function (data) {
+                //         if(data.success==true){
+                //             var operations=[];
+                //             var selector=$("#operation");
+                //             selector.append('<option  value = "">'+"请选择组织结构性质"+'</option>');
+                //             //selector.append('<optgroup label="请选择运营资质类别"></optgroup>');
+                //             if(data.obj.operation != null && data.obj.operation.length > 0){
+                //                 var calldata = data.obj.operation;
+                //                 for(var i=0;i<calldata.length;i++){
+                //                     selector.append('<option  value="'+calldata[i].operationType+'">'+calldata[i].operationType+'</option>');
+                //                 }
+                //             }
+                //         }
+                //     },
+                // });
+                laydate.render({elem: '#registerDate',max: districtEdit.getsTheMaxTime(),theme: '#6dcff6'});
+            },
+            valuechange:function(){
+                edit_dma_no = $("#dma_no").val();
+                edit_dma_name = $("#dma_name").val();
+                edit_creator = $("#creator").val();
+                edit_create_date = $("#registerDate").val();
+                if(dma_no != edit_dma_no || dma_name != edit_dma_name || creator != edit_creator || create_date != edit_create_date){
+                    flag1 = true;
+                }
+                else{
+                    flag1 = false;
+                }
+            },
+            // 提交
+            doSubmit: function(){
+                console.log('validas...');
+                districtEdit.valuechange();
+                if(flag1){
+                    if(districtEdit.validates() == true){
+                        // var s = $("#operation").val();
+                        // if (s == null) {
+                        //     $("#operation").val("");
+                        // }
+                        $("#editForm").ajaxSubmit(function(data) {
+                            console.log(data);
+                            var result = $.parseJSON(data);
+                            // if (result.success) {
+
+                            //     $("#commonSmWin").modal("hide");
+                            //     layer.msg("添加成功！",{move:false});
+                            //     $("#search_condition").val("");
+                            // }
+                            if (result.success) {
+                                if (result.obj.flag == 1){
+                                    $("#commonSmWin").modal("hide");
+                                    $("#current_dma_no").attr("value",edit_dma_no);
+                                    $("#current_dma_name").attr("value",edit_dma_name);
+                                    layer.msg("添加成功！",{move:false});
+                                    $("#search_condition").val("");
+                                }else{
+                                    layer.msg(result.obj.errMsg,{move:false});
+                                }
+                            }else{
+                                layer.msg(result.msg,{move:false});
+                            }
+                        });
+                    }
+                }else{
+                    $("#commonSmWin").modal("hide");
+                }
+
+            },
+            clearPreviousValue :function(){
+                if($(".remote").data("previousValue")){
+                    $(".remote").data("previousValue").old = null;
+                }
+            },
+            getsTheMaxTime: function () {
+            
+                var nowDate = new Date();
+                maxTime = parseInt(nowDate.getFullYear())
+                    + "-"
+                    + (parseInt(nowDate.getMonth() + 1) < 10 ? "0"
+                        + parseInt(nowDate.getMonth() + 1)
+                        : parseInt(nowDate.getMonth() + 1))
+                    + "-"
+                    + (nowDate.getDate() < 10 ? "0" + nowDate.getDate()
+                        : nowDate.getDate()) + " ";
+                
+                return maxTime
+            },
+            //校验
+            validates: function(){
+                return $("#editForm").validate({
+                    rules : {
+                        dma_no:{
+                            required:true,
+                            maxlength:25,
+                            remote :{
+                                type:"post",
+                                async:false,
+                                url:"/dmam/verifydmano/" ,
+                                data:{
+                                    userName:function(){
+                                        return $("#dma_no").val();}
+                                },
+                                dataFilter:function(data){
+                                    var resultData = $.parseJSON(data);
+                                    if(resultData.success == true){
+                                        return true;
+                                    }else{
+                                        if(dma_no == edit_dma_no){
+                                            return true;
+                                        }else{
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        dma_name:{
+                            required:true,
+                            maxlength:25,
+                            remote :{
+                                type:"post",
+                                async:false,
+                                url:"/dmam/verifydmaname/" ,
+                                data:{
+                                    userName:function(){
+                                        return $("#dma_name").val();}
+                                },
+                                dataFilter:function(data){
+                                    var resultData = $.parseJSON(data);
+                                    if(resultData.success == true){
+                                        return true;
+                                    }else{
+                                        if(dma_name == edit_dma_name){
+                                            return true;
+                                        }else{
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        creator:{
+                            required:true,
+                            maxlength:25
+                        },
+                        
+                        create_date:{
+                            selectRegDate:true
+                        }
+                    },
+                    messages : {
+                        dma_no:{
+                            required :  "分区编号不能为空",
+                            maxlength : "\u957F\u5EA6\u4E0D\u8D85\u8FC725\u4F4D",
+                            remote:"该分区编号已存在"
+                        },
+                        dma_name:{
+                            required :  "分区名称不能为空",
+                            maxlength : "\u957F\u5EA6\u4E0D\u8D85\u8FC725\u4F4D",
+                            remote:"该分区名称已存在"
+                        },
+                        creator:{
+                            required :  "创建人不能为空",
+                            maxlength : "\u957F\u5EA6\u4E0D\u8D85\u8FC725\u4F4D"
+                        },
+                        create_date:{
+                            selectRegDate : "\u6CE8\u518C\u65E5\u671F\u5FC5\u987B\u5C0F\u4E8E/\u7B49\u4E8E\u4ECA\u5929"
+                        }
+                    }
+                }).form();
+            }
+        }
+        $(function() {
+            districtEdit.init();
+            $("#submitEdit").on("click",districtEdit.doSubmit);
+            $('input').inputClear();
+            $("#dma_no,#dma_name,#registerDate,#create_date,#cursor").on("change",districtEdit.clearPreviousValue);
+        });
+    })($,window)
+</script>

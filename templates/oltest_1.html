@@ -1,0 +1,135 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html>
+  <head>
+    <title>Draw and Modify Features</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <form class="form-inline">
+      <label>Geometry type &nbsp;</label>
+      <select id="type">
+        <option value="Point">Point</option>
+        <option value="LineString">LineString</option>
+        <option value="Polygon">Polygon</option>
+      </select>
+    </form>
+    <script>
+      //'http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600'
+      //'http://t0.tianditu.com/DataServer?T=cta_w&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600'
+      function crtLayerXYZ(type, proj, opacity){
+       var layer = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'http://t'+Math.round(Math.random()*7)+'.tianditu.com/DataServer?T='+type+'&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600',
+                projection: proj
+            }),
+            opacity: opacity
+        });
+        layer.id = type;
+        return layer;
+      }
+
+      var raster = new ol.layer.Tile({
+        source: new ol.source.OSM()
+      });
+
+      var vec_layer = crtLayerXYZ("vec_c","EPSG:4326",1);
+      var cta_wlayer = crtLayerXYZ("cta_c","EPSG:4326",1);
+      var cva_clayer = crtLayerXYZ("cva_c","EPSG:4326",1);
+      var center = [118.39469563,29.888188578];
+
+      vectorLayer1 = new ol.layer.Vector({
+                // projection: 'EPSG:4326',
+                source: new ol.source.Vector()
+            });
+
+            var controls = [
+              new ol.control.Attribution({collapsed: false}),
+              // new ol.control.FullScreen(),
+              new ol.control.MousePosition(),
+              // new ol.control.OverviewMap({collapsed: false, collapsible: false}),
+              // new ol.control.Rotate({autoHide: false}),
+              new ol.control.ScaleLine(),
+              new ol.control.Zoom(),
+              new ol.control.ZoomSlider(),
+              new ol.control.ZoomToExtent()
+          ];
+
+      var map = new ol.Map({
+        layers: [vec_layer,cta_wlayer,cva_clayer,vectorLayer1],
+        // layers: [raster],
+        target: 'map',
+        controls:controls,
+        view: new ol.View({
+          // center: [-11000000, 4600000],
+          projection: 'EPSG:4326',
+          center:center,
+          // center:  new ol.proj.transform(center,"EPSG:4326","EPSG:3857"),
+          maxZoom : 18,
+          zoom: 14
+        })
+      });
+
+      var features = new ol.Collection();
+      var featureOverlay = new ol.layer.Vector({
+        source: new ol.source.Vector({features: features}),
+        style: new ol.style.Style({
+          fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 255, 0.2)'
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#ffcc33',
+            width: 2
+          }),
+          image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+              color: '#ffcc33'
+            })
+          })
+        })
+      });
+      featureOverlay.setMap(map);
+
+      var modify = new ol.interaction.Modify({
+        features: features,
+        // the SHIFT key must be pressed to delete vertices, so
+        // that new vertices can be drawn at the same position
+        // of existing vertices
+        deleteCondition: function(event) {
+          return ol.events.condition.shiftKeyOnly(event) &&
+              ol.events.condition.singleClick(event);
+        }
+      });
+      map.addInteraction(modify);
+
+      var draw; // global so we can remove it later
+      var typeSelect = document.getElementById('type');
+
+      function addInteraction() {
+        draw = new ol.interaction.Draw({
+          features: features,
+          type: /** @type {ol.geom.GeometryType} */ (typeSelect.value)
+        });
+        draw.on('drawend',function(event){
+          console.log(event);
+        });
+        map.addInteraction(draw);
+      }
+
+
+      /**
+       * Handle change event.
+       */
+      typeSelect.onchange = function() {
+        map.removeInteraction(draw);
+        addInteraction();
+      };
+
+      addInteraction();
+    </script>
+  </body>
+</html>

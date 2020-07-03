@@ -1,0 +1,270 @@
+ 
+{% extends '_vbase.html' %}
+
+
+{% load staticfiles %}
+
+{% block stylesheet %}
+<style type="text/css">
+    
+    table tr:nth-child(odd){
+
+            background: #F1F1F1;
+
+        }
+        table tr:nth-child(even){
+
+            background: #fffffF;
+
+
+        }
+
+
+
+        table tr{
+            height: 40px;
+            text-align: center;
+            color: #0a0a0c;
+        }
+
+    table {
+          table-layout: fixed;
+          width: 100%;
+          border-collapse: collapse;
+          text-align: center;
+          /*border: 3px solid purple;*/
+            border:1px solid #CDCDCD;
+
+        }
+
+        th, td {
+          padding: 0px;
+          height: 20px;
+        }
+</style>
+{% endblock %}
+
+{% block main_content %}
+
+
+<div class="row">
+          <div class="col-md-12">
+            <div class="col-md-2" style="padding-right: 0px; padding-left: 0px;">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title fwb">小区列表</h3>
+                  <div class="actions pull-right listActions">
+                    <i class="fa fa-chevron-down"></i>
+                  </div>
+                </div>
+                <div class="panel-body" style="padding: 0px;">
+                  <div class="form-group" style="margin-top: 15px;">
+                    <div class="col-md-12">
+                      <input id="search_condition" name="search" class="form-control" style="margin-bottom: 10px;" type="text" placeholder="请输入组织名称" />
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="padding: 0px;height:80%!important">
+                    <ul id="commubitytreeDemo" class="ztreee" style="overflow:auto;height:500px!important"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+
+            <div class="col-md-2" style="padding-right: 0px; padding-left:0px;"></div>
+            <div class="col-md-10" style="padding-right: 0px; padding-left: 10px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="cursor:pointer;" id="stretch" >
+                        <h3 class="panel-title fwb">查询条件</h3>
+                        <!-- <div class="actions pull-right listActions">
+                            <i class="fa chevron-up"  id="stretch-chevron" ></i>
+                        </div> -->
+                    </div>
+                    <div class="panel-body fixed-table-body"   id="stretch-body">
+                        <!--工具面板-->
+                        <div class="col-md-12 alarmSearchToolPanel" style="padding: 0px;">
+                            <form id="hourslist" class="form-horizontal" action="#"  method="post" role="form" >{% csrf_token %}
+                                <div class="form-group" >
+                                    <label class="col-md-1  control-label searchListSelect" style="margin-left: 0px;"><span style="margin-left: -10px;">小区名称：</span></label>
+                                    <div class="col-md-3">
+                                      <input id="station_name" class="form-control" value="{{ station }}" readonly="" type="text">
+                                      <input id="commaddr" class="form-control" value="{{ commaddr }}" readonly="" type="hidden">
+                                    </div>
+                                    <label class="col-md-1 col-sm-3 control-label searchListSelect">时间：</label>
+                                    <!-- <div class="col-md-3 col-sm-8 searchListSelect">
+                                        <input style="cursor: pointer; background-color: #fafafa;"
+                                            class="form-control layer-date laydate-icon"
+                                            id="timeInterval" name="timeInterval" readonly />
+                                        <label id="timeInterval-error" class="error" for="timeInterval" style="display: none;">开始时间请不要超过上个月一号</label>
+                                    </div> -->
+                                    <!-- 改为月选择器 -->
+                                    <div class="col-md-2 col-sm-3 searchListSelect">
+                                        <select class="form-control valid" id="select2" aria-invalid="false">
+                                        </select> 
+                                    </div> 
+                                    <div class="col-md-3 control-label " id="dateSearchData">
+                                        
+                                        <button id="thismonthClick" type="button"class="btn btn-primary" name="-2" >本月  </button>
+                                        <button id="lastmonthClick" type="button"class="btn btn-primary" name="-3" >上月  </button>
+                                        
+                                        <button id="inquireClick" type="button" class="btn btn-primary search-btn" name="1" ><i class="glyphicon glyphicon-search"></i>  查询</button>
+                                        
+                                        
+                                        
+                                    </div>
+                                </div>
+                                
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-10 " style="padding-right: 0px; padding-left:10px;">
+              <div class="panel panel-default">
+                <div class="panel-heading" id="stretch2" >
+                  <h3 class="panel-title fwb">图形分析</h3>
+                  <div class="actions pull-right listActions">
+                    <i class="fa chevron-down"  id="stretch-chevron" ></i>
+                  </div>
+                </div>
+                <div class="panel-body fixed-table-body"  id="stretch-body">
+                  
+                  <div class="col-md-6">
+                      <table id="dataTableBind" border="1">
+                          
+                          <tbody>
+                            
+                            <tr>
+                              <td style="font-weight: bold">日期</td>
+                              <td style="font-weight: bold">用水量</td>
+                              <td style="font-weight: bold">日期</td>
+                              <td style="font-weight: bold">用水量</td>
+                              <td style="font-weight: bold">日期</td>
+                              <td style="font-weight: bold">用水量</td>
+                              
+                            </tr>
+                            <tr>
+                              <td>1</td>
+                              <td id="d01"></td>
+                              <td>11</td>
+                              <td id="d11"></td>
+                              <td>21</td>
+                              <td id="d21"></td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td id="d02"></td>
+                              <td>12</td>
+                              <td id="d12"></td>
+                              <td>22</td>
+                              <td id="d22"></td>
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td id="d03"></td>
+                              <td>13</td>
+                              <td id="d13"></td>
+                              <td>23</td>
+                              <td id="d23"></td>
+                            </tr>
+                            <tr>
+                              <td>4</td>
+                              <td id="d04"></td>
+                              <td>14</td>
+                              <td id="d14"></td>
+                              <td>24</td>
+                              <td id="d24"></td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
+                              <td id="d05"></td>
+                              <td>15</td>
+                              <td id="d15"></td>
+                              <td>25</td>
+                              <td id="d25"></td>
+                            </tr>
+                            <tr>
+                              <td>6</td>
+                              <td id="d06"></td>
+                              <td>16</td>
+                              <td id="d16"></td>
+                              <td>26</td>
+                              <td id="d26"></td>
+                            </tr>
+                            <tr>
+                              <td>7</td>
+                              <td id="d07"></td>
+                              <td>17</td>
+                              <td id="d17"></td>
+                              <td>27</td>
+                              <td id="d27"></td>
+                            </tr>
+                            <tr>
+                              <td>8</td>
+                              <td id="d08"></td>
+                              <td>18</td>
+                              <td id="d18"></td>
+                              <td>28</td>
+                              <td id="d28"></td>
+                            </tr>
+                            <tr>
+                              <td>9</td>
+                              <td id="d09"></td>
+                              <td>19</td>
+                              <td id="d19"></td>
+                              <td id="td29">29</td>
+                              <td id="d29"></td>
+                            </tr>
+                            <tr>
+                              <td>10</td>
+                              <td id="d10"></td>
+                              <td>20</td>
+                              <td id="d20"></td>
+                              <td id="td30">30</td>
+                              <td id="d30"></td>
+                              
+                            </tr>
+                            <tr id="tr31" >
+                              <td>31</td>
+                              <td id="d31"></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              
+                            </tr>
+                          </tbody>
+                        </table>
+                  </div>
+                  <div class="col-md-6">
+                    <div id="comunity_daily_chart" style="height:400px;width:100%;"></div>
+                  </div>
+              </div>
+              </div>
+            </div>
+
+            
+
+            
+                        
+ 
+            
+          </div>  
+          
+        </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript %}
+<script src="{% static 'virvo/resources/js/zTree/js/ztreeSearch.js' %}"></script>
+<script type="text/javascript" src="{% static 'virvo/wro/bd-echatrs.js' %}"></script>
+<script src="{% static 'virvo/wro/neighborhoodusedayly.js' %}"></script>
+{% endblock %}

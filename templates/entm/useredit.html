@@ -1,0 +1,135 @@
+{% load staticfiles %}
+<form id="editForm" role="form" action="{% url 'entm:useredit' object.id %}" class="form-horizontal" method="post">{% csrf_token %}
+    <div class="modal-header">
+        <button type="button" id="doXEdit" class="close" data-dismiss="modal"
+            aria-hidden="true">&times;</button>
+        <h4 class="modal-title">修改用户</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <input id = "userId"  type="text" hidden="true" name="id" value="{{ form.idstr.value }}" />
+                <input id="sign" type="text" hidden="true" name="sign" value="" />
+
+                <input id = "idstr"  type="text" hidden="true" name="idstr" value="{{ form.idstr.value }}" />
+                <input id="uuid" type="text" hidden="true" name="uuid" value="{{ form.uuid.value }}" />
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><label
+                        class="text-danger">*</label> 用户名：</label>
+                    <div class="col-md-7">
+                        <input readonly="true" placeholder="请输入用户名"
+                            type="text" class="form-control" id="username" name="user_name" value="{{ form.user_name.value|default:''}}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> 密码：</label>
+                    <div class="col-md-7">
+                        <input id="passwordEdit" name="password" placeholder="请输入密码" class="form-control"
+                            type="password" autocomplete="new-password"/>
+                    </div>
+                </div>
+                <!-- <div id="sendAPassWord" class="form-group hidden">
+                    <label class="col-md-3 control-label">下发口令：</label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入下发口令" class="form-control" type="password" id="sendDownCommand" name="sendDownCommand" value="">
+                    </div>
+                </div> -->
+                <input id="groupIds" name="groupId" type="text"
+                    hidden="true" value="{{ object.belongto.cid }}" />
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><label
+                        class="text-danger">*</label> 所属企业：</label>
+                    <div class="has-feedback col-md-7">
+                        <input name="belongto"
+                            class="form-control" id="zTreeCitySelEdit" placeholder="请选择所属企业" readonly="readonly" style="background-color: #fafafa; cursor: pointer;"
+                            type="text" value="{{ form.belongto.value }}" />
+                            <span id="zTreeCitySelSpan" class="fa fa-chevron-down form-control-feedback" aria-hidden="true"></span>
+                        <div id="zTreeContentEdit" class="ztreeModelBox" style="top:36px!important">
+                            <ul id="ztreeDemoEdit" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><label class="text-danger"></label> 状态：</label>
+                    <div class="col-md-7">
+                        <select class="form-control" id="state" name="is_active">
+                            <option value = "1" selected="selected" >启用</option>
+                            <option value = "0" >停用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">授权截止日期：</label>
+                        <div class="col-md-7">
+                            <input style="cursor: pointer;  background-color: #fafafa;" class="form-control layer-date laydate-icon"
+                                    id="authorizationDateEdit" name="expire_date" value="{{ form.expire_date.value|default:''}} "/>
+                        </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> 真实姓名：</label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入真实姓名" type="text"
+                            class="form-control" id="fullName" name="real_name" value="{{ form.real_name.value|default:''}}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">性别：</label>
+                    <div class="col-md-7">
+                        <label class="radio-inline"><input type="radio" name="sex" value="1" checked="checked" id="gender1"> 男</label>
+                        <label class="radio-inline"><input type="radio" name="sex" value="2" id="gender2"> 女</label>
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-md-3 control-label">电话号码：</label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入电话号码" type="text"
+                            class="form-control" id="mobile" name="phone_number" value="{{ form.phone_number.value|default:'' }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">邮箱：</label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入邮箱" type="text"
+                            class="form-control" id="mail" name="email" value="{{ form.email.value|default:'' }}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="doSubmitEdit" class="btn btn-primary" type="button">
+            <strong>提 交</strong>
+        </button>
+        <button id="doCloseEdit" type="button" class="btn btn-default" data-dismiss="modal">
+            <strong>关 闭</strong>
+        </button>
+    </div>
+</form>
+<input value="{{ user.idstr }}" id="currentUserId" type="hidden"/>
+<script>
+    var userNameNull = "\u8BF7\u8F93\u5165\u7528\u6237\u540D\uFF0C\u8303\u56F4\uFF1A4~25";
+    var userNameError = "\u8BF7\u8F93\u5165\u5B57\u6BCD/\u6570\u5B57/\u4E0B\u5212\u7EBF/\u77ED\u6760\uFF0C\u5982\uFF1Alove\u3001\u5C0F\u9C7C\u30011234\u3001F3-808";
+    var userNameMinLength = "\u9601\u4E0B\u81F3\u5C11\u8981\u8F93\u51654\u4F4D\uFF0C\u5982\uFF1Alove\u3001\u5C0F\u9C7C";
+    var usernameExists = "\u8BE5\u7528\u6237\u540D\u5DF2\u88AB\u4F7F\u7528,\u8BF7\u91CD\u65B0\u6DFB\u52A0";
+    var usernameAuthorizationDateNull = "\u6388\u6743\u622A\u6B62\u65E5\u671F\u4E0D\u80FD\u4E3A\u7A7A";
+    var usernameAuthorizationToday = "\u6388\u6743\u622A\u6B62\u65E5\u671F\u5FC5\u987B\u5927\u4E8E/\u7B49\u4E8E\u4ECA\u5929";
+    var passWordNull = "\u4E0D\u8981\u548C\u6211\u6BD4\u61D2\uFF0C\u4E0D\u8F93\u5165\u5BC6\u7801\uFF0C\u6211\u61D2\u5F97\u548C\u4F60\u6BD4";
+    var passwordMinLength = "\u4E0D\u80FD\u5C11\u4E8E6\u4E2A\u5B57\u7B26\uFF0C\u5982\u679C\u5B9E\u5728\u4E0D\u591F\u957F\uFF0C\u53BB\u9762\u58C1\u601D\u8FC7\u5427\uFF0C\u591F\u957F\u4E86\u518D\u6765";
+    var passwordCompareNull = "\u8F93\u5165\u5BC6\u7801\u7684\u59FF\u52BF\u72C2\u62FD\u5E05\u6C14\u540A\u70B8\u5929\uFF0C\u5DEE\u4E00\u70B9\u5C31\u4E24\u6B21\u5BC6\u7801\u90FD\u4E00\u81F4\u4E86";
+    var emailError = "\u60A8\u7684\u90AE\u7BB1\u683C\u5F0F\u8F93\u5165\u9519\u8BEF\u5566";
+    var phoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u624B\u673A\u53F7\u5462";
+    var publicMinSize2Length="\u957F\u5EA6\u4E0D\u80FD\u5C0F\u4E8E2\u4F4D";
+    var publicSelectGroupNull="\u8BF7\u9009\u62E9\u6240\u5C5E\u4F01\u4E1A";
+    var publicMinSize6Length="\u957F\u5EA6\u4E0D\u80FD\u5C0F\u4E8E6\u4F4D";
+    var publicSize25="\u957F\u5EA6\u4E0D\u8D85\u8FC725\u4F4D";
+    var publicSize20="\u957F\u5EA6\u4E0D\u8D85\u8FC720\u4F4D";
+    var publicSize60="\u957F\u5EA6\u4E0D\u8D85\u8FC760\u4F4D";
+    var publicNull = "\u4E0D\u80FD\u4E3A\u7A7A";
+    var publicEditSuccess = "\u4FEE\u6539\u6210\u529F";
+    var publicEditError = "\u4FEE\u6539\u5931\u8D25";
+    var userGroupSelectNull = "\u8BF7\u9009\u62E9\u7EC4\u7EC7";
+</script>
+
+<script src="{% static 'virvo/wro/userEdit.js' %}"></script>
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>

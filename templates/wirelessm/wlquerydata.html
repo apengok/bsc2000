@@ -1,0 +1,295 @@
+ 
+{% extends '_vbase.html' %}
+
+
+{% load staticfiles %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'virvo/resources/js/fullcalendar/css/common.css' %}"/>
+<!-- <link rel="stylesheet" href="{% static 'virvo/wro/fixedColums.dataTables.css' %}"/> -->
+<style type="text/css">
+        
+        #showInfo table tr:nth-child(odd){
+
+            background: #F1F1F1;
+
+        }
+        #showInfo table tr:nth-child(even){
+
+            background: #fffffF;
+
+
+        }
+
+
+
+        #showInfo table tr{
+            height: 40px;
+            text-align: center;
+            color: #0a0a0c;
+        }
+
+        .col-md-3{
+            width: 24%;
+        }
+        .col-md-5{
+            width: 42.555%;
+        }
+
+        #showInfo table {
+          table-layout: fixed;
+          width: 100%;
+          border-collapse: collapse;
+          text-align: center;
+          /*border: 3px solid purple;*/
+            border:1px solid #CDCDCD;
+
+        }
+
+       #showInfo th, td {
+          padding: 0px;
+          height: 20px;
+        }
+
+        
+        
+    </style>
+{% endblock %}
+
+{% block main_content %}
+
+
+
+<div class="row">
+          <div class="col-md-12">
+            <div class="col-md-2" style="padding-right: 0px; padding-left: 0px;">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title fwb">小区列表</h3>
+                  <div class="actions pull-right listActions">
+                    <i class="fa fa-chevron-down"></i>
+                  </div>
+                </div>
+                <div class="panel-body" style="padding: 0px;">
+                  <div class="form-group" style="margin-top: 15px;">
+                    <div class="col-md-12">
+                      <input id="search_condition" name="search" class="form-control" style="margin-bottom: 10px;" type="text" placeholder="请输入组织名称或小区名称" />
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="padding: 0px;height:80%!important">
+                    <ul id="commubitytreeDemo" class="ztreee" style="overflow:auto;height:500px!important"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+
+            <div class="col-md-2" style="padding-right: 0px; padding-left:0px;"></div>
+            
+
+            <div class="col-md-10 " style="padding-right: 0px; padding-left:10px;padding-bottom: 0px;">
+              <div class="panel panel-default">
+                <div class="panel-heading" id="stretch2" >
+                  <h3 class="panel-title fwb">数据查询</h3>
+                  <div class="actions pull-right listActions">
+                    <i class="fa chevron-down"  id="stretch2-chevron" ></i>
+                  </div>
+                </div>
+                <div class="panel-body fixed-table-body"  id="stretch2-body">
+                  <input value="" id="permission" type="hidden" />
+                  <input value="{{ user.id }}" id="currentUserId" type="hidden" />
+                  <div class="ToolPanel">
+                    <div class="bars pull-left" id="barsPuLeft">
+                      <div class="btn-group pull-left barsMargin" role="group">
+                        <form role="form" id="operationForm"> {% csrf_token %}
+                          <label id="formLabDi"> <input type="text"
+                            class="Inlinesearch form-control" id="simpleQueryParam"
+                            name="simpleQueryParam" placeholder="请输入用户代码/表编号/SIM卡号">
+                          </label>
+                          <button type="button" id="search_button"
+                                                            onclick="myTable.requestData()"
+                                                            class="btn btn-outline btn-default">搜索</button>
+                          <input id="hiddenText" type="text" style="display: none" />
+                        </form>
+                      </div>
+                      
+                    </div>
+                    <!-- add -->
+                    <div class="btn-group pull-left barsMargin" style="font-size: 20px;color: red;">
+                      总表数:<span id="totalmeter"></span> 
+                      <!-- 抄收率:<span id=readpercent></span>% -->
+                    </div>
+                    <!-- <div class="col-md-2 has-feedback">
+                      <input id="readmetertime" name="readmetertime" placeholder="请输入超收日期"
+                             class="form-control layer-date laydate-icon">
+                    </div> -->
+                    <!--  -->
+                    <div class="columns btn-group pull-right refShowRight">
+                      <button id="refreshTable" class="btn btn-default"
+                        type="button" name="refresh" title="刷新">
+                        <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                      </button>
+                      <div class="keep-open btn-group" title="定制显示列">
+                        <button id="customizeColumns" type="button"
+                          class="btn btn-default dropdown-toggle"
+                          data-toggle="dropdown">
+                          <i class="glyphicon glyphicon-th icon-th"></i> <span
+                            class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" id="Ul-menu-text">
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                   <!-- select query -->
+                   <div class="col-md-12">
+                     <table>
+                       <tr>
+                         <td>厂商选择:</td>
+                         <td style="padding-right: 10px;">
+                           <select name="manuselect" id="manuselect" autocomplete="off"  class="form-control">
+                                <option  value="none">请选择</option>
+                                <option value="中科君达">中科君达</option>
+                                
+                            </select>
+                          </td>
+                          <td>抄表方式:</td>
+                         <td style="padding-right: 10px;">
+                           <select name="rmodeselect" id="rmodeselect" autocomplete="off"  class="form-control">
+                                <option  value="none">请选择</option>
+                                <option value="NB物联">NB抄表</option>
+                                <option value="LORA智能">集中器抄表</option>
+                                
+                            </select>
+                          </td>
+
+                          <!-- <td>零吨用水:</td>
+                          <td style="padding-right: 10px;">
+                            <select name="zeroselect" id="zeroselect" autocomplete="off"  class="form-control">
+                                  <option  value="none">请选择</option>
+                                  <option value="2">昨日无用水量</option>
+                                  <option value="3">近三日无用水</option>
+                                  <option value="7">近七日无用水</option>
+                                  <option value="15">近半月无用水</option>
+                                  <option value="30">近一月无用水</option>
+                                  <option value="90">近三月无用水</option>
+                                  <option value="180">近半年无用水</option>
+                                  
+                              </select>
+                            </td> -->
+
+                          <td>水表口径:</td>
+                         <td style="padding-right: 10px;">
+                           <select name="dnselect" id="dnselect" autocomplete="off"  class="form-control">
+                                <option  value="none">请选择</option>
+                                <option value="15">DN15</option>
+                                <option value="20">DN20</option>
+                                <option value="25">DN25</option>
+                                
+                            </select>
+                          </td >
+                          <td>时间段:</td>
+                          <td style="width: 325px;">
+                            <div class="has-feedback">
+                              <input id="timeInterval" name="timeInterval" placeholder="请输入超收日期"
+                                     class="form-control layer-date laydate-icon">
+                            </div>
+                          </td>
+                          <!-- <td>排序方式:</td>
+                          <td style="padding-right: 10px;">
+                            <select name="dnselect" id="dnselect" autocomplete="off"  class="form-control">
+                                 <option  value="none">请选择</option>
+                                 <option value="0">用户代码</option>
+                                 <option value="1">抄表时间</option>
+                                 <option value="2">水量</option>
+                                 
+                             </select>
+                          </td > -->
+                          <td style="padding-right: 10px;"><button id="querybyselect"  class="btn btn-primary" type="button">查询</button>
+                            </td>
+                         <td>
+                          <button id="exportbyselect" type="button"  class="btn btn-default" ><a class="dumb" href="/wirelessm/watermeter/exportbyselect/">导出</a></button>
+                          </td>
+                       </tr>
+                     </table>
+                   </div>
+                   
+                  <table id="dataTable"
+                    class="table table-striped table-bordered table-hover checkTable"
+                    cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                            <th >序号</th>
+                            <th >用户代码</th>
+                            <th >小区</th>
+                            <th >楼号</th>
+                            <th >单元号、房号</th>
+                            <!-- <th >节点编号</th> -->
+                            <th >表编号</th>
+                            <th >表读数</th>
+                            <th >抄表时间</th>
+                            <th >时段用水量</th>
+                            <th >通讯状态</th>
+                            <th >阀门状态</th>
+                            <th >信号强度</th>
+                            <th >温度</th>
+                            <th >电池电压</th>
+                            <th >报警</th>
+                            <th >1日</th>
+                            <th >2日</th>
+                            <th >3日</th>
+                            <th >4日</th>
+                            <th >5日</th>
+                            <th >6日</th>
+                            <th >7日</th>
+                            <th >8日</th>
+                            <th >9日</th>
+                            <th >10日</th>
+                            <th >11日</th>
+                            <th >12日</th>
+                            <th >13日</th>
+                            <th >14日</th>
+                            <th >15日</th>
+                            <th >16日</th>
+                            <th >17日</th>
+                            <th >18日</th>
+                            <th >19日</th>
+                            <th >20日</th>
+                            <th >21日</th>
+                            <th >22日</th>
+                            <th >23日</th>
+                            <th >24日</th>
+                            <th >25日</th>
+                            <th >26日</th>
+                            <th >27日</th>
+                            <th >28日</th>
+                            <th id="d29">29日</th>
+                            <th id="d30">30日</th>
+                            <th id="d31">31日</th>
+                      </tr>
+                  </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>  
+          
+        </div>
+
+        <!-- dma绑定 -->
+    
+    </div>
+
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<script src="{% static 'virvo/resources/js/zTree/js/ztreeSearch.js' %}"></script>
+<script src="{% static 'virvo/wro/wlquerydata.js' %}"></script>
+<!-- <script src="{% static 'virvo/wro/fixedColumn.min.js' %}"></script> -->
+{% endblock %}

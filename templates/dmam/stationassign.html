@@ -1,0 +1,341 @@
+{% load staticfiles %}
+<!-- 新增站点管理 -->
+  
+      <form id="adduserType" role="form" action="" method="post" class="form-horizontal">{% csrf_token %}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          <h4 class="modal-title">DMA分区站点配置</h4>
+                      <!-- <input class="hidden" id="vid9" name="vid" value="">
+                      <input class="hidden" name="orderType" value="9"> -->
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-3" style="padding-right: 0px; padding-left: 0px;">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title fwb">站点列表</h3>
+                  
+                </div>
+                <div class="panel-body" style="padding: 0px;">
+                  <div class="form-group" style="margin-top: 15px;">
+                    <div class="col-md-12">
+                      <input id="search_condition" name="search" class="form-control" style="margin-bottom: 10px;" type="text" placeholder="请输入组织名称" />
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="border: 1px solid black;padding: 0px;height:80%!important">
+                    <ul id="stationtreeDemo" class="ztreee" style="overflow:auto;height:500px!important"></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <button type="button" id="export" class="btn btn-primary"><i class="fa chevron-right"  id="stretch3-chevron" ></i></button>
+              <button type="button" id="import" class="btn btn-primary"><i class="fa chevron-left"  id="stretch3-chevron" ></i></button>
+            </div>
+            <div class="col-md-8">
+              <table id="tb_zone_static" class="table table-bordered" style="height: 400px;text-align: center;">
+                <thead >
+                  <tr >
+                    <th style="text-align: center;"><input type="checkbox" id="checkAllTwo"  onclick=""></th>
+                    <th style="text-align: center;">序号</th>
+                    <th style="text-align: center;">分区名称</th>
+                    <th style="text-align: center;">站点名称</th>
+                    <th style="text-align: center;">类型</th>
+                  </tr>
+  
+                </thead>
+               
+                <tr>
+                    <td style="text-align: center;"><input type="checkbox" id="checkAllTwo"  onclick=""></td>
+
+                    <td>1</td>
+                    <td>铁湖计量分区</td>
+                    <td>长寿-敬老院</td>
+                    <td>
+                        <div class="has-feedback ">
+                          <select class="form-control" id="state" name="relate_meter">
+                              <option>进水表</option>
+                              <option>出水表</option>
+                              <option>贸易结算表</option>
+                              <option>未计费水表</option>
+                              <option>官网检测表</option>
+                          </select>
+                      </div>
+                    </td>
+                  
+                </tr>
+                
+                  
+               
+              </table>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="addoperation" class="btn btn-primary">提交</button>
+          <button type="button" class="btn btn-default btn-off" data-dismiss="modal" id="closeAddDialog">关闭</button>
+        </div>
+      </form>
+      
+<script src="{% static 'virvo/resources/js/sendAjax.js' %}"></script>
+<script type="text/javascript">
+  (function($,window){
+        
+        assignStation = {
+        //初始化
+        init:function(){
+            var setting = {
+                async : {
+                    url : "district/dmatree/",
+                    tyoe : "post",
+                    enable : true,
+                    autoParam : [ "id" ],
+                    contentType : "application/json",
+                    dataType : "json",
+                },
+                view : {
+                    dblClickExpand : false
+                },
+                edit : {
+                    enable : true,
+                    editNameSelectAll : true,
+                    showRemoveBtn : false,//stationManage.showRemoveBtn,
+                    showRenameBtn : false
+                },
+                data : {
+                    simpleData : {
+                        enable : true
+                    }
+                },
+                callback : {
+                    beforeClick : assignStation.beforeClick,
+                    onClick : assignStation.onClick
+
+                }
+            };
+            $.fn.zTree.init($("#stationtreeDemo"), setting, null);
+            // $.fn.zTree.init($("#treeDemo"), treeSetting, zNodes);
+            var treeObj = $.fn.zTree.getZTreeObj('stationtreeDemo');
+            treeObj.expandAll(true);
+           
+        },
+        beforeClick: function(treeId, treeNode){
+            var check = (treeNode);
+            return check;
+        },
+        onClick: function(e, treeId, treeNode){
+            var zTree = $.fn.zTree.getZTreeObj("stationtreeDemo"), nodes = zTree
+                .getSelectedNodes(), v = "";
+            n = "";
+            nodes.sort(function compare(a, b) {
+                return a.id - b.id;
+            });
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                n += nodes[i].name;
+                v += nodes[i].id + ",";
+            }
+            if (v.length > 0)
+                v = v.substring(0, v.length - 1);
+            var cityObj = $("#zTreeOrganSelEdit");
+            console.log('before:',$("#groupIds").val());
+            $("#groupIds").val(v);
+            $("#idstr").val(v);
+            console.log('after:',$("#groupIds").val());
+            cityObj.val(n);
+            
+        },
+        export:function(){
+            var zTree = $.fn.zTree.getZTreeObj("stationtreeDemo"), nodes = zTree
+                .getSelectedNodes(), v = "";
+
+                console.log(nodes);
+            n = "";
+            nodes.sort(function compare(a, b) {
+                return a.id - b.id;
+            });
+            var oTable = document.getElementById('tb_zone_static');
+            var rowLength = oTable.rows.length;
+            console.log('rowLength',rowLength);
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                n += nodes[i].name;
+                v += nodes[i].id + ",";
+            console.log('rowLength',rowLength+i);
+                var row_cnt = rowLength+i;
+                var tr = '<tr>';
+                tr += '<td><input  type="checkbox" name="subChk"  value="' + nodes[i].name + '" uid="'+ nodes[i].id +'" /></td>';
+                tr += '<td>'+row_cnt +'</td>';
+                tr += '<td>'+nodes[i].name+'</td>';
+                tr += '<td>'+nodes[i].name+'</td>';
+                tr += '<td>'+'<div class="has-feedback ">'+
+                                    '<select class="form-control" id="state" name="relate_meter">'+
+                                        '<option>进水表</option>'+
+                                        '<option>出水表</option>'+
+                                        '<option>贸易结算表</option>'+
+                                        '<option>未计费水表</option>'+
+                                        '<option>官网检测表</option>'+
+                                    '</select>'+
+                               ' </div>'+'</td>';
+                tr += '</tr>'
+                $('#tb_zone_static tr:last').after(tr);
+            }
+            if (v.length > 0)
+                v = v.substring(0, v.length - 1);
+
+            // #add to table
+            
+            
+        },
+        import:function(){
+
+            //gets table
+            var oTable = document.getElementById('myTable');
+
+            //gets rows of table
+            var rowLength = oTable.rows.length;
+
+            //loops through rows    
+            for (i = 0; i < rowLength; i++){
+
+              //gets cells of current row  
+               var oCells = oTable.rows.item(i).cells;
+
+               //gets amount of cells of current row
+               var cellLength = oCells.length;
+
+               //loops through each cell in current row
+               for(var j = 0; j < cellLength; j++){
+
+                      // get your cell info here
+
+                      var cellVal = oCells.item(j).innerHTML;
+                      alert(cellVal);
+                   }
+            }
+        },
+        hideMenu: function(){
+            $("#zTreeContentEdit").fadeOut("fast");
+            $("body").unbind("mousedown", assignStation.onBodyDown);
+        },
+        onBodyDown: function(event){
+            if (!(event.target.id == "menuBtn" || event.target.id == "zTreeContentEdit" || $(event.target).parents("#zTreeContentEdit").length > 0)) {
+                assignStation.hideMenu();
+            }
+        },
+        
+        doSubmit: function(){
+            
+            assignStation.valueChange();
+            if (flag1){
+                var     baseinfo_action = "/dmam/district/dmabaseinfo/edit/{id}/";
+                dma_id = $("#current_dma_no").val();
+                
+                new_action = baseinfo_action.replace("{id}", dma_id);
+                
+                $("#baseinfoForm").attr("action",new_action);
+
+                if(assignStation.validates()){
+                    $('#simpleQueryParam').val("");
+                    
+                    $("#baseinfoForm").ajaxSubmit(function(data) {
+                        if (data != null) {
+                            var result =  $.parseJSON(data);
+                            console.log(result);
+                            if (result.success == true) {
+                                if (result.obj.flag == 1){
+                                    // $("#commonLgWin").modal("hide");
+                                    layer.msg(publicEditSuccess,{move:false});
+                                    myTable.refresh()
+                                }else{
+                                    if(date != null){
+                                        layer.msg(publicEditError,{move:false});
+                                    }
+                                }
+                            }else{
+                                layer.msg(result.obj.errMsg,{move:false});
+                            }
+                        }
+                    });
+                    // $("#commonLgWin").modal("hide"); // 关闭窗口
+                }
+            } else {
+                // $("#commonLgWin").modal("hide"); // 关闭窗口
+            }
+        },
+        //校验
+        validates: function(){
+            var isAdmin = isAdminStr == 'true'
+            console.log('isadmin?',isAdmin);
+            if(isAdmin == true){
+                return $("#baseinfoForm").validate({
+                    rules : {
+                        dma_no : {
+                            required : true,
+                            
+                        },
+                        belongto : {
+                            required : true
+                        }
+                    },
+                    messages : {
+                        dma_no : {
+                            required : "分区编号不能为空",
+                            
+                        },
+                        
+                        belongto : {
+                            required : "组织不能为空"
+                        }
+                    }
+                }).form();
+            }else{
+                return $("#baseinfoForm").validate({
+                    rules : {
+                        dma_no : {
+                            required : true,
+                            
+                        },
+                        
+                        belongto : {
+                            required : true
+                        }
+                        
+                    },
+                    messages : {
+                        dma_no : {
+                            required : "分区编号不能为空",
+                            
+                        },
+                        belongto : {
+                            required : "组织不能为空"
+                        }
+                    }
+                }).form();
+            }
+
+        },
+        getsTheCurrentTime: function () {
+            var time=$("#authorizationDateEdit").val();
+                var nowDate = new Date();
+                var startTime = parseInt(nowDate.getFullYear()+1)
+                    + "-"
+                    + (parseInt(nowDate.getMonth() + 1) < 10 ? "0"
+                        + parseInt(nowDate.getMonth() + 1)
+                        : parseInt(nowDate.getMonth() + 1))
+                    + "-"
+                    + (nowDate.getDate() < 10 ? "0" + nowDate.getDate()
+                        : nowDate.getDate()) + " ";
+                $("#authorizationDateEdit").val(startTime);
+        },
+    }
+    
+        $(function() {
+            assignStation.init();
+            // station manager
+            $("#export").on("click",assignStation.export);
+            $("#submitAdd").on("click",assignStation.doSubmit);
+            $('input').inputClear();
+            $("#dma_no,#dma_name,#registerDate,#create_date,#cursor").on("change",assignStation.clearPreviousValue);
+        });
+    })($,window)
+</script>            

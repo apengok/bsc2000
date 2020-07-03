@@ -1,0 +1,361 @@
+<form id="editForm" action="/clbs/m/infoconfig/infoinput/edit.gsp" role="form"
+      method="post" class="form-horizontal">
+    <div class="modal-header">
+        <button id="doXEdit" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">修改</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="text" hidden="true" id="id" name="id" value="b15b6b76-a683-4cb1-bcbb-903cdc936874"/>
+                <input type="hidden" id="configId" name="configId" value="a51d7bd2-e573-47fd-ad42-4047330be121" />
+                <div class="form-group col-md-4 form-one">
+                    <label class="col-sm-12 col-md-12 titleCenter">监控对象*</label>
+                    <div class="col-sm-12 col-md-12 object-area" style="overflow:visible !important">
+                        <div class="form-group">
+                            <label class="col-sm-3 col-md-3 control-label" style="padding-top:15px;">监控对象：</label>
+                            <div class="col-sm-8 col-md-8 " style="padding-top:10px; margin:0px;">
+                                <input type="hidden" id="vehicleid" name="brandID" value="34981bff-7ca6-4c54-bbcd-80f60af73cb9"/>
+                                <input type="hidden" id="monitorType" name="monitorType" value="0" />
+                                <input type="hidden" id="checkEdit" name="checkEdit"/>
+                                <input type="hidden" name="professionalsId" id="professionalIds"/>
+                                <input type="hidden" name="brands" id="hideBrands"/>
+                                <input type="hidden" name="devices" id="hideDevices"/>
+                                <input type="hidden" name="sims" id="hideSims"/>
+                                <div class="input-group">
+                                    <input  value="粤BV21M6"  type="text" placeholder="" class="form-control" maxlength="20" id="brands"/>
+                                    <div class="input-group-btn">
+                                        <!-- <input type="hidden" class="hidenSubmitControl"/> -->
+                                        <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                            <i class="fa fa-spinner loading-state"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 col-md-3 control-label">所属企业：</label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" name="carGroupName" value="深圳客户群" id="carGroupName" class="form-control groupCitySel" 
+                                    style="cursor: pointer;" readonly="readonly"/>
+                                <div class="back-layer" style="position: absolute; width: 100%; height: 100%; top: 0px; 
+                                    left: 0px; background: rgba(0, 0, 0, 0); z-index: 999; display: block;" id="vehicleGroupDiv">
+                                </div>
+                                <input type="hidden" value="b4a76464-62a0-1037-9ef0-6f8760c3f14c" id="carGroupId" name="carGroupId"/>
+                                <input type="hidden" value="" id="peoGroupId" name="peoGroupId"/>
+                            </div>
+                        </div>
+                        <div class="form-group monitoring-people">
+                            <label class="col-sm-3 col-md-3 control-label">车主电话：</label>
+                            <div class="col-sm-8 col-md-8">
+                                <input type="text" id="vehicleOwnerPhone" class="form-control vehicleList" READONLY name="vehicleOwnerPhone" value=""/>
+                            </div>
+                        </div>
+                        <div class="form-group monitoring-people">
+                            <label class="col-sm-3 col-md-3 control-label">车辆类型：</label>
+                            <div class="col-sm-8 col-md-8">
+                                <!-- <input type="text" th:value="*{vehicleType}" class="form-control" READONLY/> -->
+                                <select name="vehicleType" placeholder="请输入车辆类型"
+                                    id="vehicleType" class="form-control vehicleList" readonly>
+                                </select>
+                                <div class="back-layer" style="position: absolute; width: 100%; height: 100%; top: 0px; 
+                                    left: 0px; background: rgba(0, 0, 0, 0); z-index: 999; display: block;" id="vehicleTypeDiv">
+                                </div>
+                                <input type="text" value="0860eae3-562f-4535-988a-6d378dc4f4f1" id="firstVehicleType" hidden>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4 form-one">
+                    <label class="col-sm-12 col-md-12 titleCenter">分组*</label>
+                    <div class="col-sm-12 col-md-12 object-area" id="edit-object-area" style="overflow:visible;overflow-y:scroll;">
+                        <div>
+                            <div class="form-group" style="padding-top:9px;margin-bottom: 2px;">
+                            <input type="hidden" id="groupID" name="groupid" value="ad2633da-a287-472e-927d-cb6b637cd16c" />
+                            <input type="hidden" id="groupName" name="groupName" value="维修机组"/>
+                            <div id="edit-area">
+                                <label class="col-sm-3 col-md-3 control-label">分组：</label>
+                                <div class="col-sm-7 col-md-6 form-group assignment-div">
+                                    <input name="groupName" class="form-control zTreeCitySel" style="background-color: #fafafa; cursor: pointer;"
+                                        id="zTreeCitySel" placeholder="请选择组织" readonly />
+                                    <input id="assignmentId" type="hidden" />
+                                </div>
+                            </div>
+                            <button id="edit-add-btn" type="button"
+                                class="btn btn-primary btnPaddLeft">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div id="edit-list"></div>
+                        <div id="edit-add-area"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                        <label class="col-sm-12 col-md-12 titleCenter">终端*</label>
+                        <div class="col-sm-12 col-md-12 object-area"  style="overflow:visible !important">
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 control-label" style="padding-top:15px;">终端号：</label>
+                                <div class="col-sm-8 col-md-8 form-group" style="padding-top:10px; margin:0px;">
+                                    <div style="position:relative;">
+                                        <span style="overflow:hidden;">
+                                            <input type="hidden" id="deviceid" name="deviceID" value="8da2275f-1f68-4c24-990e-a64fd0ec1bf3" />
+                                            <div class="input-group">
+                                                <input value="66698598"  type="text" placeholder="" class="form-control" maxlength="20" id="devices">
+                                                <div class="input-group-btn">
+                                                    <!-- <input type="hidden" class="hidenSubmitControl"/> -->
+                                                  <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                                      <i class="fa fa-spinner loading-state"></i>
+                                                  </button>
+                                                  <ul class="dropdown-menu dropdown-menu-right" role="menu" style="width:100%">
+                                                  </ul>
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="deviceGroupList">
+                                <label class="col-sm-3 col-md-3 control-label">所属企业：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input type="text" name="deviceGroupName" value="威尔沃" id="deviceGroupName" class="form-control groupCitySel" 
+                                        style="cursor: pointer;" READONLY/>
+                                    <div class="back-layer" style="position: absolute; width: 100%; height: 100%; top: 0px; 
+                                        left: 0px; background: rgba(0, 0, 0, 0); z-index: 999; display: block;" id="deviceGroupDiv">
+                                    </div>
+                                    <input type="hidden" value="338c7dc2-384a-1037-8466-cb3a0ec2dddf" id="deviceGroupId" name="deviceGroupId"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 control-label">通讯类型：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <!-- <input th:field="*{deviceType}" id="deviceType" type="text" class="form-control deviceList"
+                                           READONLY/> -->
+                                    <select name="deviceType" id="deviceType" class="form-control deviceList" readonly>
+                                    </select>
+                                    <div class="back-layer" style="position: absolute; width: 100%; height: 100%; top: 0px; 
+                                        left: 0px; background: rgba(0, 0, 0, 0); z-index: 999; display: block;" id="deviceTypeDiv">
+                                    </div>
+                                    <input type="text" value="0"  id="firstDeviceType" hidden>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 col-md-3 control-label">功能类型：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <!-- <input th:field="*{functionalType}" id="functionalType" type="text" class="form-control deviceList"
+                                           READONLY/> -->
+                                    <select name="functionalType" id="functionalType" class="form-control deviceList" readonly>
+                                    </select>
+                                    <div class="back-layer" style="position: absolute; width: 100%; height: 100%; top: 0px; 
+                                        left: 0px; background: rgba(0, 0, 0, 0); z-index: 999; display: block;" id="functionalTypeDiv">
+                                    </div>
+                                    <input type="text" value="1"  id="firstFunctionalType" hidden>
+                                </div>
+                            </div>
+                            <div class="form-group  hidden">
+                                <label class="col-sm-3 col-md-3 control-label">制造商：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input id="manuFacturer" type="text" class="form-control"
+                                           READONLY name="manuFacturer" value=""/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 form-one">
+                        <label class="col-sm-12 col-md-12 titleCenter">SIM卡*</label>
+                        <div class="col-sm-12 col-md-12 object-area" style="overflow:visible !important">
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 control-label" style="padding-top:15px;">SIM卡号：</label>
+                                <div class="col-sm-8 col-md-8 form-group" style="padding-top:10px; margin:0px;">
+                                    <div style="position:relative;">
+                                        <span style="overflow:hidden;">
+                                            <input type="hidden" id="simid" name="simID" value="4490dc8d-3f17-45c4-b7fd-02e764458a6c"/>
+                                            </span>
+                                            <div class="input-group">
+                                                <input  value="15019204556"  type="text" placeholder="" class="form-control" maxlength="20" id="sims">
+                                                
+                                                <div class="input-group-btn">
+                                                    <!-- <input type="hidden" class="hidenSubmitControl"/> -->
+                                                  <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                                      <i class="fa fa-spinner loading-state"></i>
+                                                  </button>
+                                                  <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                                  </ul>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 control-label">ICCID：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input name="iccidSim"  value="" id="iccidSim" type="text" class="form-control simsList"
+                                           READONLY/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 control-label">所属企业：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input name="simParentGroupName" value="威尔沃" id="simParentGroupName" type="text" class="form-control groupCitySel"
+                                           style="cursor: pointer;" READONLY/>
+                                    <div class="back-layer" style="position: absolute; width: 100%; height: 100%; top: 0px; 
+                                        left: 0px; background: rgba(0, 0, 0, 0); z-index: 999; display: block;" id="simGroupDiv">
+                                    </div>
+                                    <input type="hidden" value="338c7dc2-384a-1037-8466-cb3a0ec2dddf" id="simParentGroupId" name="simParentGroupId"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 col-md-3 control-label">运营商：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <!-- <input th:field="*{operator}" id="operator" type="text" class="form-control simsList"
+                                           READONLY/> -->
+                                    <select value="中国移动" name="operator" id="operator" class="form-control simsList" readonly>
+                                        <option selected="selected" value="中国移动">中国移动</option>
+                                        <option value="中国联通">中国联通</option>
+                                        <option value="中国电信">中国电信</option>
+                                    </select>
+                                    <div class="back-layer" style="position: absolute; width: 100%; height: 100%; top: 0px; 
+                                        left: 0px; background: rgba(0, 0, 0, 0); z-index: 999; display: block;" id="operatorTypeDiv">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <label class="col-sm-3 col-md-3 control-label">套餐流量：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input id="simFlow" type="text" class="form-control"
+                                           READONLY name="simFlow" value=""/>
+                                </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <label class="col-sm-3 col-md-3 control-label">激活日期：</label>
+                                <div class="col-sm-8 col-md-8">
+                                    <input id="openCardTime" type="text" class="form-control"
+                                           READONLY name="openCardTime" value=""/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 form-one">
+                        <label class="col-sm-12 col-md-12 titleCenter">服务期限</label>
+                        <div class="col-sm-12 col-md-12 object-area">
+                            <div class="form-group"  style="padding-top:10px;">
+                                <input type="hidden" id="serviceLifecycleId" name="serviceLifecycleId" value="" />
+                                <label class="col-sm-3 col-md-3 control-label">计费日期：</label>
+                                <div class="col-sm-8 col-md-8 form-group assignment-div">
+                                    <input id="billingDate" class="form-control layer-date laydate-icon" style="background-color: #fafafa; cursor: pointer;"
+                                        placeholder="计费日期" name="billingDateStr" value="" readonly>
+                                </div>
+                                <label class="col-sm-3 col-md-3 control-label">到期日期：</label>
+                                <div class="col-sm-8 col-md-8 form-group assignment-div">
+                                    <input id="dueDate" class="form-control layer-date laydate-icon" style="background-color: #fafafa; cursor: pointer;"
+                                        placeholder="到期日期" name="durDateStr" value="" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 form-one hidden">
+                        <label class="col-sm-12 col-md-12">外设</label>
+                        <div class="col-sm-12 col-md-12 object-area select">
+                            <div class="object-area-select">
+                                <input type="text" name="peripheralsId" style="border: none;" id="peripheralsId" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 monitoring-people" id="people-work-area">
+                        <label class="col-sm-12 col-md-12 titleCenter">从业人员</label>
+                        <div class="col-sm-12 col-md-12 object-area" id="people-object-area" style="overflow:visible;overflow-y:visible">
+                            <input type="hidden" id="peopleIds" name="professionalsID" value="" />
+                            <input type="hidden" id="peopleNames" name="professionals" value="" />
+                            <div class="form-group" style="padding-top:9px;">
+                                <div id="people-area">
+                                    <label class="col-sm-4 col-md-3 control-label">从业人员：</label>
+                                    <div class="col-sm-5 col-md-6">
+                                        <div style="position:relative;">
+                                            <div class="input-group">
+                                                
+                                                <input  id="professionals" name="professionalsId__" type="text" placeholder="" class="form-control peopleSelect" maxlength="20" >
+                                                
+                                                <div class="input-group-btn">
+                                                    <button type="button" id="button" class="btn btn-white dropdown-toggle disabled loading-state-button" data-toggle="dropdown">
+                                                        <i class="fa fa-spinner loading-state"></i>
+                                                    </button>
+                                                  
+                                                    <ul class="dropdown-menu dropdown-menu-right" role="menu"  style="width:100%">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="people-add-btn" type="button" class="btn btn-primary btnPaddLeft">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div id="people-edit-list"></div>
+                            <div id="people-add-area"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="doSubmit" class="btn btn-primary" type="button">
+                <strong>提 交</strong>
+            </button>
+            <button id="doCloseEdit" type="button" class="btn btn-default" data-dismiss="modal">
+                <strong>关 闭</strong>
+            </button>
+        </div>
+</form>
+<div id="zTreeArea">
+    <div id="zTreeContent"
+        style="display: none; position: absolute; top: 35px; left: 15px; background-color: #fff; z-index: 9999999; overflow: auto; width: 220PX; height: 152PX; border: 1px solid #ccc;">
+        <ul id="ztreeDemo" class="ztree"></ul>
+    </div>
+</div>
+<label id="error_label" class='error' style='display: none;'></label>
+<div id="zTreeArea2">
+    <div id="groupTree"
+        style="display: none; position: absolute; top: 35px; left: 15px; background-color: #fff; z-index: 9999999; overflow: auto; width: 220PX; height: 152PX; border: 1px solid #ccc;">
+        <ul id="ztreeDemo2" class="ztree"></ul>
+    </div>
+</div>
+<style>
+#zTreeContent{
+height:200px!important;
+}
+</style>
+<script>
+    var assignmentMaxCarNum = "\u5206\u7EC4\u4E0B\u7684\u8F66\u8F86\u6570\u5DF2\u7ECF\u8FBE\u5230\u4E0A\u9650100\u53F0";
+    var dueDateCompareBillingDate = "\u5230\u671F\u65E5\u671F\u5FC5\u987B\u5927\u4E8E\u8BA1\u8D39\u65E5\u671F!";
+    var repeateChooseProfession = "\u8BF7\u4E0D\u8981\u91CD\u590D\u9009\u62E9\u4ECE\u4E1A\u4EBA\u5458";
+    var systemError = "\u5BF9\u4E0D\u8D77\uFF0C\u7CFB\u7EDF\u8D70\u4E22\u4E86\uFF0C\u8BF7\u8054\u7CFB\u7BA1\u7406\u5458";
+    var repeateChooseAssignment = "\u8BF7\u4E0D\u8981\u91CD\u590D\u9009\u62E9\u5206\u7EC4";
+    var personnelNumberError = "\u8BF7\u8F93\u5165\u6C49\u5B57\u3001\u5B57\u6BCD\u3001\u6570\u5B57\u6216\u77ED\u6A2A\u6760\uFF0C\u957F\u5EA62-20\u4F4D";
+    var publicSize8Length = "\u957F\u5EA6\u4E0D\u8D85\u8FC78\u4F4D";
+    var personnelNumberExists = "\u4EBA\u5458\u7F16\u53F7\u5DF2\u5B58\u5728";
+    var groupNameNull = "\u5206\u7EC4\u540D\u79F0\u4E0D\u80FD\u4E3A\u7A7A";
+    var phoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u624B\u673A\u53F7\u5462";
+    var telPhoneError = "\u770B\u8D77\u6765\u4E0D\u50CF\u7535\u8BDD\u53F7\u7801\u54E6";
+    var vehicleTypeNull = "\u8F66\u8F86\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A";
+    var deviceTypeNull = "\u901A\u8BAF\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A";
+    var functionalTypeNull = "\u529F\u80FD\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A";
+    var publicSize50 = "\u957F\u5EA6\u4E0D\u8D85\u8FC750\u4F4D";
+    var vehicleBrandNull = "\u76D1\u63A7\u5BF9\u8C61\u4E0D\u80FD\u4E3A\u7A7A";
+    var vehicleBrandError = "\u8BF7\u8F93\u5165\u6C49\u5B57\u3001\u5B57\u6BCD\u3001\u6570\u5B57\u6216\u77ED\u6A2A\u6760\uFF0C\u957F\u5EA62-20\u4F4D";
+    var vehicleBrandExists = "\u8F66\u724C\u53F7\u5DF2\u5B58\u5728";
+    var deviceNumberSelect = "\u8BF7\u9009\u62E9\u6216\u65B0\u589E\u7EC8\u7AEF\u53F7";
+    var deviceNumberMaxlength = "\u957F\u5EA6\u4E0D\u8D85\u8FC720";
+    var deviceNumberError = "\u8BF7\u8F93\u5165\u5B57\u6BCD/\u6570\u5B57/\u4E0B\u5212\u7EBF/\u77ED\u6760\uFF0C\u8303\u56F4\uFF08\u8F66\uFF097~15\uFF08\u4EBA\uFF091~20";
+    var deviceNumberExists = "\u7EC8\u7AEF\u53F7\u5DF2\u5B58\u5728";
+    var simNumberNull = "\u8BF7\u8F93\u5165SIM\u5361\u53F7\u6570\u5B57\uFF0C\u8303\u56F4\uFF1A7~13";
+    var simNumberError = "\u8BF7\u8F93\u5165\u6570\u5B57\uFF0C\u8303\u56F4\uFF1A7~13";
+    var simNumberExists = "SIM\u5361\u53F7\u5DF2\u5B58\u5728";
+    var simNumberMaxlength = "\u957F\u5EA6\u4E0D\u8D85\u8FC713";
+    var personnelNumberNull = "\u76D1\u63A7\u5BF9\u8C61\u4E0D\u80FD\u4E3A\u7A7A";
+    
+</script>
+<script src="/clbs/wro/infoinputEdit.js"></script>
