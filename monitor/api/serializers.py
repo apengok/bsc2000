@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-
+import datetime
+
 from rest_framework.serializers import (
     HyperlinkedIdentityField,
     ModelSerializer,
@@ -35,6 +37,7 @@ class BigmeterRTSerializer(ModelSerializer):
     id = ReadOnlyField(source='commaddr')
     belongto = SerializerMethodField()
     alarm = SerializerMethodField()
+    commstate = SerializerMethodField()
     
     # fluxreadtime = SerializerMethodField()
     # serialnumber = SerializerMethodField()
@@ -61,6 +64,14 @@ class BigmeterRTSerializer(ModelSerializer):
     def get_alarm(self,obj):
         return 0
         return  Alarm.objects.filter(commaddr=obj.commaddr).count()
+
+    def get_commstate(self,obj):
+        now = datetime.datetime.now()
+        d7 = now - datetime.timedelta(days=7)
+        dn = datetime.datetime.strptime(obj.fluxreadtime,"%Y-%m-%d %H:%M:%S")
+        if d7 < dn:
+            return 1
+        return 0
 
     # def get_fluxreadtime(self,obj):
     #     try:

@@ -17,8 +17,8 @@ DATABASES = {
         'NAME': 'zncb',
         'USER': 'scada',
         'PASSWORD': 'scada',
-        'HOST': '120.78.255.129',    #120.78.255.129 192.168.197.134
-        # 'HOST': 'localhost',    #120.78.255.129 192.168.197.134
+        # 'HOST': '120.78.255.129',    #120.78.255.129 192.168.197.134
+        'HOST': 'localhost',    #120.78.255.129 192.168.197.134
         'PORT': '3306',
         'STORAGE_ENGINE': 'INNODB',
         'OPTIONS': {'charset': 'utf8mb4'},
@@ -31,5 +31,9 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 #add geospatial something
-GEOS_LIBRARY_PATH = 'C:/OSGeo4W64/bin/geos_c.dll'
-GDAL_LIBRARY_PATH = 'C:/OSGeo4W64/bin/gdal111.dll'
+# GEOS_LIBRARY_PATH = 'C:/OSGeo4W64/bin/geos_c.dll'
+# GDAL_LIBRARY_PATH = 'C:/OSGeo4W64/bin/gdal111.dll'
+
+#add geospatial something
+GEOS_LIBRARY_PATH = 'C:/OSGeo4W/bin/geos_c.dll'
+GDAL_LIBRARY_PATH = 'C:/OSGeo4W/bin/gdal300.dll'
