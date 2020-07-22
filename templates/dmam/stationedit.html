@@ -15,6 +15,13 @@
                 <input id="uuid" type="text" hidden="true" name="uuid" value="{{ form.uuid.value }}" />
 
                 <div class="form-group">
+                    <label class="col-md-3 control-label"> 用户代码：</label>
+                    <div class="col-md-7">
+                        <input placeholder="请输入用户代码"
+                            type="text" class="form-control" id="userid" name="userid"  value="{{ form.userid.value|default:''}}" />
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-md-3 control-label"><label class="text-danger">*</label> 站点名称：</label>
                     <div class="col-md-7">
                         <input type="text" class="form-control" id="username" name="username" value="{{ form.username.value|default:''}}" />
@@ -200,6 +207,7 @@
     var userGroupSelectNull = "\u8BF7\u9009\u62E9\u7EC4\u7EC7";
 
     var locate = "{{ form.installationsite.value }}";
+    var userid = "{{ form.userid.value }}";
     var username = "{{ form.username.value }}";
     var description = "{{ form.description.value }}";
     

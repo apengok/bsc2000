@@ -263,6 +263,7 @@
             }
         },
         valueChange:function () { // 判断值是否改变
+            var edit_userid = $("#userid").val();
             var edit_username = $("#username").val();
             var edit_description  = $("#description").val();
             var edit_zTreeStationSelEdit = $("#zTreeStationSelEdit").val();
@@ -279,7 +280,7 @@
             var edit_focus = $("#focusVal").val();
             var edit_biguser = $("#biguserVal").val();
             // 值已经发生改变
-            if (username != edit_username || description != edit_description || zTreeStationSelEdit != edit_zTreeStationSelEdit || usertype != edit_usertype
+            if (userid != edit_userid ||username != edit_username || description != edit_description || zTreeStationSelEdit != edit_zTreeStationSelEdit || usertype != edit_usertype
                 || madedate != edit_madedate || lng != edit_lng || lat != edit_lat || locate != edit_locate || focus != edit_focus || biguser != edit_biguser
                 || relate_meter != edit_relate_meter ) {
                     flag1 = true;
