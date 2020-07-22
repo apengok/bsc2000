@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.core.cache import cache
 from django.shortcuts import get_object_or_404,render,redirect
 from django.http import HttpResponse,JsonResponse,HttpResponseRedirect,StreamingHttpResponse
 from django.contrib import messages
@@ -58,12 +59,13 @@ from core.models import (
     DMABaseinfo,
     DmaStation,
     Station,
+    SimCard,
     Meter,
     VCommunity,
     VConcentrator,
     DmaGisinfo,
     VWatermeter,
-    VSecondWater
+    VSecondWater,
 )
 
 
@@ -79,7 +81,8 @@ from .forms import (
     CommunityCreateForm,
     CommunityEditForm
 )
-
+from tablib import Dataset
+from .resources import ImportStationResource,minimalist_xldate_as_datetime
 import logging
 
 logger_info = logging.getLogger('info_logger')
@@ -1937,6 +1940,7 @@ class StationAddView(AjaxableResponseMixin,UserPassesTestMixin,CreateView):
         dn = meter.dn
         lng = self.request.POST.get("lng")
         lat = self.request.POST.get("lat")
+        userid = self.request.POST.get("userid")
         username = self.request.POST.get("username")
         usertype = self.request.POST.get("usertype")
         madedate = self.request.POST.get("madedate")
@@ -1944,6 +1948,7 @@ class StationAddView(AjaxableResponseMixin,UserPassesTestMixin,CreateView):
         installationsite = self.request.POST.get("installationsite")
         commaddr = meter.simid.simcardNumber
         amrs_bigmeter = {
+            "userid":userid,
             "serialnumber":serialnumber,
             "username":username,
             "usertype":usertype,
@@ -2046,6 +2051,7 @@ class StationEditView(AjaxableResponseMixin,UserPassesTestMixin,UpdateView):
         # amrs bigmeter
         commaddr = meter.simid.simcardNumber
         dn = meter.dn
+        userid = self.request.POST.get("userid")
         username = self.request.POST.get("username")
         usertype = self.request.POST.get("usertype")
         lng = self.request.POST.get("lng")
@@ -2057,6 +2063,7 @@ class StationEditView(AjaxableResponseMixin,UserPassesTestMixin,UpdateView):
         # amrs bigmeter
         amrs_bigmeter = {
             "serialnumber":serialnumber,
+            "userid":userid,
             "username":username,
             "usertype":usertype,
             "dn":dn,
@@ -3022,3 +3029,359 @@ def saveDmaGisinfo(request):
         }
 
     return JsonResponse(data)
+
+
+
+# station import
+class StationImportView(TemplateView,UserPassesTestMixin):
+    """docstring for AssignRoleView"""
+    template_name = "dmam/importstation.html"
+    mtype_data = {
+        "电磁水表":0,
+        "超声水表":1,
+        "机械水表":2,
+        "插入电磁":3
+    }
+        
+    def test_func(self):
+        
+        if self.request.user.has_menu_permission_edit('stationmanager_dmam'):
+            return True
+        return False
+
+    def handle_no_permission(self):
+        data = {
+                "mheader": "站点导入",
+                "err_msg":"您没有权限进行操作，请联系管理员."
+                    
+            }
+        # return HttpResponse(json.dumps(err_data))
+        return render(self.request,"entm/permission_error.html",data)
+
+    def get_context_data(self, **kwargs):
+        context = super(StationImportView, self).get_context_data(**kwargs)
+        context["page_title"] = "导入站点"
+        
+        return context
+
+    # def get_object(self):
+    #     # print(self.kwargs)
+    #     return User.objects.get(id=self.kwargs["pk"])
+
+    def check_row(self, row, **kwargs):
+        '''
+        simcardnumber 不存在直接创建新的 存在且未被绑定，直接用
+        SerialNumber 不存在，可以创建表具，存在且与导入simcardnumber不匹配，则报错
+        '''
+        # user = kwargs["user"]
+        # print("row :::",row)
+
+        # for k in row:
+        #     print(k,row[k],type(row[k]))
+
+        err_msg = []
+
+        userid          = str(row[u'用户代码'])
+        username        = str(row[u'站点名称'])
+        description     = str(row[u'站点描述'])
+        belongto        = str(row[u'所属组织'])
+        serialnumber    = str(row[u'表具编号'])
+        # 从excel读上来的数据全是数字都是float类型
+        if '.' in serialnumber:
+            if isinstance(row[u'表具编号'],float):
+                serialnumber = str(int(row[u'表具编号']))
+
+        bflag = Meter.objects.filter(serialnumber=serialnumber).exists()
+        if bflag:
+            err_msg.append(u"表具编号%s已存在"%(serialnumber))
+
+        metertype       = str(row[u'表具类型'])
+        model           = str(row[u'类型'])       #Meter -- mtype
+        manufacturer    = str(row[u'制造厂商'])
+        protocol        = str(row[u'通讯协议']) # Meter -- protocol
+        dn              = str(row[u'口径'])
+        usertype        = str(row[u'用水性质'])
+        madedate        = row[u'安装日期']
+        
+        if madedate != '':
+            if isinstance(madedate,str):
+                b = datetime.datetime.strptime(madedate.strip(),"%Y-%m-%d")
+            else:
+                madedate = int(row[u'安装日期'])
+
+        lng             = str(row[u'经度'])
+        lat             = str(row[u'纬度'])
+        commaddr        = str(row[u'SIM卡号']) #SimCard -- simcardNumber
+        imei            = str(row[u'IMEI'])  #SimCard -- IMEI
+        operator        = str(row[u'运营商'])
+        
+        simcardNumber = str(row[u'SIM卡号'])
+        
+        # 从excel读上来的数据全是数字都是float类型
+        if '.' in simcardNumber:
+            if isinstance(row[u'SIM卡号'],float):
+                simcardNumber = str(int(row[u'SIM卡号']))
+                
+        bflag = SimCard.objects.filter(simcardNumber=simcardNumber).exists()
+        if bflag:
+            err_msg.append(u"SIM卡号%s已存在"%(simcardNumber))
+
+        org_name = row[u'所属组织']
+        if org_name != '':
+            org = Organization.objects.filter(name=org_name)
+            if not org.exists():
+                err_msg.append(u"该组织%s不存在"%(org_name))
+        else:
+            err_msg.append(u"组织不能为空")
+
+        
+
+        imei = row[u'IMEI']
+        try:
+            if isinstance(imei,float):
+                imei = str(int(imei))
+        except:
+            pass
+
+        
+
+        openCardTime    = row[u'开户日期'] #SimCard -- openCardTime
+        
+
+        if openCardTime != '':
+            if isinstance(openCardTime,str):
+                b = datetime.datetime.strptime(openCardTime.strip(),"%Y-%m-%d")
+            else:
+                openCardTime = int(row[u'开户日期'])
+
+
+        print('check row end')
+
+        return err_msg
+
+    def import_row(self, row, **kwargs):
+        '''
+        simcardnumber 不存在直接创建新的 存在且未被绑定，直接用
+        SerialNumber 不存在，可以创建表具，存在且与导入simcardnumber不匹配，则报错
+        '''
+        # user = kwargs["user"]
+        # print("row :::",row)
+
+        # for k in row:
+        #     print(k,row[k],type(row[k]))
+
+        err_msg = []
+
+        userid          = str(row[u'用户代码'])
+        # 从excel读上来的数据全是数字都是float类型
+        if '.' in userid:
+            if isinstance(row[u'用户代码'],float):
+                userid = str(int(row[u'用户代码']))
+
+        username        = str(row[u'站点名称'])
+        description     = str(row[u'站点描述'])
+        belongto        = str(row[u'所属组织'])
+        serialnumber    = str(row[u'表具编号'])
+        # 从excel读上来的数据全是数字都是float类型
+        if '.' in serialnumber:
+            if isinstance(row[u'表具编号'],float):
+                serialnumber = str(int(row[u'表具编号']))
+
+        metertype       = str(row[u'表具类型'])
+        model           = str(row[u'类型'])       #Meter -- mtype
+        mtype = self.mtype_data[model]
+        manufacturer    = str(row[u'制造厂商'])
+        protocol        = str(row[u'通讯协议']) # Meter -- protocol
+        dn              = str(row[u'口径'])
+        # 从excel读上来的数据全是数字都是float类型
+        if '.' in dn:
+            if isinstance(row[u'口径'],float):
+                dn = str(int(row[u'口径']))
+
+        usertype        = str(row[u'用水性质'])
+        madedate        = row[u'安装日期']
+        
+        if madedate != '':
+            if isinstance(madedate,str):
+                b = datetime.datetime.strptime(madedate.strip(),"%Y-%m-%d")
+            else:
+                madedate = int(row[u'安装日期'])
+                b = minimalist_xldate_as_datetime(madedate,0)
+        madedate = b.strftime('%Y-%m-%d')
+
+        lng             = str(row[u'经度'])
+        lat             = str(row[u'纬度'])
+        commaddr        = str(row[u'SIM卡号']) #SimCard -- simcardNumber
+        imei            = str(row[u'IMEI'])  #SimCard -- IMEI
+        operator        = str(row[u'运营商'])
+        
+        simcardNumber = str(row[u'SIM卡号'])
+        
+        # 从excel读上来的数据全是数字都是float类型
+        if '.' in simcardNumber:
+            if isinstance(row[u'SIM卡号'],float):
+                simcardNumber = str(int(row[u'SIM卡号']))
+                
+        bflag = SimCard.objects.filter(simcardNumber=simcardNumber).exists()
+        if bflag:
+            err_msg.append(u"SIM卡号%s已存在"%(simcardNumber))
+
+        org_name = row[u'所属组织']
+        belongto = Organization.objects.get(name=org_name)
+        
+
+        imei = row[u'IMEI']
+        try:
+            if isinstance(imei,float):
+                imei = str(int(imei))
+        except:
+            pass
+
+        
+
+        openCardTime    = row[u'开户日期'] #SimCard -- openCardTime
+        if openCardTime == '':
+            row[u'开户日期'] = datetime.date.today().strftime('%Y-%m-%d')
+        else:
+            if isinstance(openCardTime,str):
+                b = datetime.datetime.strptime(openCardTime.strip(),"%Y-%m-%d")
+            else:
+                openCardTime = int(row[u'开户日期'])
+                b = minimalist_xldate_as_datetime(openCardTime,0)
+        openCardTime = b.strftime('%Y-%m-%d')
+
+        if openCardTime != '':
+            if isinstance(openCardTime,str):
+                b = datetime.datetime.strptime(openCardTime.strip(),"%Y-%m-%d")
+            else:
+                openCardTime = int(row[u'开户日期'])
+
+
+        print('check row end')
+
+        simcard_data = {
+            "belongto":belongto,
+            "isStart":True,
+            "simcardNumber":simcardNumber,
+            "imei":imei,
+            "operator":operator,
+            "openCardTime":openCardTime
+        }
+        simcard_obj = SimCard.objects.create(**simcard_data)
+
+        meter_data = {
+            "belongto":belongto,
+            "serialnumber":serialnumber,
+            "metertype":metertype,
+            "mtype":mtype,
+            "manufacturer":manufacturer,
+            "protocol":protocol,
+            "dn":dn,
+            "simid":simcard_obj
+        }
+
+        meter_obj = Meter.objects.create(**meter_data)
+
+        bigmeter_data = {
+            'userid':userid, 
+            'username':username,
+            # 'description':description,
+            # 'belongto':belongto,
+            'serialnumber':serialnumber,
+            'metertype':metertype,
+            'model':mtype,
+            'manufacturer':manufacturer,
+            # 'protocol':protocol,
+            'dn':dn,
+            'usertype':usertype,
+            'madedate':madedate,
+            'lng':lng,
+            'lat':lat,
+            'commaddr':simcardNumber,
+            'simid':simcardNumber
+        }
+
+        amrs_bigmeter = Bigmeter.objects.create(**bigmeter_data)
+
+        station_data = {
+            "amrs_bigmeter":amrs_bigmeter,
+            "belongto":belongto,
+            "meter":meter_obj,
+            "description":description
+        }
+
+        station_obj = Station.objects.create(**station_data)
+
+        return err_msg
+
+
+    def post(self,request,*args,**kwargs):
+        
+        context = self.get_context_data(**kwargs)
+
+        user = request.user
+
+        simcard_resource = ImportStationResource()
+        dataset = Dataset()
+        dataset.headers = ('seqno', 'userid', 'username','description','belongto','serialnumber','metertype',
+        'model','manufacturer','protocol','dn','usertype','madedate','lng','lat','commaddr','imei',
+        'operator','openCardTime')
+
+        user_post = self.request.FILES['file']
+        # print('new_persons:',user_post.read())
+        file_contents = user_post.read()  #.decode('iso-8859-15')
+        imported_data = dataset.load(file_contents,'xls')
+        
+
+        row_count = 0
+        err_msgs = []
+        for row in imported_data.dict:
+            row_count += 1
+            print(row)
+            err = self.check_row(row,**kwargs)
+            
+            if len(err) > 0:
+                emsg = u'第%s条错误:<br/>'%(row_count) + '<br/>'.join(e for e in err)
+                err_msgs.append(emsg)
+
+        err_count = len(err_msgs)
+        success_count = row_count - err_count
+        
+        if err_count > 0:
+            msg = '检查结果:正确%s条<br />'%(success_count)+'错误%s条<br/> (请修改后再导入)'%(err_count)+'<br/>'.join(e for e in err_msgs)
+            
+        else:
+            msg = '导入结果:成功导入%s条<br />'%(success_count)+'失败%s条<br/>'%(err_count)
+            
+            cache.set('TOTAL_IMPORT_COUNT',success_count)
+            cache.set('imported_num',1)
+            # simcard_resource.import_data(dataset, dry_run=False,**kwargs)  # Actually import now
+            for row in imported_data.dict:
+                row_count += 1
+                print(row)
+                err = self.import_row(row,**kwargs)
+
+            
+        
+        data={"exceptionDetailMsg":"null",
+                "msg":msg,
+                "obj":"null",
+                "success":True
+        }
+
+        return HttpResponse(json.dumps(data))
+
+
+
+def stationtemplaatedownload(request):
+    # file_path = os.path.join(settings.STATICFILES_DIRS[0] , '用户模板.xls') #development
+    
+    file_path = os.path.join(settings.STATIC_ROOT , 'stationtemplate.xls')
+    
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'attachment; filename=' + escape_uri_path("站点模板.xls")
+            return response
+    # raise Http404
+    return HttpResponse(json.dumps({'success':0,'msg':'file not found'}))

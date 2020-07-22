@@ -101,6 +101,7 @@ class BigmeterEditForm(forms.ModelForm):
 
 
 class StationsForm(forms.ModelForm):
+    userid = forms.CharField(required = False)
     belongto = forms.CharField()
     username = forms.CharField()
     serialnumber = forms.CharField()
@@ -124,6 +125,7 @@ class StationsForm(forms.ModelForm):
 
 
 class StationsEditForm(forms.ModelForm):
+    userid = forms.CharField(required = False)
     username = forms.CharField()
     belongto = forms.CharField()
     serialnumber = forms.CharField()
@@ -141,6 +143,7 @@ class StationsEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(StationsEditForm, self).__init__(*args, **kwargs)
 
+        self.fields['userid'].initial = self.instance.amrs_bigmeter.userid
         self.fields['username'].initial = self.instance.amrs_bigmeter.username
         self.fields['madedate'].initial = self.instance.amrs_bigmeter.madedate
         self.fields['lng'].initial = self.instance.amrs_bigmeter.lng

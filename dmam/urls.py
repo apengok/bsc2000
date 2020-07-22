@@ -65,6 +65,8 @@ urlpatterns = [
     url(r'^stations/delete/(?P<pk>[0-9]+)/?$',views.StationDeleteView.as_view(),name='stationdelete'),
     url(r'^stations/deletemore',views.stationdeletemore,name='stationdeletemore'),
     url(r'^dmastations/list/(?P<pk>\w+)/$',views.dmastationlist,name='dmastationlist'),
+    url(r'^stations/import',views.StationImportView.as_view(),name='stationimport'),
+    url(r'^stations/basetemp/download',views.stationtemplaatedownload,name='stationtemplaatedownload'),
     
     url(r'^station/getmeterlist/$',views.getmeterlist,name='getmeterlist'),
     url(r'^station/getmeterParam/$',views.getmeterParam,name='getmeterParam'),

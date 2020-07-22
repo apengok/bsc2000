@@ -2,134 +2,693 @@
 <html>
   <head>
     <title>Draw and Modify Features</title>
-    <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.3.1/css/fixedColumns.dataTables.min.css" type="text/css">
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/3.3.1/js/dataTables.fixedColumns.min.js"></script>
+
+    <style>
+      /* Ensure that the demo table scrolls */
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        width: 800px;
+        margin: 0 auto;
+    }
+    </style>
   </head>
   <body>
-    <div id="map" class="map"></div>
-    <form class="form-inline">
-      <label>Geometry type &nbsp;</label>
-      <select id="type">
-        <option value="Point">Point</option>
-        <option value="LineString">LineString</option>
-        <option value="Polygon">Polygon</option>
-      </select>
-    </form>
-    <script>
-      //'http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600'
-      //'http://t0.tianditu.com/DataServer?T=cta_w&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600'
-      function crtLayerXYZ(type, proj, opacity){
-       var layer = new ol.layer.Tile({
-            source: new ol.source.XYZ({
-                url: 'http://t'+Math.round(Math.random()*7)+'.tianditu.com/DataServer?T='+type+'&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600',
-                projection: proj
-            }),
-            opacity: opacity
-        });
-        layer.id = type;
-        return layer;
-      }
+    <div class="content">
+      <h1 class="page_title">Multiple fixed columns</h1>
+      <div class="info" style="min-height: 8em;">
+        <p>FixedColumns allows more than one column to be frozen into place using the <a href="//datatables.net/reference/option/fixedColumns.leftColumns"><code class="option" title="FixedColumns initialisation option">fixedColumns.leftColumns</code></a> parameter. The example below shows two columns fixed.</p>
+      </div>
+      <div id="example_wrapper" class="dataTables_wrapper no-footer"><div id="example_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="example"></label></div><div class="DTFC_ScrollWrapper" style="position: relative; clear: both; height: 342px;"><div class="DTFC_RightWrapper" style="position:absolute; top:0; right:0;" aria-hidden="true"><div class="DTFC_RightHeadWrapper" style="position:relative; top:0; left:0;"><div class="DTFC_RightHeadBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div></div><div class="DTFC_RightBodyWrapper" style="position:relative; top:0; left:0; height:0; overflow:hidden;"><div class="DTFC_RightBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div></div><div class="DTFC_RightFootWrapper" style="position:relative; top:0; left:0;"><div class="DTFC_RightFootBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div></div></div><div class="dataTables_scroll"><div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;"><div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 1080.8px; padding-right: 17px;"><table class="stripe row-border order-column dataTable no-footer" style="width: 1080.8px; margin-left: 0px;" role="grid"><thead>
+          <tr role="row" style="height: 41px;"><th class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 73.6px;" aria-label="First name: activate to sort column descending" aria-sort="ascending">First name</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 72px;" aria-label="Last name: activate to sort column ascending">Last name</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 178.4px;" aria-label="Position: activate to sort column ascending">Position</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 76.8px;" aria-label="Office: activate to sort column ascending">Office</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 28px;" aria-label="Age: activate to sort column ascending">Age</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 67.2px;" aria-label="Start date: activate to sort column ascending">Start date</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 56.8px;" aria-label="Salary: activate to sort column ascending">Salary</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 36px;" aria-label="Extn.: activate to sort column ascending">Extn.</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 168px;" aria-label="E-mail: activate to sort column ascending">E-mail</th></tr>
+        </thead></table></div></div><div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%; max-height: 300px;"><table id="example" class="stripe row-border order-column dataTable no-footer" style="width: 100%;" role="grid" aria-describedby="example_info"><thead>
+          <tr role="row" style="height: 0px;"><th class="sorting_asc" aria-controls="example" rowspan="1" colspan="1" style="width: 73.6px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="First name: activate to sort column descending" aria-sort="ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">First name</div></th><th class="sorting" aria-controls="example" rowspan="1" colspan="1" style="width: 72px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Last name: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Last name</div></th><th class="sorting" aria-controls="example" rowspan="1" colspan="1" style="width: 178.4px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Position: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Position</div></th><th class="sorting" aria-controls="example" rowspan="1" colspan="1" style="width: 76.8px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Office: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Office</div></th><th class="sorting" aria-controls="example" rowspan="1" colspan="1" style="width: 28px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Age: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Age</div></th><th class="sorting" aria-controls="example" rowspan="1" colspan="1" style="width: 67.2px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Start date: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Start date</div></th><th class="sorting" aria-controls="example" rowspan="1" colspan="1" style="width: 56.8px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Salary: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Salary</div></th><th class="sorting" aria-controls="example" rowspan="1" colspan="1" style="width: 36px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Extn.: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Extn.</div></th><th class="sorting" aria-controls="example" rowspan="1" colspan="1" style="width: 168px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="E-mail: activate to sort column ascending"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">E-mail</div></th></tr>
+        </thead>
+        
+        <tbody>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        <tr role="row" class="odd" style="height: 37px;">
+            <td class="sorting_1">Airi</td>
+            <td>Satou</td>
+            <td>Accountant</td>
+            <td>Tokyo</td>
+            <td>33</td>
+            <td>2008/11/28</td>
+            <td>$162,700</td>
+            <td>5407</td>
+            <td>a.satou@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Angelica</td>
+            <td>Ramos</td>
+            <td>Chief Executive Officer (CEO)</td>
+            <td>London</td>
+            <td>47</td>
+            <td>2009/10/09</td>
+            <td>$1,200,000</td>
+            <td>5797</td>
+            <td>a.ramos@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Ashton</td>
+            <td>Cox</td>
+            <td>Junior Technical Author</td>
+            <td>San Francisco</td>
+            <td>66</td>
+            <td>2009/01/12</td>
+            <td>$86,000</td>
+            <td>1562</td>
+            <td>a.cox@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Bradley</td>
+            <td>Greer</td>
+            <td>Software Engineer</td>
+            <td>London</td>
+            <td>41</td>
+            <td>2012/10/13</td>
+            <td>$132,000</td>
+            <td>2558</td>
+            <td>b.greer@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Brenden</td>
+            <td>Wagner</td>
+            <td>Software Engineer</td>
+            <td>San Francisco</td>
+            <td>28</td>
+            <td>2011/06/07</td>
+            <td>$206,850</td>
+            <td>1314</td>
+            <td>b.wagner@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Brielle</td>
+            <td>Williamson</td>
+            <td>Integration Specialist</td>
+            <td>New York</td>
+            <td>61</td>
+            <td>2012/12/02</td>
+            <td>$372,000</td>
+            <td>4804</td>
+            <td>b.williamson@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Bruno</td>
+            <td>Nash</td>
+            <td>Software Engineer</td>
+            <td>London</td>
+            <td>38</td>
+            <td>2011/05/03</td>
+            <td>$163,500</td>
+            <td>6222</td>
+            <td>b.nash@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Caesar</td>
+            <td>Vance</td>
+            <td>Pre-Sales Support</td>
+            <td>New York</td>
+            <td>21</td>
+            <td>2011/12/12</td>
+            <td>$106,450</td>
+            <td>8330</td>
+            <td>c.vance@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Cara</td>
+            <td>Stevens</td>
+            <td>Sales Assistant</td>
+            <td>New York</td>
+            <td>46</td>
+            <td>2011/12/06</td>
+            <td>$145,600</td>
+            <td>3990</td>
+            <td>c.stevens@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Cedric</td>
+            <td>Kelly</td>
+            <td>Senior Javascript Developer</td>
+            <td>Edinburgh</td>
+            <td>22</td>
+            <td>2012/03/29</td>
+            <td>$433,060</td>
+            <td>6224</td>
+            <td>c.kelly@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Charde</td>
+            <td>Marshall</td>
+            <td>Regional Director</td>
+            <td>San Francisco</td>
+            <td>36</td>
+            <td>2008/10/16</td>
+            <td>$470,600</td>
+            <td>6741</td>
+            <td>c.marshall@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Colleen</td>
+            <td>Hurst</td>
+            <td>Javascript Developer</td>
+            <td>San Francisco</td>
+            <td>39</td>
+            <td>2009/09/15</td>
+            <td>$205,500</td>
+            <td>2360</td>
+            <td>c.hurst@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Dai</td>
+            <td>Rios</td>
+            <td>Personnel Lead</td>
+            <td>Edinburgh</td>
+            <td>35</td>
+            <td>2012/09/26</td>
+            <td>$217,500</td>
+            <td>2290</td>
+            <td>d.rios@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Donna</td>
+            <td>Snider</td>
+            <td>Customer Support</td>
+            <td>New York</td>
+            <td>27</td>
+            <td>2011/01/25</td>
+            <td>$112,000</td>
+            <td>4226</td>
+            <td>d.snider@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Doris</td>
+            <td>Wilder</td>
+            <td>Sales Assistant</td>
+            <td>Sydney</td>
+            <td>23</td>
+            <td>2010/09/20</td>
+            <td>$85,600</td>
+            <td>3023</td>
+            <td>d.wilder@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Finn</td>
+            <td>Camacho</td>
+            <td>Support Engineer</td>
+            <td>San Francisco</td>
+            <td>47</td>
+            <td>2009/07/07</td>
+            <td>$87,500</td>
+            <td>2927</td>
+            <td>f.camacho@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Fiona</td>
+            <td>Green</td>
+            <td>Chief Operating Officer (COO)</td>
+            <td>San Francisco</td>
+            <td>48</td>
+            <td>2010/03/11</td>
+            <td>$850,000</td>
+            <td>2947</td>
+            <td>f.green@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Garrett</td>
+            <td>Winters</td>
+            <td>Accountant</td>
+            <td>Tokyo</td>
+            <td>63</td>
+            <td>2011/07/25</td>
+            <td>$170,750</td>
+            <td>8422</td>
+            <td>g.winters@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Gavin</td>
+            <td>Joyce</td>
+            <td>Developer</td>
+            <td>Edinburgh</td>
+            <td>42</td>
+            <td>2010/12/22</td>
+            <td>$92,575</td>
+            <td>8822</td>
+            <td>g.joyce@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Gavin</td>
+            <td>Cortez</td>
+            <td>Team Leader</td>
+            <td>San Francisco</td>
+            <td>22</td>
+            <td>2008/10/26</td>
+            <td>$235,500</td>
+            <td>2860</td>
+            <td>g.cortez@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Gloria</td>
+            <td>Little</td>
+            <td>Systems Administrator</td>
+            <td>New York</td>
+            <td>59</td>
+            <td>2009/04/10</td>
+            <td>$237,500</td>
+            <td>1721</td>
+            <td>g.little@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Haley</td>
+            <td>Kennedy</td>
+            <td>Senior Marketing Designer</td>
+            <td>London</td>
+            <td>43</td>
+            <td>2012/12/18</td>
+            <td>$313,500</td>
+            <td>3597</td>
+            <td>h.kennedy@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Hermione</td>
+            <td>Butler</td>
+            <td>Regional Director</td>
+            <td>London</td>
+            <td>47</td>
+            <td>2011/03/21</td>
+            <td>$356,250</td>
+            <td>1016</td>
+            <td>h.butler@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Herrod</td>
+            <td>Chandler</td>
+            <td>Sales Assistant</td>
+            <td>San Francisco</td>
+            <td>59</td>
+            <td>2012/08/06</td>
+            <td>$137,500</td>
+            <td>9608</td>
+            <td>h.chandler@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Hope</td>
+            <td>Fuentes</td>
+            <td>Secretary</td>
+            <td>San Francisco</td>
+            <td>41</td>
+            <td>2010/02/12</td>
+            <td>$109,850</td>
+            <td>6318</td>
+            <td>h.fuentes@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Howard</td>
+            <td>Hatfield</td>
+            <td>Office Manager</td>
+            <td>San Francisco</td>
+            <td>51</td>
+            <td>2008/12/16</td>
+            <td>$164,500</td>
+            <td>7031</td>
+            <td>h.hatfield@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Jackson</td>
+            <td>Bradshaw</td>
+            <td>Director</td>
+            <td>New York</td>
+            <td>65</td>
+            <td>2008/09/26</td>
+            <td>$645,750</td>
+            <td>1042</td>
+            <td>j.bradshaw@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Jena</td>
+            <td>Gaines</td>
+            <td>Office Manager</td>
+            <td>London</td>
+            <td>30</td>
+            <td>2008/12/19</td>
+            <td>$90,560</td>
+            <td>3814</td>
+            <td>j.gaines@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Jenette</td>
+            <td>Caldwell</td>
+            <td>Development Lead</td>
+            <td>New York</td>
+            <td>30</td>
+            <td>2011/09/03</td>
+            <td>$345,000</td>
+            <td>1937</td>
+            <td>j.caldwell@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Jennifer</td>
+            <td>Chang</td>
+            <td>Regional Director</td>
+            <td>Singapore</td>
+            <td>28</td>
+            <td>2010/11/14</td>
+            <td>$357,650</td>
+            <td>9239</td>
+            <td>j.chang@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Jennifer</td>
+            <td>Acosta</td>
+            <td>Junior Javascript Developer</td>
+            <td>Edinburgh</td>
+            <td>43</td>
+            <td>2013/02/01</td>
+            <td>$75,650</td>
+            <td>3431</td>
+            <td>j.acosta@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Jonas</td>
+            <td>Alexander</td>
+            <td>Developer</td>
+            <td>San Francisco</td>
+            <td>30</td>
+            <td>2010/07/14</td>
+            <td>$86,500</td>
+            <td>8196</td>
+            <td>j.alexander@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Lael</td>
+            <td>Greer</td>
+            <td>Systems Administrator</td>
+            <td>London</td>
+            <td>21</td>
+            <td>2009/02/27</td>
+            <td>$103,500</td>
+            <td>6733</td>
+            <td>l.greer@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Martena</td>
+            <td>Mccray</td>
+            <td>Post-Sales support</td>
+            <td>Edinburgh</td>
+            <td>46</td>
+            <td>2011/03/09</td>
+            <td>$324,050</td>
+            <td>8240</td>
+            <td>m.mccray@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Michael</td>
+            <td>Silva</td>
+            <td>Marketing Designer</td>
+            <td>London</td>
+            <td>66</td>
+            <td>2012/11/27</td>
+            <td>$198,500</td>
+            <td>1581</td>
+            <td>m.silva@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Michael</td>
+            <td>Bruce</td>
+            <td>Javascript Developer</td>
+            <td>Singapore</td>
+            <td>29</td>
+            <td>2011/06/27</td>
+            <td>$183,000</td>
+            <td>5384</td>
+            <td>m.bruce@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Michelle</td>
+            <td>House</td>
+            <td>Integration Specialist</td>
+            <td>Sydney</td>
+            <td>37</td>
+            <td>2011/06/02</td>
+            <td>$95,400</td>
+            <td>2769</td>
+            <td>m.house@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Olivia</td>
+            <td>Liang</td>
+            <td>Support Engineer</td>
+            <td>Singapore</td>
+            <td>64</td>
+            <td>2011/02/03</td>
+            <td>$234,500</td>
+            <td>2120</td>
+            <td>o.liang@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Paul</td>
+            <td>Byrd</td>
+            <td>Chief Financial Officer (CFO)</td>
+            <td>New York</td>
+            <td>64</td>
+            <td>2010/06/09</td>
+            <td>$725,000</td>
+            <td>3059</td>
+            <td>p.byrd@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Prescott</td>
+            <td>Bartlett</td>
+            <td>Technical Author</td>
+            <td>London</td>
+            <td>27</td>
+            <td>2011/05/07</td>
+            <td>$145,000</td>
+            <td>3606</td>
+            <td>p.bartlett@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Quinn</td>
+            <td>Flynn</td>
+            <td>Support Lead</td>
+            <td>Edinburgh</td>
+            <td>22</td>
+            <td>2013/03/03</td>
+            <td>$342,000</td>
+            <td>9497</td>
+            <td>q.flynn@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Rhona</td>
+            <td>Davidson</td>
+            <td>Integration Specialist</td>
+            <td>Tokyo</td>
+            <td>55</td>
+            <td>2010/10/14</td>
+            <td>$327,900</td>
+            <td>6200</td>
+            <td>r.davidson@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Sakura</td>
+            <td>Yamamoto</td>
+            <td>Support Engineer</td>
+            <td>Tokyo</td>
+            <td>37</td>
+            <td>2009/08/19</td>
+            <td>$139,575</td>
+            <td>9383</td>
+            <td>s.yamamoto@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Serge</td>
+            <td>Baldwin</td>
+            <td>Data Coordinator</td>
+            <td>Singapore</td>
+            <td>64</td>
+            <td>2012/04/09</td>
+            <td>$138,575</td>
+            <td>8352</td>
+            <td>s.baldwin@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Shad</td>
+            <td>Decker</td>
+            <td>Regional Director</td>
+            <td>Edinburgh</td>
+            <td>51</td>
+            <td>2008/11/13</td>
+            <td>$183,000</td>
+            <td>6373</td>
+            <td>s.decker@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Shou</td>
+            <td>Itou</td>
+            <td>Regional Marketing</td>
+            <td>Tokyo</td>
+            <td>20</td>
+            <td>2011/08/14</td>
+            <td>$163,000</td>
+            <td>8899</td>
+            <td>s.itou@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Sonya</td>
+            <td>Frost</td>
+            <td>Software Engineer</td>
+            <td>Edinburgh</td>
+            <td>23</td>
+            <td>2008/12/13</td>
+            <td>$103,600</td>
+            <td>1667</td>
+            <td>s.frost@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Suki</td>
+            <td>Burks</td>
+            <td>Developer</td>
+            <td>London</td>
+            <td>53</td>
+            <td>2009/10/22</td>
+            <td>$114,500</td>
+            <td>6832</td>
+            <td>s.burks@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Tatyana</td>
+            <td>Fitzpatrick</td>
+            <td>Regional Director</td>
+            <td>London</td>
+            <td>19</td>
+            <td>2010/03/17</td>
+            <td>$385,750</td>
+            <td>1965</td>
+            <td>t.fitzpatrick@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Thor</td>
+            <td>Walton</td>
+            <td>Developer</td>
+            <td>New York</td>
+            <td>61</td>
+            <td>2013/08/11</td>
+            <td>$98,540</td>
+            <td>8327</td>
+            <td>t.walton@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Tiger</td>
+            <td>Nixon</td>
+            <td>System Architect</td>
+            <td>Edinburgh</td>
+            <td>61</td>
+            <td>2011/04/25</td>
+            <td>$320,800</td>
+            <td>5421</td>
+            <td>t.nixon@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Timothy</td>
+            <td>Mooney</td>
+            <td>Office Manager</td>
+            <td>London</td>
+            <td>37</td>
+            <td>2008/12/11</td>
+            <td>$136,200</td>
+            <td>7580</td>
+            <td>t.mooney@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Unity</td>
+            <td>Butler</td>
+            <td>Marketing Designer</td>
+            <td>San Francisco</td>
+            <td>47</td>
+            <td>2009/12/09</td>
+            <td>$85,675</td>
+            <td>5384</td>
+            <td>u.butler@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Vivian</td>
+            <td>Harrell</td>
+            <td>Financial Controller</td>
+            <td>San Francisco</td>
+            <td>62</td>
+            <td>2009/02/14</td>
+            <td>$452,500</td>
+            <td>9422</td>
+            <td>v.harrell@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Yuri</td>
+            <td>Berry</td>
+            <td>Chief Marketing Officer (CMO)</td>
+            <td>New York</td>
+            <td>40</td>
+            <td>2009/06/25</td>
+            <td>$675,000</td>
+            <td>6154</td>
+            <td>y.berry@datatables.net</td>
+          </tr><tr role="row" class="even" style="height: 38px;">
+            <td class="sorting_1">Zenaida</td>
+            <td>Frank</td>
+            <td>Software Engineer</td>
+            <td>New York</td>
+            <td>63</td>
+            <td>2010/01/04</td>
+            <td>$125,250</td>
+            <td>7439</td>
+            <td>z.frank@datatables.net</td>
+          </tr><tr role="row" class="odd" style="height: 38px;">
+            <td class="sorting_1">Zorita</td>
+            <td>Serrano</td>
+            <td>Software Engineer</td>
+            <td>San Francisco</td>
+            <td>56</td>
+            <td>2012/06/01</td>
+            <td>$115,000</td>
+            <td>4389</td>
+            <td>z.serrano@datatables.net</td>
+          </tr></tbody>
+      </table></div></div><div class="DTFC_LeftWrapper" style="position: absolute; top: 0px; left: 0px; width: 217.6px; height: 1px;" aria-hidden="true"><div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"><table class="stripe row-border order-column dataTable no-footer DTFC_Cloned" style="width: 100%; margin-left: 0px;" role="grid"><thead><tr role="row" style="height: 41px;"><th class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 73.6px;" aria-label="First name: activate to sort column descending" aria-sort="ascending">First name</th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 72px;" aria-label="Last name: activate to sort column ascending">Last name</th></tr></thead></table></div><div class="DTFC_LeftBodyWrapper" style="position: relative; top: 0px; left: 0px; height: 284px; overflow: hidden;"><div class="DTFC_LeftBodyLiner" style="position: relative; top: 0px; left: 0px; overflow-y: scroll; width: 234.6px; height: 284px; max-height: 284px;"><table class="stripe row-border order-column dataTable no-footer DTFC_Cloned" style="width: 100%; padding: 0px; margin: 0px;" role="grid" aria-describedby="example_info"><thead>
+          <tr role="row" style="height: 0px;"><th class="sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 73.6px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="First name: activate to sort column descending" aria-sort="ascending"></th><th class="sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 72px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Last name: activate to sort column ascending"></th></tr>
+        </thead>
+        
+        <tbody>
+          <tr role="row" class="odd" data-dt-row="4" style="height: 37px;">
+            <td class="sorting_1" data-dt-row="4" data-dt-column="0">Airi</td>
+            <td data-dt-row="4" data-dt-column="1">Satou</td>
+          </tr>
+          <tr role="row" class="even" data-dt-row="24" style="height: 38px;">
+            <td class="sorting_1" data-dt-row="24" data-dt-column="0">Angelica</td>
+            <td data-dt-row="24" data-dt-column="1">Ramos</td></tr><tr role="row" class="odd" data-dt-row="2" style="height: 38px;"><td class="sorting_1" data-dt-row="2" data-dt-column="0">Ashton</td><td data-dt-row="2" data-dt-column="1">Cox</td></tr><tr role="row" class="even" data-dt-row="18" style="height: 38px;"><td class="sorting_1" data-dt-row="18" data-dt-column="0">Bradley</td><td data-dt-row="18" data-dt-column="1">Greer</td></tr><tr role="row" class="odd" data-dt-row="27" style="height: 38px;"><td class="sorting_1" data-dt-row="27" data-dt-column="0">Brenden</td><td data-dt-row="27" data-dt-column="1">Wagner</td></tr><tr role="row" class="even" data-dt-row="5" style="height: 38px;"><td class="sorting_1" data-dt-row="5" data-dt-column="0">Brielle</td><td data-dt-row="5" data-dt-column="1">Williamson</td></tr><tr role="row" class="odd" data-dt-row="42" style="height: 38px;"><td class="sorting_1" data-dt-row="42" data-dt-column="0">Bruno</td><td data-dt-row="42" data-dt-column="1">Nash</td></tr><tr role="row" class="even" data-dt-row="22" style="height: 38px;"><td class="sorting_1" data-dt-row="22" data-dt-column="0">Caesar</td><td data-dt-row="22" data-dt-column="1">Vance</td></tr><tr role="row" class="odd" data-dt-row="50" style="height: 38px;"><td class="sorting_1" data-dt-row="50" data-dt-column="0">Cara</td><td data-dt-row="50" data-dt-column="1">Stevens</td></tr><tr role="row" class="even" data-dt-row="3" style="height: 38px;"><td class="sorting_1" data-dt-row="3" data-dt-column="0">Cedric</td><td data-dt-row="3" data-dt-column="1">Kelly</td></tr><tr role="row" class="odd" data-dt-row="12" style="height: 38px;"><td class="sorting_1" data-dt-row="12" data-dt-column="0">Charde</td><td data-dt-row="12" data-dt-column="1">Marshall</td></tr><tr role="row" class="even" data-dt-row="8" style="height: 38px;"><td class="sorting_1" data-dt-row="8" data-dt-column="0">Colleen</td><td data-dt-row="8" data-dt-column="1">Hurst</td></tr><tr role="row" class="odd" data-dt-row="19" style="height: 38px;"><td class="sorting_1" data-dt-row="19" data-dt-column="0">Dai</td><td data-dt-row="19" data-dt-column="1">Rios</td></tr><tr role="row" class="even" data-dt-row="56" style="height: 38px;"><td class="sorting_1" data-dt-row="56" data-dt-column="0">Donna</td><td data-dt-row="56" data-dt-column="1">Snider</td></tr><tr role="row" class="odd" data-dt-row="23" style="height: 38px;"><td class="sorting_1" data-dt-row="23" data-dt-column="0">Doris</td><td data-dt-row="23" data-dt-column="1">Wilder</td></tr><tr role="row" class="even" data-dt-row="45" style="height: 38px;"><td class="sorting_1" data-dt-row="45" data-dt-column="0">Finn</td><td data-dt-row="45" data-dt-column="1">Camacho</td></tr><tr role="row" class="odd" data-dt-row="28" style="height: 38px;"><td class="sorting_1" data-dt-row="28" data-dt-column="0">Fiona</td><td data-dt-row="28" data-dt-column="1">Green</td></tr><tr role="row" class="even" data-dt-row="1" style="height: 38px;"><td class="sorting_1" data-dt-row="1" data-dt-column="0">Garrett</td><td data-dt-row="1" data-dt-column="1">Winters</td></tr><tr role="row" class="odd" data-dt-row="25" style="height: 38px;"><td class="sorting_1" data-dt-row="25" data-dt-column="0">Gavin</td><td data-dt-row="25" data-dt-column="1">Joyce</td></tr><tr role="row" class="even" data-dt-row="33" style="height: 38px;"><td class="sorting_1" data-dt-row="33" data-dt-column="0">Gavin</td><td data-dt-row="33" data-dt-column="1">Cortez</td></tr><tr role="row" class="odd" data-dt-row="17" style="height: 38px;"><td class="sorting_1" data-dt-row="17" data-dt-column="0">Gloria</td><td data-dt-row="17" data-dt-column="1">Little</td></tr><tr role="row" class="even" data-dt-row="13" style="height: 38px;"><td class="sorting_1" data-dt-row="13" data-dt-column="0">Haley</td><td data-dt-row="13" data-dt-column="1">Kennedy</td></tr><tr role="row" class="odd" data-dt-row="51" style="height: 38px;"><td class="sorting_1" data-dt-row="51" data-dt-column="0">Hermione</td><td data-dt-row="51" data-dt-column="1">Butler</td></tr><tr role="row" class="even" data-dt-row="6" style="height: 38px;"><td class="sorting_1" data-dt-row="6" data-dt-column="0">Herrod</td><td data-dt-row="6" data-dt-column="1">Chandler</td></tr><tr role="row" class="odd" data-dt-row="37" style="height: 38px;"><td class="sorting_1" data-dt-row="37" data-dt-column="0">Hope</td><td data-dt-row="37" data-dt-column="1">Fuentes</td></tr><tr role="row" class="even" data-dt-row="36" style="height: 38px;"><td class="sorting_1" data-dt-row="36" data-dt-column="0">Howard</td><td data-dt-row="36" data-dt-column="1">Hatfield</td></tr><tr role="row" class="odd" data-dt-row="40" style="height: 38px;"><td class="sorting_1" data-dt-row="40" data-dt-column="0">Jackson</td><td data-dt-row="40" data-dt-column="1">Bradshaw</td></tr><tr role="row" class="even" data-dt-row="10" style="height: 38px;"><td class="sorting_1" data-dt-row="10" data-dt-column="0">Jena</td><td data-dt-row="10" data-dt-column="1">Gaines</td></tr><tr role="row" class="odd" data-dt-row="20" style="height: 38px;"><td class="sorting_1" data-dt-row="20" data-dt-column="0">Jenette</td><td data-dt-row="20" data-dt-column="1">Caldwell</td></tr><tr role="row" class="even" data-dt-row="26" style="height: 38px;"><td class="sorting_1" data-dt-row="26" data-dt-column="0">Jennifer</td><td data-dt-row="26" data-dt-column="1">Chang</td></tr><tr role="row" class="odd" data-dt-row="49" style="height: 38px;"><td class="sorting_1" data-dt-row="49" data-dt-column="0">Jennifer</td><td data-dt-row="49" data-dt-column="1">Acosta</td></tr><tr role="row" class="even" data-dt-row="53" style="height: 38px;"><td class="sorting_1" data-dt-row="53" data-dt-column="0">Jonas</td><td data-dt-row="53" data-dt-column="1">Alexander</td></tr><tr role="row" class="odd" data-dt-row="52" style="height: 38px;"><td class="sorting_1" data-dt-row="52" data-dt-column="0">Lael</td><td data-dt-row="52" data-dt-column="1">Greer</td></tr><tr role="row" class="even" data-dt-row="34" style="height: 38px;"><td class="sorting_1" data-dt-row="34" data-dt-column="0">Martena</td><td data-dt-row="34" data-dt-column="1">Mccray</td></tr><tr role="row" class="odd" data-dt-row="15" style="height: 38px;"><td class="sorting_1" data-dt-row="15" data-dt-column="0">Michael</td><td data-dt-row="15" data-dt-column="1">Silva</td></tr><tr role="row" class="even" data-dt-row="55" style="height: 38px;"><td class="sorting_1" data-dt-row="55" data-dt-column="0">Michael</td><td data-dt-row="55" data-dt-column="1">Bruce</td></tr><tr role="row" class="odd" data-dt-row="30" style="height: 38px;"><td class="sorting_1" data-dt-row="30" data-dt-column="0">Michelle</td><td data-dt-row="30" data-dt-column="1">House</td></tr><tr role="row" class="even" data-dt-row="41" style="height: 38px;"><td class="sorting_1" data-dt-row="41" data-dt-column="0">Olivia</td><td data-dt-row="41" data-dt-column="1">Liang</td></tr><tr role="row" class="odd" data-dt-row="16" style="height: 38px;"><td class="sorting_1" data-dt-row="16" data-dt-column="0">Paul</td><td data-dt-row="16" data-dt-column="1">Byrd</td></tr><tr role="row" class="even" data-dt-row="32" style="height: 38px;"><td class="sorting_1" data-dt-row="32" data-dt-column="0">Prescott</td><td data-dt-row="32" data-dt-column="1">Bartlett</td></tr><tr role="row" class="odd" data-dt-row="11" style="height: 38px;"><td class="sorting_1" data-dt-row="11" data-dt-column="0">Quinn</td><td data-dt-row="11" data-dt-column="1">Flynn</td></tr><tr role="row" class="even" data-dt-row="7" style="height: 38px;"><td class="sorting_1" data-dt-row="7" data-dt-column="0">Rhona</td><td data-dt-row="7" data-dt-column="1">Davidson</td></tr><tr role="row" class="odd" data-dt-row="43" style="height: 38px;"><td class="sorting_1" data-dt-row="43" data-dt-column="0">Sakura</td><td data-dt-row="43" data-dt-column="1">Yamamoto</td></tr><tr role="row" class="even" data-dt-row="46" style="height: 38px;"><td class="sorting_1" data-dt-row="46" data-dt-column="0">Serge</td><td data-dt-row="46" data-dt-column="1">Baldwin</td></tr><tr role="row" class="odd" data-dt-row="54" style="height: 38px;"><td class="sorting_1" data-dt-row="54" data-dt-column="0">Shad</td><td data-dt-row="54" data-dt-column="1">Decker</td></tr><tr role="row" class="even" data-dt-row="29" style="height: 38px;"><td class="sorting_1" data-dt-row="29" data-dt-column="0">Shou</td><td data-dt-row="29" data-dt-column="1">Itou</td></tr><tr role="row" class="odd" data-dt-row="9" style="height: 38px;"><td class="sorting_1" data-dt-row="9" data-dt-column="0">Sonya</td><td data-dt-row="9" data-dt-column="1">Frost</td></tr><tr role="row" class="even" data-dt-row="31" style="height: 38px;"><td class="sorting_1" data-dt-row="31" data-dt-column="0">Suki</td><td data-dt-row="31" data-dt-column="1">Burks</td></tr><tr role="row" class="odd" data-dt-row="14" style="height: 38px;"><td class="sorting_1" data-dt-row="14" data-dt-column="0">Tatyana</td><td data-dt-row="14" data-dt-column="1">Fitzpatrick</td></tr><tr role="row" class="even" data-dt-row="44" style="height: 38px;"><td class="sorting_1" data-dt-row="44" data-dt-column="0">Thor</td><td data-dt-row="44" data-dt-column="1">Walton</td></tr><tr role="row" class="odd" data-dt-row="0" style="height: 38px;"><td class="sorting_1" data-dt-row="0" data-dt-column="0">Tiger</td><td data-dt-row="0" data-dt-column="1">Nixon</td></tr><tr role="row" class="even" data-dt-row="39" style="height: 38px;"><td class="sorting_1" data-dt-row="39" data-dt-column="0">Timothy</td><td data-dt-row="39" data-dt-column="1">Mooney</td></tr><tr role="row" class="odd" data-dt-row="35" style="height: 38px;"><td class="sorting_1" data-dt-row="35" data-dt-column="0">Unity</td><td data-dt-row="35" data-dt-column="1">Butler</td></tr><tr role="row" class="even" data-dt-row="38" style="height: 38px;"><td class="sorting_1" data-dt-row="38" data-dt-column="0">Vivian</td><td data-dt-row="38" data-dt-column="1">Harrell</td></tr><tr role="row" class="odd" data-dt-row="21" style="height: 38px;"><td class="sorting_1" data-dt-row="21" data-dt-column="0">Yuri</td><td data-dt-row="21" data-dt-column="1">Berry</td></tr><tr role="row" class="even" data-dt-row="47" style="height: 38px;"><td class="sorting_1" data-dt-row="47" data-dt-column="0">Zenaida</td><td data-dt-row="47" data-dt-column="1">Frank</td></tr><tr role="row" class="odd" data-dt-row="48" style="height: 38px;"><td class="sorting_1" data-dt-row="48" data-dt-column="0">Zorita</td><td data-dt-row="48" data-dt-column="1">Serrano</td></tr></tbody>
+      </table></div></div><div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div></div></div><div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing 1 to 57 of 57 entries</div></div>
+      
+    </div>
 
-      var raster = new ol.layer.Tile({
-        source: new ol.source.OSM()
-      });
-
-      var vec_layer = crtLayerXYZ("vec_c","EPSG:4326",1);
-      var cta_wlayer = crtLayerXYZ("cta_c","EPSG:4326",1);
-      var cva_clayer = crtLayerXYZ("cva_c","EPSG:4326",1);
-      var center = [118.39469563,29.888188578];
-
-      vectorLayer1 = new ol.layer.Vector({
-                // projection: 'EPSG:4326',
-                source: new ol.source.Vector()
-            });
-
-            var controls = [
-              new ol.control.Attribution({collapsed: false}),
-              // new ol.control.FullScreen(),
-              new ol.control.MousePosition(),
-              // new ol.control.OverviewMap({collapsed: false, collapsible: false}),
-              // new ol.control.Rotate({autoHide: false}),
-              new ol.control.ScaleLine(),
-              new ol.control.Zoom(),
-              new ol.control.ZoomSlider(),
-              new ol.control.ZoomToExtent()
-          ];
-
-      var map = new ol.Map({
-        layers: [vec_layer,cta_wlayer,cva_clayer,vectorLayer1],
-        // layers: [raster],
-        target: 'map',
-        controls:controls,
-        view: new ol.View({
-          // center: [-11000000, 4600000],
-          projection: 'EPSG:4326',
-          center:center,
-          // center:  new ol.proj.transform(center,"EPSG:4326","EPSG:3857"),
-          maxZoom : 18,
-          zoom: 14
-        })
-      });
-
-      var features = new ol.Collection();
-      var featureOverlay = new ol.layer.Vector({
-        source: new ol.source.Vector({features: features}),
-        style: new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: 'rgba(255, 255, 255, 0.2)'
-          }),
-          stroke: new ol.style.Stroke({
-            color: '#ffcc33',
-            width: 2
-          }),
-          image: new ol.style.Circle({
-            radius: 7,
-            fill: new ol.style.Fill({
-              color: '#ffcc33'
-            })
-          })
-        })
-      });
-      featureOverlay.setMap(map);
-
-      var modify = new ol.interaction.Modify({
-        features: features,
-        // the SHIFT key must be pressed to delete vertices, so
-        // that new vertices can be drawn at the same position
-        // of existing vertices
-        deleteCondition: function(event) {
-          return ol.events.condition.shiftKeyOnly(event) &&
-              ol.events.condition.singleClick(event);
-        }
-      });
-      map.addInteraction(modify);
-
-      var draw; // global so we can remove it later
-      var typeSelect = document.getElementById('type');
-
-      function addInteraction() {
-        draw = new ol.interaction.Draw({
-          features: features,
-          type: /** @type {ol.geom.GeometryType} */ (typeSelect.value)
-        });
-        draw.on('drawend',function(event){
-          console.log(event);
-        });
-        map.addInteraction(draw);
-      }
-
-
-      /**
-       * Handle change event.
-       */
-      typeSelect.onchange = function() {
-        map.removeInteraction(draw);
-        addInteraction();
-      };
-
-      addInteraction();
-    </script>
+    
   </body>
+
+  <script>
+    $(document).ready(function() {
+    var table = $('#example').DataTable( {
+        scrollY:        "300px",
+        scrollX:        true,
+        scrollCollapse: true,
+        paging:         false,
+        fixedColumns:   {
+            leftColumns: 2
+        }
+    } );
+} );
+  </script>
 </html>

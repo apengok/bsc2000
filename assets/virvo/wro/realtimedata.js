@@ -42,12 +42,12 @@
         // });
         // winHeight = $(window).height();//可视区域高度
         winHeight = $(".sidebar").height();//sidebar height
-        console.log("wHeight:",winHeight);
+        // console.log("wHeight:",winHeight);
         headerHeight = $("#header").height();//头部高度
         var stationStateHeight = $("#station_status").height()
-        console.log("station status height",stationStateHeight);
+        // console.log("station status height",stationStateHeight);
         var paneHeaderHeight = $(".panel-heading").height();
-        console.log("paneHeaderHeight",paneHeaderHeight);
+        // console.log("paneHeaderHeight",paneHeaderHeight);
 
         // var tabHeight = $myTab.height();//信息列表table选项卡高度
         // var tabContHeight = $("#myTabContent").height();//table表头高度
@@ -463,19 +463,19 @@
         pageLayout.init();
 
         $('#dataTable').on( 'draw.dt', function ( e, settings, len ) {
-            console.log( 'New page length: '+len );
+            // console.log( 'New page length: '+len );
             winHeight = $(window).height();
             var newpageheight = $('#dataTable').height();
             var sidebarHeight = $('.sidebar').height()
 
             if(newpageheight > sidebarHeight){
 
-                console.log("winHeight",winHeight,newpageheight);
+                // console.log("winHeight",winHeight,newpageheight);
                 headerHeight = $("#header").height();//头部高度
                 var stationStateHeight = $("#station_status").height()
-                console.log("station status height",stationStateHeight);
+                // console.log("station status height",stationStateHeight);
                 var paneHeaderHeight = $(".panel-heading").height();
-                console.log("paneHeaderHeight",paneHeaderHeight);
+                // console.log("paneHeaderHeight",paneHeaderHeight);
                 
                 var newContLeftH = newpageheight - headerHeight - stationStateHeight - 2*paneHeaderHeight - 100;
                 //sidebar高度
@@ -483,11 +483,11 @@
                 // organTree.css('height',newpageheight + 'px');
             }
             // $('#sidebar').css({"height":newpageheight+"px"});
-            console.log("sidwbar heith",sidebarHeight);
+            // console.log("sidwbar heith",sidebarHeight);
             var newTreeH = newpageheight - headerHeight - 110;
-            console.log("newpageheight heith",newpageheight);
+            // console.log("newpageheight heith",newpageheight);
 
-            console.log("newTreeH heith",newTreeH);
+            // console.log("newTreeH heith",newTreeH);
 
             organTree.css('height',newTreeH + 'px');
         } );
