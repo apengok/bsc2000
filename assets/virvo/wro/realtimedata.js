@@ -171,6 +171,11 @@
                         "class" : "text-center"
                     },
                     {
+                        "data" : "userid",
+                        "class" : "text-center",
+                        
+                    } ,
+                    {
                         "data" : "username",
                         "class" : "text-center",
                         render : function(data, type, row, meta) {
@@ -204,6 +209,16 @@
                         }
                     },
                     {
+                        "data" : "manufacturer",
+                        "class" : "text-center",
+                        
+                    } ,
+                    {
+                        "data" : "dn",
+                        "class" : "text-center",
+                        
+                    } ,
+                    {
                         "data" : "commstate",
                         "class" : "text-center",
                         render : function(data, type, row, meta) {
@@ -217,11 +232,6 @@
 
                         }
                     }, 
-                    {
-                        "data" : "dn",
-                        "class" : "text-center",
-                        
-                    } ,
                     {
                         "data" : "fluxreadtime",
                         "class" : "text-center",
@@ -461,6 +471,17 @@
         });
 
         pageLayout.init();
+
+        $('.dumb').click(function() {
+            
+            // this.href="/wirelessm/watermeter/exportbyselect/";
+            $(this).attr("href", "/monitor/realtimedata/export/?groupName="+selectTreeId+"&groupType="+selectTreeType
+            +"&selectTreeType="+selectTreeType
+            );
+
+            // $(this).attr("href", this.href + "?communityid="+selectTreeId+"&dnselect=25");
+                
+        });
 
         $('#dataTable').on( 'draw.dt', function ( e, settings, len ) {
             // console.log( 'New page length: '+len );

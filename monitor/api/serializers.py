@@ -45,7 +45,7 @@ class BigmeterRTSerializer(ModelSerializer):
     
     class Meta:
         model = Bigmeter
-        fields = ['id','belongto','username','serialnumber','commstate','dn','fluxreadtime',
+        fields = ['id','userid','belongto','username','serialnumber','commstate','dn','fluxreadtime','manufacturer',
             'pickperiod','reportperiod','flux','plustotalflux','reversetotalflux','pressurereadtime',
             'pressure','meterv','gprsv','signlen','alarm'
         ]

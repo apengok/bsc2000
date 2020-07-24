@@ -20,6 +20,7 @@ urlpatterns = [
 
     # 实时数据
     url(r'^realtimedata/?$',views.RealTimeDataView.as_view(),name='realtimedata'),
+    url(r'^realtimedata/export/?$',views.exportbyselect,name='exportbyselect'),
     url(r'^rtdata/showalarm/(?P<pk>[0-9]+)/$',views.RtdataAmarm.as_view(),name='rtalarm'),
 
     # 车辆监控

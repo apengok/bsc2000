@@ -107,6 +107,10 @@
                       </div>
                       
                     </div>
+                    <div class="pull-left">
+                      <button type="button" 
+                        class="btn btn-outline "><a href="/monitor/realtimedata/export" class="dumb" id="exportId"><i class="glyphicon glyphicon-log-out icoPaddingLeft"></i>导出</a></button>
+                    </div>
                     <div class="columns btn-group pull-right refShowRight">
                       <button id="refreshTable" class="btn btn-default"
                         type="button" name="refresh" title="刷新">
@@ -130,12 +134,14 @@
                     <thead>
                       <tr>
                             <th >序号</th>
+                            <th >用户代码</th>
                             <th >站点名称</th>
                             <th >所属组织</th>
                             <th >表具编号</th>
+                            <th >厂家</th>
                             <!-- <th >报警</th> -->
-                            <th >状态</th>
                             <th >口径</th>
+                            <th >状态</th>
                             <th >最新采样时间</th>
                             <th >采样间隔min</th>
                             <th >上报间隔h</th>

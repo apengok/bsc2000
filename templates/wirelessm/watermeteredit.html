@@ -10,15 +10,15 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 户号：</label>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 用户代码(收费编号)：</label>
                     <div class="col-md-4">
                         <input name="numbersth" value="{{ form.numbersth.value|default:'' }}" type="text" maxlength="50" class="form-control" id="numbersth"/>
-                        <label id="numbersth-error" style="display: none" class="error" for="numbersth">请输入户名</label>
+                        <label id="numbersth-error" style="display: none" class="error" for="numbersth">请输入用户代码(收费编号)</label>
                     </div>
-                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 栋号：</label>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 楼号：</label>
                     <div class="col-md-4">
                         <input name="buildingname"  value="{{ form.buildingname.value|default:'' }}"  type="text" maxlength="50" class="form-control" id="buildingname"/>
-                        <label id="buildingname-error" style="display: none" class="error" for="buildingname">请输入栋号</label>
+                        <label id="buildingname-error" style="display: none" class="error" for="buildingname">请输入楼号</label>
                     </div>
                     <!-- <label class="col-md-2 control-label"><label class="text-danger">*</label> 所属组织：</label>
                     <div class="has-feedback col-md-4">
@@ -33,10 +33,10 @@
                     </div> -->
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 房号：</label>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 单元号、房号：</label>
                     <div class="col-md-4">
                         <input name="roomname"  value="{{ form.roomname.value|default:'' }}"  type="text" maxlength="50" class="form-control" id="roomname"/>
-                        <label id="roomname-error" style="display: none" class="error" for="roomname">请输入房号</label>
+                        <label id="roomname-error" style="display: none" class="error" for="roomname">请输入单元号、房号</label>
                     </div>
                     <label class="col-md-2 control-label">所属小区：</label>
                     <div class="col-md-4">
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 水表编号：</label>
+                    <label class="col-md-2 control-label" style="padding-right: 0px;"><label class="text-danger">*</label> 表编号(水表表身编码)：</label>
                     <div class="col-md-4">
                         <input name="serialnumber"  value="{{ form.serialnumber.value|default:'' }}"  type="text" maxlength="50" class="form-control" id="serialnumber"/>
                         <label id="serialnumber-error" style="display: none" class="error" for="serialnumber">请输入编号</label>

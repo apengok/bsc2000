@@ -135,6 +135,10 @@ class WatermeterSelectResource(resources.ModelResource):
 #         model = VWatermeter
 
 class ImportWatermeterResource(resources.ModelResource):
+    """
+    序号	用户代码(收费编号)	表编号(水表表身编码)	关联IMEI	所属集中器	小区名称	楼号	单元号、房号	用户姓名	用户电话	用户地址	表类型(抄表远传方式)	口径	厂家	是否阀控表	安装位置	安装日期	表初使读数	备注	
+
+    """
     serialnumber        = fields.Field(column_name=u'表编号', attribute="serialnumber")
     communityid         = fields.Field(column_name=u'所属小区', attribute="communityid")
     concentrator        = fields.Field(column_name=u'所属集中器', attribute="concentrator")

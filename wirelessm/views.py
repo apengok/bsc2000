@@ -11,7 +11,7 @@ import random
 import datetime
 from django.conf import settings
 from django.db.models import Avg, Max, Min, Sum,Count
-
+from django.http import Http404
 from mptt.utils import get_cached_trees
 from mptt.templatetags.mptt_tags import cache_tree_children
 from django.contrib.auth.mixins import PermissionRequiredMixin,UserPassesTestMixin
@@ -1112,17 +1112,17 @@ class WatermeterImportView(TemplateView,UserPassesTestMixin):
 
         err_msg = []
 
-        serialnumber = str(row[u'表编号'])
+        serialnumber = str(row[u'表编号(水表表身编码)'])
         
         # 从excel读上来的数据全是数字都是float类型
         if '.' in serialnumber:
-            if isinstance(row[u'表编号'],float):
-                serialnumber = str(int(row[u'表编号']))
-                row[u'表编号'] = serialnumber
+            if isinstance(row[u'表编号(水表表身编码)'],float):
+                serialnumber = str(int(row[u'表编号(水表表身编码)']))
+                row[u'表编号(水表表身编码)'] = serialnumber
 
         bflag = Watermeter.objects.filter(serialnumber=serialnumber).exists()
         if bflag:
-            err_msg.append(u"表编号%s已存在"%(serialnumber))
+            err_msg.append(u"表编号(水表表身编码)%s已存在"%(serialnumber))
 
         # 小区
         # communityname = row[u'所属小区'] #communityid
@@ -1163,37 +1163,51 @@ class WatermeterImportView(TemplateView,UserPassesTestMixin):
 
         row[u'关联IMEI'] = wateraddr
 
-        # 户号
-        numbersth = str(row[u'户号'])
+        # 用户代码(收费编号)
+        numbersth = str(row[u'用户代码(收费编号)'])
         if '.' in numbersth:
-            if isinstance(row[u'户号'],float):
-                numbersth = str(int(row[u'户号']))
-                row[u'户号'] = numbersth
+            if isinstance(row[u'用户代码(收费编号)'],float):
+                numbersth = str(int(row[u'用户代码(收费编号)']))
+                row[u'用户代码(收费编号)'] = numbersth
 
         # 栋号
-        buildingname = str(row[u'栋号'])
+        buildingname = str(row[u'楼号'])
         if '.' in buildingname:
-            if isinstance(row[u'栋号'],float):
-                buildingname = str(int(row[u'栋号']))
-                row[u'栋号'] = buildingname
+            if isinstance(row[u'楼号'],float):
+                buildingname = str(int(row[u'楼号']))
+                row[u'楼号'] = buildingname
 
-        # 房号
-        roomname = str(row[u'房号'])
+        # 单元号、房号
+        roomname = str(row[u'单元号、房号'])
         if '.' in roomname:
-            if isinstance(row[u'房号'],float):
-                roomname = str(int(row[u'房号']))
-                row[u'房号'] = roomname
+            if isinstance(row[u'单元号、房号'],float):
+                roomname = str(int(row[u'单元号、房号']))
+                row[u'单元号、房号'] = roomname
+
+        # 用户电话
+        usertel = str(row[u'用户电话'])
+        if '.' in usertel:
+            if isinstance(row[u'用户电话'],float):
+                usertel = str(int(row[u'用户电话']))
+                row[u'用户电话'] = usertel
+
+        # dn
+        dn = str(row[u'口径'])
+        if '.' in dn:
+            if isinstance(row[u'口径'],float):
+                dn = str(int(row[u'口径']))
+                row[u'口径'] = dn
 
         # 
-        metercontrol = str(row[u'阀控表'])
+        metercontrol = str(row[u'是否阀控表'])
         if metercontrol == '是' or metercontrol == '阀控表':
-            row[u'阀控表'] = 1
+            row[u'是否阀控表'] = 1
         else:
-            row[u'阀控表'] = 0
+            row[u'是否阀控表'] = 0
 
 
         # import dosage and readtime
-        dosage = str(row[u'表读数'])
+        dosage = str(row[u'表初始读数'])
         
         # 从excel读上来的数据全是数字都是float类型
         # if '.' in dosage:
@@ -1201,20 +1215,20 @@ class WatermeterImportView(TemplateView,UserPassesTestMixin):
         #         dosage = str(int(row[u'表读数']))
         #         row[u'表读数'] = dosage
 
-        readtime = row[u'抄表时间']
+        readtime = row[u'安装日期']
         if readtime == '':
-            row[u'抄表时间'] = datetime.date.today().strftime('%Y-%m-%d %H:%M:%S')
+            row[u'安装日期'] = datetime.date.today().strftime('%Y-%m-%d')
         else:
             try:
                 if isinstance(readtime,str):
-                    b = datetime.datetime.strptime(readtime.strip(),"%Y-%m-%d %H:%M:%S")
+                    b = datetime.datetime.strptime(readtime.strip(),"%Y-%m-%d")
                 else:
-                    readtime = float(row[u'抄表时间'])
+                    readtime = float(row[u'安装日期'])
                     b = minimalist_xldate_as_datetime(readtime,0)
-                row[u'抄表时间'] = b.strftime('%Y-%m-%d %H:%M:%S')
+                row[u'安装日期'] = b.strftime('%Y-%m-%d')
             except Exception as e:
                 err_msg.append(u"{}".format(e))
-                # err_msg.append(u"时间格式不对:yyyy-mm-dd HH:MM:SS")
+                err_msg.append(u"日期格式不对:yyyy-mm-dd")
         
         return err_msg
 
@@ -1239,7 +1253,7 @@ class WatermeterImportView(TemplateView,UserPassesTestMixin):
         err_msgs = []
         import_lists = []
         for row in imported_data.dict:
-            if row[u'表编号'] == '':
+            if row[u'表编号(水表表身编码)'] == '':
                 continue
             row_count += 1
             print('\r\n\r\nrow:',row)
@@ -1264,27 +1278,28 @@ class WatermeterImportView(TemplateView,UserPassesTestMixin):
                 
                 data = {}
                 amrs_data = {
-                    'serialnumber':row[u'表编号'], 
+                    'numbersth':row[u'用户代码(收费编号)'], 
+                    'serialnumber':row[u'表编号(水表表身编码)'], 
                     'communityid':community.amrs_community.id, 
-                    'metertype':row[u'表类型'],
+                    'metertype':row[u'表类型(抄表远传方式)'],
                     'wateraddr':row[u'关联IMEI'],
-                    'numbersth':row[u'户号'],
-                    'buildingname':row[u'栋号'],
-                    'roomname':row[u'房号'],
+                    'buildingname':row[u'楼号'],
+                    'roomname':row[u'单元号、房号'],
                     'username':row[u'用户姓名'],
                     'usertel':row[u'用户电话'],
                     'dn':row[u'口径'],
                     'manufacturer':row[u'厂家'],
                     'installationsite':row[u'安装位置'],
-                    'metercontrol':row[u'阀控表'],
-                    'madedate':row[u'生产日期'],
-                    'dosage':row[u'表读数'],
-                    'rtime':row[u'抄表时间']
+                    'metercontrol':row[u'是否阀控表'],
+                    'madedate':row[u'安装日期'],
+                    'dosage':row[u'表初始读数'],
+                    # 'rtime':row[u'抄表时间']
                 }
                 data = {
                     'belongto':belongto.id,
                     'communityid':community.id,
                     'useraddr':row[u'用户地址'],
+                    'descriptions':row[u'备注'],
                     'amrs_watermeter':amrs_data
                 }
 
@@ -1328,15 +1343,15 @@ class WatermeterImportView(TemplateView,UserPassesTestMixin):
 def watermeterdownload(request):
     # file_path = os.path.join(settings.STATICFILES_DIRS[0] , '用户模板.xls') #development
     
-    file_path = os.path.join(settings.STATIC_ROOT , 'watermetertemplate.xls')
+    file_path = os.path.join(settings.STATIC_ROOT , 'watermetertemplate-new.xls')
     
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
             response['Content-Disposition'] = 'attachment; filename=' + escape_uri_path("户表模板.xls")
             return response
-    # raise Http404
-    return HttpResponse(json.dumps({'success':0,'msg':'file not found'}))
+    raise Http404('file not found')
+    # return HttpResponse(json.dumps({'success':0,'msg':'file not found'}))
 
 
 def watermeterexport(request):

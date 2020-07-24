@@ -1168,6 +1168,7 @@ class VWatermeter(models.Model):
     # concentrator = models.ForeignKey( VConcentrator ,on_delete=models.CASCADE,null=True, blank=True,)    #所属集中器
     useraddr = models.CharField(db_column='UserAddr', max_length=255, blank=True, null=True)  # Field name made lowercase.
     # meter_catlog = models.CharField(db_column='meter_catlog', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    descriptions = models.CharField(db_column='descriptions', max_length=1000, blank=True, null=True)  # Field name made lowercase.
 
     objects = VWatermeterManager()
 

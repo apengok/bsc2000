@@ -31,7 +31,8 @@ from dmam.utils import merge_values, merge_values_with,merge_values_to_dict
 
 from ggis.models import FenceDistrict
 # from django.core.urlresolvers import reverse_lazy
-
+from django.utils.encoding import escape_uri_path
+from .resources import BigmeterRTSelectResource
 
 def dmastasticinfo():
     organ = Organization.objects.first()
@@ -711,3 +712,109 @@ def getmapsecondwaterlist(request):
     return HttpResponse(json.dumps(result))
 
 
+def exportbyselect(request):
+    '''
+    实时数据列表 导出
+    '''
+    groupName = request.GET.get("groupName")
+    groupType = request.GET.get("groupType")
+    districtId = request.GET.get("districtId")
+    selectCommunity = request.GET.get("selectCommunity")
+    selectBuilding = request.GET.get("selectBuilding")
+    selectTreeType = request.GET.get("selectTreeType")
+    simpleQueryParam = request.GET.get("simpleQueryParam")
+
+    organ = request.user.belongto
+    
+    if groupName:# and groupType == 'group':
+        try:
+            organ = Organization.objects.get(uuid=groupName)
+        except:
+            pass
+
+    pressure_queryset = organ.pressure_list_queryset('').filter(amrs_pressure__fluxreadtime__isnull=False)#.order_by('-amrs_pressure__fluxreadtime')
+    station_queryset = organ.station_list_queryset('').filter(amrs_bigmeter__fluxreadtime__isnull=False)#.order_by('-amrs_bigmeter__fluxreadtime')
+    if simpleQueryParam:
+        station_queryset = station_queryset.filter(
+                Q(amrs_bigmeter__username__icontains=simpleQueryParam)|
+                Q(amrs_bigmeter__commaddr__icontains=simpleQueryParam)|
+                Q(amrs_bigmeter__serialnumber__icontains=simpleQueryParam)
+                # Q(imei__icontains=query)
+                ).distinct()
+
+        pressure_queryset = pressure_queryset.filter(
+                Q(amrs_pressure__username__icontains=simpleQueryParam)|
+                Q(amrs_pressure__commaddr__icontains=simpleQueryParam)|
+                Q(amrs_pressure__serialnumber__icontains=simpleQueryParam)
+                # Q(imei__icontains=query)
+                ).distinct()
+    
+    queryset_list = [s.amrs_bigmeter for s in station_queryset]
+    queryset_list += [s.amrs_pressure for s in pressure_queryset]
+
+    queryset_list = sorted(queryset_list, key=lambda x: x.fluxreadtime)
+
+    watermeter_resource = BigmeterRTSelectResource()
+    # dataset = watermeter_resource.export(queryset_list)
+
+    HEADERS = []
+    # name 是路由url中的参数
+    # resource_name = '%s_Resource()' % name
+    # export_resource = eval(resource_name)
+
+    HEADERS = watermeter_resource.get_export_headers()
+    dataset = watermeter_resource.export(queryset_list)
+    import xlwt
+    book = xlwt.Workbook()
+    sheet = book.add_sheet('Sheet1')  # 创建一个sheet
+    # -----样式设置----------------
+    alignment = xlwt.Alignment()  # 创建居中
+    alignment.horz = xlwt.Alignment.HORZ_CENTER
+    alignment.vert = xlwt.Alignment.VERT_CENTER
+    # 头部样式
+    header = xlwt.XFStyle()
+    header.alignment = alignment
+    header.font.height = 200
+    header.font.name = '宋体'
+    header.font.bold = True  # 加粗
+    # 内容样式
+    style = xlwt.XFStyle()  # 创建样式
+    style.alignment = alignment  # 给样式添加文字居中属性
+    style.font.height = 200  # 设置200字体大小(默认10号)
+    style.font.name = '宋体'  # 设置 宋体
+    style.font.colour_index = 0x77  # 颜色
+    # 序号
+    sheet.write(0,0,"序号",header)
+    # 头部标题 设置样式
+    for tag in range(0, len(HEADERS)):
+        sheet.write(0, tag+1, HEADERS[tag], header)
+        # ----------设置列宽--------------
+        col = sheet.col(tag)
+        if 420 * (len(HEADERS[tag]) + 2) > 65536:
+            col.width = 65000
+        else:
+            col.width = 420 * (len(HEADERS[tag]) + 2)
+
+    # 内容样式
+    if dataset:
+        for line in range(0, len(dataset)):
+            sheet.write(line + 1, 0, line+1, style) #seq
+            for col in range(0, len(HEADERS)):
+                sheet.write(line + 1, col+1, dataset[line][col], style)
+                length = len(HEADERS[col])
+                for row in range(0, len(dataset)):
+                    if len(str(dataset[row][col])) >= len(str(dataset[row - 1][col])) and len(
+                                str(dataset[row][col])) > length:
+                        length = len(str(dataset[row][col]))
+                # 设置列宽
+                colwidth = sheet.col(col+1)
+                if 420 * (length + 2) > 65536:
+                    colwidth.width = 65000
+                else:
+                    colwidth.width = 420 * (length + 2)
+
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename='+ escape_uri_path("实时数据导出.xls")
+    # response['Content-Disposition'] = 'attachment; filename=%s.xls' % urlquote(name)
+    book.save(response)
+    return response

@@ -54,8 +54,8 @@ class WatermeterSerializer(ModelSerializer):
     
     class Meta:
         model = Watermeter
-        fields = ["id","serialnumber","numbersth","buildingname","roomname",#"communityid","concentrator",
-            "username","usertel","metercontrol"]
+        fields = ["id","serialnumber","numbersth","buildingname","roomname","dn","manufacturer",
+            "username","usertel","metercontrol","madedate"]
 
 class VWatermeterListSerializer(ModelSerializer):
     communityid = SerializerMethodField()
@@ -334,7 +334,7 @@ class MapConcentratorSerializer(ModelSerializer):
 class WatermeterImportSerializer(ModelSerializer):
     class Meta:
         model = Watermeter
-        fields = ('serialnumber', 'communityid', 'metertype','wateraddr','numbersth','buildingname','roomname',
+        fields = ('numbersth','serialnumber', 'communityid', 'metertype','wateraddr','buildingname','roomname',
             'username','usertel','dn','manufacturer','installationsite','metercontrol','madedate','dosage','rtime'
         )
 
