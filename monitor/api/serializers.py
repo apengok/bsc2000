@@ -68,9 +68,14 @@ class BigmeterRTSerializer(ModelSerializer):
     def get_commstate(self,obj):
         now = datetime.datetime.now()
         d7 = now - datetime.timedelta(days=7)
-        dn = datetime.datetime.strptime(obj.fluxreadtime,"%Y-%m-%d %H:%M:%S")
-        if d7 < dn:
-            return 1
+        try:
+            dn = datetime.datetime.strptime(obj.fluxreadtime,"%Y-%m-%d %H:%M:%S")
+            if d7 < dn:
+                return 1
+            
+        except:
+            pass
+
         return 0
 
     # def get_fluxreadtime(self,obj):

@@ -89,8 +89,8 @@ class BigmeterRTListAPIView(ListAPIView):
             except:
                 pass
 
-        pressure_queryset = organ.pressure_list_queryset('').filter(amrs_pressure__fluxreadtime__isnull=False)#.order_by('-amrs_pressure__fluxreadtime')
-        station_queryset = organ.station_list_queryset('').filter(amrs_bigmeter__fluxreadtime__isnull=False)#.order_by('-amrs_bigmeter__fluxreadtime')
+        pressure_queryset = organ.pressure_list_queryset('')#.filter(amrs_pressure__fluxreadtime__isnull=False)#.order_by('-amrs_pressure__fluxreadtime')
+        station_queryset = organ.station_list_queryset('')#.filter(amrs_bigmeter__fluxreadtime__isnull=False)#.order_by('-amrs_bigmeter__fluxreadtime')
         if simpleQueryParam:
             station_queryset = station_queryset.filter(
                     Q(amrs_bigmeter__username__icontains=simpleQueryParam)|
@@ -109,7 +109,7 @@ class BigmeterRTListAPIView(ListAPIView):
         queryset_list = [s.amrs_bigmeter for s in station_queryset]
         queryset_list += [s.amrs_pressure for s in pressure_queryset]
 
-        queryset_list = sorted(queryset_list, key=lambda x: x.fluxreadtime)
+        queryset_list = sorted(queryset_list, key=lambda x: x.fluxreadtime if x.fluxreadtime else '')
         queryset_list = queryset_list[::-1]
         
         print('time elapse:',time.time()-t1)
