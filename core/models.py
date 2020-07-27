@@ -941,8 +941,14 @@ class Station(models.Model):
     # locate      = models.CharField(db_column='locate', max_length=30, blank=True, null=True)  # Field name made lowercase.
     # dmaid       = models.ForeignKey(DMABaseinfo,blank=True, null=True,on_delete=models.CASCADE) #所在dma分区
     dmaid       = models.ManyToManyField(DMABaseinfo)
-
+    
     dmametertype     = models.CharField(db_column='dmaMeterType', max_length=30, blank=True, null=True)  # Field name made lowercase.
+
+    image1 = models.ImageField(upload_to='stations', blank=True)
+    image2 = models.ImageField(upload_to='stations', blank=True)
+    image3 = models.ImageField(upload_to='stations', blank=True)
+    image4 = models.ImageField(upload_to='stations', blank=True)
+    image5 = models.ImageField(upload_to='stations', blank=True)
 
     objects = StationManager()
 

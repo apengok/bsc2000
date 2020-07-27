@@ -121,7 +121,7 @@ class StationsForm(forms.ModelForm):
 
     class Meta:
         model = Station    
-        fields= ('description','focus','biguser')
+        fields= ('description','focus','biguser','image2','image3','image4','image5')
 
 
 class StationsEditForm(forms.ModelForm):
@@ -138,7 +138,7 @@ class StationsEditForm(forms.ModelForm):
     lat = forms.CharField(required=False)
     madedate = forms.CharField(required=False)
     installationsite = forms.CharField(required=False)
-
+    
 
     def __init__(self, *args, **kwargs):
         super(StationsEditForm, self).__init__(*args, **kwargs)
@@ -164,7 +164,7 @@ class StationsEditForm(forms.ModelForm):
 
     class Meta:
         model = Station    
-        fields= ('description','focus','biguser')
+        fields= ('description','focus','biguser','image1','image2','image3','image4','image5')
 
 
 class AssignStationForm(forms.Form):

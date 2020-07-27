@@ -1,5 +1,94 @@
 {% load staticfiles %}
 
+
+<style>
+    #preview-index {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#preview-index:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal1 {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content1 {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+.modal-content1, #caption {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close1 {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close1:hover,
+.close1:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content1 {
+    width: 100%;
+  }
+}
+</style>
+
 <form id="addForm" role="form" action="{% url 'dmam:stationadd' %}" class="form-horizontal" method="post">{% csrf_token %}
     <div class="modal-header">
         <button type="button" id="doXEdit" class="close" data-dismiss="modal"
@@ -179,30 +268,56 @@
 
             <div class="col-md-12">
                 <div class="col-md-2"><button type="button" class="btn btn-primary">载入现场图片</button></div>
-                <div class="col-md-2" style="border: 1px solid grey;height: 100px;">
-                    <!-- <table width="50%" border="0" cellspacing="0" cellpadding="0">
-                        <tbody>
-                            <tr>
-                                <td align="left">
-                                <div id="localImag-ico" style="margin-bottom: 10px;"><img id="preview-ico" src="" style="display: block;"></div>
-                                <input id="photograph-ico" name="photograph-ico" type="hidden" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="inpFilePhoto">
-                                        <input type="file" accept="image/png" name="file" id="doc-ico" style="width:202px;" >
-                                        点击选择照片
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> -->
+                <div class="col-md-2" style="height: 120px;">
+                    <div id="localImag-index1" style="border: 1px solid grey;height: 90px;">
+                        <img id="preview-index1" class="img-click" src="" alt="现场图1" style="display: block;width: 240px;height: 80px;">
+                    </div>
+
+                    <div class="inpFilePhoto">
+                        <input type="file" accept="image/png" name="image1" id="doc-index1" style="width:202px;height: 20px;" >
+                        点击选择照片
+                    </div>
                 </div>
-                <div class="col-md-2" style="border: 1px solid grey;height: 100px;"></div>
-                <div class="col-md-2" style="border: 1px solid grey;height: 100px;"></div>
-                <div class="col-md-2" style="border: 1px solid grey;height: 100px;"></div>
-                <div class="col-md-2" style="border: 1px solid grey;height: 100px;"></div>
+                <div class="col-md-2" style="height: 120px;">
+                    <div id="localImag-index2" style="border: 1px solid grey;height: 90px;">
+                        <img id="preview-index2" class="img-click" src="" alt="现场图2" style="display: block;width: 240px;height: 80px;">
+                    </div>
+
+                    <div class="inpFilePhoto">
+                        <input type="file" accept="image/png" name="image2" id="doc-index2" style="width:202px;height: 20px;" >
+                        点击选择照片
+                    </div>
+                </div>
+                <div class="col-md-2" style="height: 120px;">
+                    <div id="localImag-index3" style="border: 1px solid grey;height: 90px;">
+                        <img id="preview-index3" class="img-click" src="" alt="现场图3" style="display: block;width: 240px;height: 80px;">
+                    </div>
+
+                    <div class="inpFilePhoto">
+                        <input type="file" accept="image/png" name="image3" id="doc-index3" style="width:202px;height: 20px;" >
+                        点击选择照片
+                    </div>
+                </div>
+                <div class="col-md-2" style="height: 120px;">
+                    <div id="localImag-index4" style="border: 1px solid grey;height: 90px;">
+                        <img id="preview-index4" class="img-click" src="" alt="现场图4" style="display: block;width: 240px;height: 80px;">
+                    </div>
+
+                    <div class="inpFilePhoto">
+                        <input type="file" accept="image/png" name="image4" id="doc-index4" style="width:202px;height: 20px;" >
+                        点击选择照片
+                    </div>
+                </div>
+                <div class="col-md-2" style="height: 120px;">
+                    <div id="localImag-index5" style="border: 1px solid grey;height: 90px;">
+                        <img id="preview-index5" class="img-click" src="" alt="现场图5" style="display: block;width: 240px;height: 80px;">
+                    </div>
+
+                    <div class="inpFilePhoto">
+                        <input type="file" accept="image/png" name="image5" id="doc-index5" style="width:202px;height: 20px;" >
+                        点击选择照片
+                    </div>
+                </div>
             </div>
 
 
@@ -225,6 +340,17 @@
     </div>
 </form>
 <input value="{{ user.idstr }}" id="currentUserId" type="hidden"/>
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal1" >
+    <span class="close1">&times;</span>
+    <img class="modal-content1" id="img01">
+    <div id="caption"></div>
+  </div>
+
+
+  
 <script>
     var userNameNull = "站点名称不能为空";
     var userNameError = "\u8BF7\u8F93\u5165\u5B57\u6BCD/\u6570\u5B57/\u4E0B\u5212\u7EBF/\u77ED\u6760\uFF0C\u5982\uFF1Alove\u3001\u5C0F\u9C7C\u30011234\u3001F3-808";
@@ -273,6 +399,54 @@
         }
         
     })
+
+
+    
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    var img1 = document.getElementById("preview-index1");
+    img1.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+    var img2 = document.getElementById("preview-index2");
+    img2.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+    var img3 = document.getElementById("preview-index3");
+    img3.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+    var img4 = document.getElementById("preview-index4");
+    img4.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+    var img5 = document.getElementById("preview-index5");
+    img5.onclick = function(){
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close1")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() { 
+        modal.style.display = "none";
+    }
 </script>
 
 

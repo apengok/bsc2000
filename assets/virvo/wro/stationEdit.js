@@ -361,7 +361,7 @@
         
             //meter list
             var meterlist = data;
-            console.log('meterlist:',meterlist);
+            // console.log('meterlist:',meterlist);
 
             // 初始化车辆数据
             var dataList = {value: data};
@@ -412,6 +412,48 @@
             }else{
                 layer.msg(data.msg,{move:false});
             }
+        },
+        setImagePreview: function(di1,pi1,li1){
+            // personalizedConfiguration.uploadImageIndex(); // 上传图片到服务器 
+            console.log("preview")
+            var docObj=document.getElementById(di1);
+            var imgObjPreview=document.getElementById(pi1);
+            if(docObj.files &&docObj.files[0])
+            {
+                //火狐下，直接设img属性
+                imgObjPreview.style.display = 'block';
+                imgObjPreview.style.width = '240px';
+                imgObjPreview.style.height = '80px'; 
+                //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+                if(window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1){
+                    imgObjPreview.src = window.webkitURL.createObjectURL(docObj.files[0]); 
+                }else{
+                    imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+                }
+            }
+            else
+            {
+                //IE下，使用滤镜
+                docObj.select();
+                var imgSrc = document.selection.createRange().text;
+                var localImagId = document.getElementById(li1);
+                //必须设置初始大小
+                localImagId.style.width = "240px";
+                localImagId.style.height = "80px";
+                //图片异常的捕捉，防止用户修改后缀来伪造图片
+            try{
+                localImagId.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+                localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+            }
+            catch(e)
+            {
+                alert("您上传的图片格式不正确，请重新选择!");
+                return false;
+            }
+                imgObjPreview.style.display = 'none';
+                document.selection.empty();
+            }
+            return true;
         },
         doSubmit: function(){
             
@@ -534,6 +576,22 @@
         $(':radio:not(:checked)').attr('disabled', true);
 
         $("#locatesel").on("change",stationEdit.locatechange);
+        $("#doc-index1").on("change",function(){
+            stationEdit.setImagePreview("doc-index1","preview-index1","localImag-index1");
+        });
+        $("#doc-index2").on("change",function(){
+            stationEdit.setImagePreview("doc-index2","preview-index2","localImag-index2");
+        });
+        $("#doc-index3").on("change",function(){
+            stationEdit.setImagePreview("doc-index3","preview-index3","localImag-index3");
+        });
+        $("#doc-index4").on("change",function(){
+            stationEdit.setImagePreview("doc-index4","preview-index4","localImag-index4");
+        });
+        $("#doc-index5").on("change",function(){
+            stationEdit.setImagePreview("doc-index5","preview-index5","localImag-index5");
+        });
+        
 
         if ($("#userId").val() == userId) {
             $("#zTreeStationSelEdit").attr("disabled","disabled"); // 禁用选择组织控件

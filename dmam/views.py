@@ -2060,6 +2060,8 @@ class StationEditView(AjaxableResponseMixin,UserPassesTestMixin,UpdateView):
         metertype = self.request.POST.get("metertype")
         installationsite = self.request.POST.get("installationsite")
 
+        
+
         # amrs bigmeter
         amrs_bigmeter = {
             "serialnumber":serialnumber,

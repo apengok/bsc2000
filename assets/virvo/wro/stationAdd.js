@@ -595,11 +595,11 @@
                         : nowDate.getDate()) + " ";
                 $("#madedate").val(startTime);
         },
-        setImagePreview:function(){
-            console.log('setImagePreviewico')
-            // stationAdd.uploadImageIco(); // 上传图片到服务器 
-            var docObj=document.getElementById("doc-ico");
-            var imgObjPreview=document.getElementById("preview-ico");
+        setImagePreview: function(di1,pi1,li1){
+            // personalizedConfiguration.uploadImageIndex(); // 上传图片到服务器 
+            console.log("preview")
+            var docObj=document.getElementById(di1);
+            var imgObjPreview=document.getElementById(pi1);
             if(docObj.files &&docObj.files[0])
             {
                 //火狐下，直接设img属性
@@ -618,7 +618,7 @@
                 //IE下，使用滤镜
                 docObj.select();
                 var imgSrc = document.selection.createRange().text;
-                var localImagId = document.getElementById("localImag-ico");
+                var localImagId = document.getElementById(li1);
                 //必须设置初始大小
                 localImagId.style.width = "240px";
                 localImagId.style.height = "80px";
@@ -652,7 +652,21 @@
         $(':radio:not(:checked)').attr('disabled', true);
 
         $("#locatesel").on("change",stationAdd.locatechange);
-        // $("#doc-ico").on("change",stationAdd.setImagePreview);
+        $("#doc-index1").on("change",function(){
+            stationAdd.setImagePreview("doc-index1","preview-index1","localImag-index1");
+        });
+        $("#doc-index2").on("change",function(){
+            stationAdd.setImagePreview("doc-index2","preview-index2","localImag-index2");
+        });
+        $("#doc-index3").on("change",function(){
+            stationAdd.setImagePreview("doc-index3","preview-index3","localImag-index3");
+        });
+        $("#doc-index4").on("change",function(){
+            stationAdd.setImagePreview("doc-index4","preview-index4","localImag-index4");
+        });
+        $("#doc-index5").on("change",function(){
+            stationAdd.setImagePreview("doc-index5","preview-index5","localImag-index5");
+        });
 
         // if ($("#userId").val() == userId) {
         //     $("#zTreeStationSelEdit").attr("disabled","disabled"); // 禁用选择组织控件
