@@ -1,4 +1,18 @@
 {% load staticfiles %}
+<style type="text/css">
+    /*div.dataTables_wrapper{overflow:hidden;user-select:text!important;-ms-user-select:text!important;-moz-user-select:text!important;-webkit-user-select:text!important}*/
+    .hidevalue {
+      display: none;
+    }
+
+    .modal-body {
+        position: relative;
+        padding: 20px;
+        height: 200px;
+        overflow-y: scroll;
+    }
+  </style>
+
     <div class="modal-header">
         <button id="doXEdit" type="button" class="close" data-dismiss="modal"
             aria-hidden="true">&times;</button>
@@ -49,22 +63,11 @@
 
         </div>
 
-        <div style="overflow: auto">
-            <!-- <table id="dma2leakage" >
-                <thead >
-                    <tr>
-                        <th data-field="rank">排名</th>
-                        <th data-field="client_name">分区名称</th>
-                        <th data-field="belongto">所属组织</th>
-                        <th data-field="watertype">年度供水量</th>
-                        <th data-field="year_use">年度漏水量</th>
-                        <th data-field="zhanbi">漏损率</th>
-                    </tr>
-                </thead>
-            </table> -->
+        <div style="overflow: auto;width: 100%;">
+            
             <table id="concentrator_watermeter"
                 class="table table-striped table-bordered table-hover checkTable"
-                cellspacing="0" width="100%">
+                cellspacing="0" >
                 <thead>
                     <tr>
                         <th>序号</th>

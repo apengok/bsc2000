@@ -53,6 +53,7 @@ from .serializers import (
     BigmeterRTSerializer,
     MapStationSerializer,
     MapSecondWaterSerializer,
+    BigmeterPushDataSerializer,
     )
 
 import logging
@@ -234,3 +235,28 @@ def test_zxesi_view(request):
     }
    
     return Response(ret)
+
+@api_view(['GET','POST'])
+def PostMDataList(request):
+    
+    print(request.data)
+    
+    ret = {
+        "Code":"0000",
+        "info": "设备及数据全部成功插入",
+        "errMsg":""
+    }
+    return Response(ret)
+
+
+@api_view(['GET','POST'])
+def PostMData(request):
+    belongto = Organization.objects.get(name='六合远古')
+
+    queryset = belongto.station_list_queryset('')
+    queryset_list = [s.amrs_bigmeter for s in queryset]
+
+    serializer_data = BigmeterPushDataSerializer(queryset_list,many=True).data
+    print(type(serializer_data))
+    
+    return Response(serializer_data)

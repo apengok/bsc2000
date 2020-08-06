@@ -33,6 +33,27 @@ from core.models import (
     DMABaseinfo,
 )
 
+class BigmeterPushDataSerializer(ModelSerializer):
+    DeviceID = ReadOnlyField(source='serialnumber')
+    DeviceName = ReadOnlyField(source='username')
+    RealData = SerializerMethodField()
+    HistoryData = SerializerMethodField()
+
+    class Meta:
+        model = Bigmeter
+
+        fields = ['DeviceID','DeviceName','RealData','HistoryData']
+
+    def get_RealData(self,obj):
+
+        return {
+            "PT":obj.fluxreadtime if obj.fluxreadtime else '1970-01-01 00:00:00',
+            "PV":obj.plustotalflux if obj.plustotalflux else '0.0'
+        }
+
+    def get_HistoryData(self,obj):
+        return []
+
 class BigmeterRTSerializer(ModelSerializer):
     id = ReadOnlyField(source='commaddr')
     belongto = SerializerMethodField()

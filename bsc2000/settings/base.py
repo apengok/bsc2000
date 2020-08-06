@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     # 'rest_auth.registration',
     'rest_framework',
     # 'rest_framework.authtoken',
+    'django_apscheduler',
     'accounts',
     'amrs',
     'core',

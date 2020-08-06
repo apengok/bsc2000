@@ -23,6 +23,7 @@ from entm.views import i18n_javascript,error_404,error_500,StaticView,faviconred
 from accounts.views import LoginView
 
 from dmam.api.views import test_zxesi_view,getCurrentAlarm
+from monitor.api.views import PostMDataList,PostMData
 
 urlpatterns = [
     url(r'^$',LoginView.as_view(), name='login'),
@@ -80,6 +81,8 @@ urlpatterns = [
     url(r'^api/amrs/', include('amrs.urls', namespace='amrs-api')),
 
     # 3rd test
+    url(r'^CityInterface/rest/services/CountyProduct.svc/PostMDataList',PostMDataList,name='PostMDataList'),
+    url(r'^CityInterface/rest/services/CountyProduct.svc/PostMData',PostMData,name='PostMData'),
     url(r'^pis/rest/unityPlatform/getDeviceState',test_zxesi_view,name='test_zxesi'),
     url(r'^pis/rest/unityPlatform/getCurrentAlarm',getCurrentAlarm,name='getCurrentAlarm'),
 
@@ -95,3 +98,8 @@ if settings.DEBUG:
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
+
+if not settings.DEBUG:
+    import bsc2000.push_data
+
+# import bsc2000.push_data

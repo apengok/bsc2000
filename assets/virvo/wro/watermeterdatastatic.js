@@ -435,8 +435,8 @@
                     {
                         name: '表类型',
                         type: 'pie',
-                        radius : '55%',
-                        center: ['75%', '60%'],
+                        radius : '50%',
+                        center: ['70%', '60%'],
                         label:{
                             show:false
                         },
@@ -503,8 +503,8 @@
                     {
                         name: '表类型',
                         type: 'pie',
-                        radius : '55%',
-                        center: ['75%', '60%'],
+                        radius : '50%',
+                        center: ['70%', '60%'],
                         label:{
                             show:false
                         },
@@ -566,8 +566,8 @@
                     {
                         name: '表类型',
                         type: 'pie',
-                        radius : '55%',
-                        center: ['75%', '60%'],
+                        radius : '50%',
+                        center: ['70%', '60%'],
                         label:{
                             show:false
                         },
@@ -628,8 +628,8 @@
                     {
                         name: '表类型',
                         type: 'pie',
-                        radius : '55%',
-                        center: ['75%', '60%'],
+                        radius : '50%',
+                        center: ['70%', '60%'],
                         label:{
                             show:false
                         },
@@ -690,8 +690,8 @@
                     {
                         name: '表类型',
                         type: 'pie',
-                        radius : '55%',
-                        center: ['75%', '60%'],
+                        radius : '50%',
+                        center: ['70%', '60%'],
                         label:{
                             show:false
                         },
