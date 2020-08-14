@@ -416,13 +416,14 @@ def choicePermissionTree(request):
     if len(rid) <= 0:
         user = request.user
         if user.is_admin:
-            print("i'm admin")
+            print("\r\ni'm admin")
             return HttpResponse(json.dumps(buildbasetree()))
         permissiontree = user.Role.permissionTree
 
     else:
         instance = MyRoles.objects.get(pk=rid)
         # instance = MyRoles.objects.get(rid=rid)
+        print("\r\nwho am i ? ",instance.name)
         if instance.name == "超级管理员":    #超级用户直接返回全部权限
             return HttpResponse(json.dumps(buildbasetree()))
         permissiontree = instance.permissionTree

@@ -1,0 +1,211 @@
+{% extends '_vbase.html' %}
+
+
+{% load staticfiles %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block main_content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="content-left" class="col-md-2" style="padding-right: 0px; padding-left: 0px; ">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title fwb">水厂列表</h3>
+                  <div class="actions  listActions">
+                    <i class="fa fa-chevron-down"></i>
+                  </div>
+                </div>
+                <div class="panel-body" style="padding: 0px;">
+                  <!-- <div class="form-group" style="margin-top: 15px;">
+                    <div class="col-md-12">
+                      <input id="search_condition" name="search" class="form-control" style="margin-bottom: 10px;" type="text" placeholder="请输入组织名称" />
+                    </div>
+                  </div> -->
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="padding: 0px;height:100%!important">
+                    <ul id="treeDemo" class="ztreee" style="overflow:auto;"></ul>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="col-md-2" style="padding-right: 0px; padding-left:0px;"></div> -->
+        <div id="content-right" class="col-md-10 real-time-command-list" style="padding-right: 0px; padding-left:10px;padding-bottom: 0px;">
+            <iframe frameborder="0" allowtransparency="true"  id="ww_monitor" 
+            src="http://218.21.36.218:8088/wuzhong/projects/m_grh/yishuichangxitongtu.html" 
+            
+            ></iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block javascript %}
+
+<script>
+(function($,window){
+    var organTree=$("#treeDemo"),
+     logoWidth, btnIconWidth, windowWidth,sidebarHeight,
+    newwidth,   myTabHeight, wHeight, tableHeight,  winHeight, headerHeight,  
+    $frameshow=$("#ww_monitor"),
+    $contentLeft = $("#content-left"), $contentRight = $("#content-right"), $sidebar = $(".sidebar"), 
+    $mainContentWrapper = $(".main-content-wrapper"), $thetree = $("#treeDemo"),
+    $goShow = $("#goShow");
+
+    var flagOne = true;
+
+    var pageLayout = {
+        // 页面布局
+        init: function(){
+            //加载时隐藏left同时计算宽度
+            $sidebar.attr("class", "sidebar sidebar-toggle");
+            $mainContentWrapper.attr("class", "main-content-wrapper main-content-toggle-left");
+            
+            winHeight = $(window).height();//可视区域高度
+            sidebarHeight = $(".sidebar").height();//sidebar height
+            headerHeight = $("#header").height();//头部高度
+            
+            // console.log("station status height",stationStateHeight);
+            var paneHeaderHeight = $(".panel-heading").height();
+
+            
+            //树高度
+            var newContLeftH = winHeight - headerHeight  - 2*paneHeaderHeight - 80;
+            $thetree.css({
+                "height":newContLeftH + 'px'
+            });
+            // //sidebar高度
+            // $(".sidebar").css('height',newContLeftH + 'px');
+            // organTree.css('height',newContLeftH + 'px');
+            //计算顶部logo相关padding
+            logoWidth = $("#header .brand").width();
+            btnIconWidth = $("#header .toggle-navigation").width();
+            windowWidth = $(window).width();
+            newwidth = (logoWidth + btnIconWidth + 40) / windowWidth * 100;
+            //左右自适应宽度
+            $contentLeft.css({
+                "width": newwidth -0.3+ "%",
+                "height":newContLeftH + 'px'
+            });
+            $contentRight.css({
+                "width": 100 - newwidth + "%"
+            });
+            $frameshow.css({
+                "width": $contentRight.width() + 170+"px",
+                "height":winHeight - headerHeight +'px'
+            });
+            
+            // //操作树高度自适应
+            var newTreeH = winHeight - headerHeight - 503;
+            // console.log("")
+            organTree.css({
+                "height": newTreeH + "px"
+            });
+            // //视频区域自适应
+            // var mainContentHeight = $contentLeft.height();
+            // var adjustHeight = $(".adjust-area").height();
+            // videoHeight = (mainContentHeight - adjustHeight - 65) / 2;
+            // $(".videoArea").css("height", videoHeight + "px");
+            // //地图拖动改变大小
+            // oldMapHeight = $MapContainer.height();
+            // myTabHeight = $myTab.height();
+            // wHeight = $(window).height();
+            // console.log("wHeight:",wHeight);
+            // // 页面区域定位
+            // $(".amap-logo").attr("href", "javascript:void(0)").attr("target", "");
+            // 监听浏览器窗口大小变化
+            var sWidth = $(window).width();
+            if (sWidth < 1200) {
+                $("body").css("overflow", "auto");
+                $("#content-left,#panDefLeft").css("height", "auto");
+                $panDefLeft.css("margin-bottom", "0px");
+                if (sWidth <= 414) {
+                    $sidebar.removeClass("sidebar-toggle");
+                    $mainContentWrapper.removeClass("main-content-toggle-left");
+                }
+            } else {
+                // $("body").css("overflow", "hidden");
+            };
+            $(".imitateMenuBg").toggleClass("imitateMenuBg-left");
+            $(".defaultFootBg").toggleClass("defaultFootBg-left");
+            window.onresize=function(){
+                winHeight = $(window).height();//可视区域高度
+                console.log("onresize:",winHeight);
+                headerHeight = $("#header").height();//头部高度
+                
+                var paneHeaderHeight = $(".panel-heading").height();
+                // console.log("paneHeaderHeight",paneHeaderHeight);
+                
+                var newContLeftH = winHeight - headerHeight  - 2*paneHeaderHeight - 80;
+                //sidebar高度
+                // $(".sidebar").css('height',newContLeftH + 'px');
+                // organTree.css('height',newContLeftH + 'px');
+
+                //计算顶部logo相关padding
+                logoWidth = $("#header .brand").width();
+                btnIconWidth = $("#header .toggle-navigation").width();
+                windowWidth = $(window).width();
+                newwidth = (logoWidth + btnIconWidth + 40) / windowWidth * 100;
+                //左右自适应宽度
+                $contentLeft.css({
+                    "width": newwidth + "%"
+                });
+                $contentRight.css({
+                    "width": 100 - newwidth + "%"
+                });
+                console.log("resize",$contentRight.height())
+                $frameshow.css({
+                    "width": 100 + "%",
+                    "height":winHeight - headerHeight +'px'
+                });
+            
+            
+            }
+        },
+    },
+    
+    frameshow = {
+        initTree:function(){
+            var setting = {};
+            var zNodes = [
+                {
+                    name:"吴忠水务", 
+                    icon:"/static/virvo/resources/img/wenjianjia.png",
+                    open:true, 
+                    children:[
+                        {
+                            name:"一水厂",
+                            icon:"/static/virvo/resources/img/home.png"
+                        }, 
+                        {
+                            name:"二水厂",
+                            icon:"/static/virvo/resources/img/home.png"
+                        }, 
+                        {
+                            name:"三水厂",
+                            icon:"/static/virvo/resources/img/home.png"
+                        }
+                    ]
+                }
+            
+            ];
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+
+            
+        }
+    };
+
+    $(function(){
+        frameshow.initTree();
+        pageLayout.init();
+        
+    })
+})($,window)
+
+</script>
+{% endblock %}
+

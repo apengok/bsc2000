@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'sysm',
 ]
 
+X_FRAME_OPTIONS = 'ALLOW-FROM http://218.21.36.218:8088/'
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',

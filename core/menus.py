@@ -6,8 +6,18 @@ choicetreedict=OrderedDict()
 choicetreedict["prodschedule"]={
         "name":"生产调度",
         "submenu":[{
-            "factoryview":{"name":"厂区总览","url":"/prodschedule/factoryview/","sub":{"name":"可写"}},
-            "hydromodel":{"name":"水力模型","url":"/prodschedule/hydromodel/","sub":{"name":"可写"}},
+            "alloverview":{"name":"运行总览","url":"/prodschedule/alloverview/","sub":{"name":"可写"}},
+            "wwmonitor":{"name":"水厂监控","url":"/prodschedule/wwmonitor/","sub":{"name":"可写"}},
+            "pumpersee":{"name":"泵站监测","url":"/prodschedule/pumpersee/","sub":{"name":"可写"}},
+            "deepwell":{"name":"深水源井","url":"/prodschedule/deepwell/","sub":{"name":"可写"}},
+            "electrosys":{"name":"配电系统","url":"/prodschedule/electrosys/","sub":{"name":"可写"}},
+            "realtimevideo":{"name":"实时视频","url":"/prodschedule/realtimevideo/","sub":{"name":"可写"}},
+            "warningcheck":{"name":"报警查询","url":"/prodschedule/warningcheck/","sub":{"name":"可写"}},
+            "historydata":{"name":"历史数据","url":"/prodschedule/historydata/","sub":{"name":"可写"}},
+            "generalreport":{"name":"综合报表","url":"/prodschedule/generalreport/","sub":{"name":"可写"}},
+
+            # "factoryview":{"name":"厂区总览","url":"/prodschedule/factoryview/","sub":{"name":"可写"}},
+            # "hydromodel":{"name":"水力模型","url":"/prodschedule/hydromodel/","sub":{"name":"可写"}},
             
         }],
     }
@@ -128,6 +138,7 @@ choicetreedict["reports"] = {
 choicetreedict["sysm"] = {
         "name":"系统管理",
         "submenu":[{
+            "bigscreen":{"name":"大屏展示","url":"/sysm/bigscreen/","sub":{"name":"可写"}},
             "commconfig":{"name":"通讯管理","url":"/sysm/commconfig/","sub":{"name":"可写"}},
             "personalized":{"name":"平台个性化配置","url":"/sysm/personalized/list/","sub":{"name":"可写"}},
             "system":{"name":"系统设置","url":"/sysm/system/","sub":{"name":"可写"}},

@@ -11,6 +11,7 @@ urlpatterns = [
     
     url(r'^$', TemplateView.as_view(template_name='sysm/personalizedList.html'),name='sysm_home'),
 
+    url(r'^bigscreen/?$',views.BigScreenView.as_view(),name='bigscreen'),
     
 
     # 系统管理 --平台个性化配置

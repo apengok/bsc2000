@@ -400,6 +400,19 @@ def getmetercommlist(request):
     
     return HttpResponse(json.dumps(result))
 
+class BigScreenView(LoginRequiredMixin,TemplateView):
+    template_name = "sysm/showscreen.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(BigScreenView, self).get_context_data(*args, **kwargs)
+        context["page_menu"] = "系统管理"
+        # context["page_submenu"] = "组织和用户管理"
+        context["page_title"] = "大屏展示"
+        
+        
+
+        return context      
+
 class CommConfigView(LoginRequiredMixin,TemplateView):
     template_name = "sysm/commconfig.html"
 

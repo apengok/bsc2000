@@ -16,6 +16,87 @@
                     </a>
                     <ul class="second-menu-ul">
                         <li class="second-menu">
+                            <a href="/prodschedule/alloverview/">
+                                <i class="fa fa-location-arrow"></i><span>运行总览</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/wwmonitor/">
+                                <i class="fa fa-location-arrow"></i><span>水厂监控</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/pumpersee/">
+                                <i class="fa fa-location-arrow"></i><span>泵站监测</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/deepwell/">
+                                <i class="fa fa-location-arrow"></i><span>深水源井</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/electrosys/">
+                                <i class="fa fa-location-arrow"></i><span>配电系统</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/realtimevideo/">
+                                <i class="fa fa-location-arrow"></i><span>实时视频</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/warningcheck/">
+                                <i class="fa fa-location-arrow"></i><span>报警查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/historydata/">
+                                <i class="fa fa-location-arrow"></i><span>历史数据</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
+                            <a href="/prodschedule/generalreport/">
+                                <i class="fa fa-location-arrow"></i><span>综合报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <!-- <li class="second-menu">
                             <a href="/prodschedule/factoryview/">
                                 <i class="fa fa-location-arrow"></i><span>厂区总览</span> 
                                 <i></i> 
@@ -32,7 +113,7 @@
                             <ul>
                                 
                             </ul>
-                        </li>
+                        </li> -->
                         
                         
                     </ul>
@@ -629,6 +710,15 @@
                     </a>
                     <ul class="second-menu-ul">
                         <li class="second-menu">
+                            <a href="/sysm/bigscreen/">
+                                <i class="fa fa-location-arrow"></i><span>大屏展示</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        <li class="second-menu">
                             <a href="/sysm/commconfig/">
                                 <i class="fa fa-location-arrow"></i><span>通讯管理</span> 
                                 <i></i> 
@@ -691,7 +781,106 @@
                         <i class="arrow fa fa-angle-right pull-right"></i>
                     </a>
                     <ul class="second-menu-ul">
-                        {% if  'factoryview_prodschedule' in user.permissiontree %}
+                        {% if  'hydromodel_alloverview' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/alloverview/">
+                                <i class="fa fa-location-arrow"></i><span>运行总览</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_wwmonitor' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/wwmonitor/">
+                                <i class="fa fa-location-arrow"></i><span>水厂监控</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_pumpersee' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/pumpersee/">
+                                <i class="fa fa-location-arrow"></i><span>泵站监测</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_deepwell' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/deepwell/">
+                                <i class="fa fa-location-arrow"></i><span>深水源井</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_electrosys' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/electrosys/">
+                                <i class="fa fa-location-arrow"></i><span>配电系统</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_realtimevideo' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/realtimevideo/">
+                                <i class="fa fa-location-arrow"></i><span>实时视频</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_warningcheck' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/warningcheck/">
+                                <i class="fa fa-location-arrow"></i><span>报警查询</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_historydata' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/historydata/">
+                                <i class="fa fa-location-arrow"></i><span>历史数据</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if  'hydromodel_generalreport' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/prodschedule/generalreport/">
+                                <i class="fa fa-location-arrow"></i><span>综合报表</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                        <!-- {% if  'factoryview_prodschedule' in user.permissiontree %}
                         <li class="second-menu">
                             <a href="/prodschedule/factoryview/">
                                 <i class="fa fa-location-arrow"></i><span>厂区总览</span> 
@@ -712,7 +901,7 @@
                                 
                             </ul>
                         </li>
-                        {% endif %}
+                        {% endif %} -->
                         
                         
                     </ul>
@@ -1452,6 +1641,18 @@
                         <i class="arrow fa fa-angle-right pull-right"></i>
                     </a>
                     <ul class="second-menu-ul">
+
+                        {% if  'bigscreen_sysm' in user.permissiontree %}
+                        <li class="second-menu">
+                            <a href="/sysm/bigscreen/">
+                                <i class="fa fa-location-arrow"></i><span>大屏展示</span> 
+                                <i></i> 
+                            </a>
+                            <ul>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
                         {% if  'commconfig_sysm' in user.permissiontree %}
                         <li class="second-menu">
                             <a href="/sysm/commconfig/">

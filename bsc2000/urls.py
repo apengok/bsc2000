@@ -99,7 +99,7 @@ if settings.DEBUG:
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
 
-if not settings.DEBUG:
-    import bsc2000.push_data
+# if not settings.DEBUG:
+#     import bsc2000.push_data
 
 # import bsc2000.push_data

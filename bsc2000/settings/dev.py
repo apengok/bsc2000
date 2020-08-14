@@ -17,8 +17,8 @@ DATABASES = {
         'NAME': 'zncb',
         'USER': 'scada',
         'PASSWORD': 'scada',
-        'HOST': '120.78.255.129',    #120.78.255.129 192.168.197.134
-        # 'HOST': 'localhost',    #120.78.255.129 192.168.197.134
+        # 'HOST': '120.78.255.129',    #120.78.255.129 192.168.197.134
+        'HOST': 'localhost',    #120.78.255.129 192.168.197.134
         'PORT': '3306',
         'STORAGE_ENGINE': 'INNODB',
         'OPTIONS': {'charset': 'utf8mb4'},

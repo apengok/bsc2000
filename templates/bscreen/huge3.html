@@ -1,0 +1,35 @@
+{% extends '_vbase.html' %}
+
+
+{% load staticfiles %}
+
+
+
+{% block main_content %}
+{% block breadcrumb %}
+{% endblock %}
+<!-- <div style="height: 900px;width: 100%" id="echarts_1"></div> -->
+
+
+<iframe frameborder="0" allowtransparency="true" width="1200px" height="720px" id="electro_system" src="http://218.21.36.218:8088/wuzhong/projects/m_grh/nongyinshui-yxzl.html"></iframe>
+
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<!-- <script>
+    winHeight = $(window).height();//可视区域高度
+    headerHeight = $("#header").height();//头部高度
+    var tabHeight = $myTab.height();//信息列表table选项卡高度
+    var panhead = $(".panel-heading").height();
+    // tabHeight = panhead;
+    // console.log("tabHeight height ",tabHeight,"panel head",panhead)
+    var tabContHeight = $("#myTabContent").height();//table表头高度
+    var fenceTreeHeight = winHeight - 380;//围栏树高度
+    $("#electro_system").css('height',300 + "px");//电子围栏树高度
+
+    
+</script> -->
+{% endblock %}

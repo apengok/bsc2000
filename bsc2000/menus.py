@@ -127,6 +127,7 @@ choicetreedict["reports"] = {
 choicetreedict["sysm"] = {
         "name":"系统管理",
         "submenu":[{
+            "bigscreen":{"name":"通讯管理","url":"/sysm/bigscreen/","sub":{"name":"可写"}},
             "commconfig":{"name":"通讯管理","url":"/sysm/commconfig/","sub":{"name":"可写"}},
             "personalized":{"name":"平台个性化配置","url":"/sysm/personalized/list/","sub":{"name":"可写"}},
             "system":{"name":"系统设置","url":"/sysm/system/","sub":{"name":"可写"}},

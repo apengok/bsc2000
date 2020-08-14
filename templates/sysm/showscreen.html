@@ -1,0 +1,67 @@
+{% extends '_vbase.html' %}
+
+
+{% load staticfiles %}
+
+
+
+{% block main_content %}
+{% block breadcrumb %}
+{% endblock %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body" id="stretch-body">
+                 <div class="row homeText">
+                     
+                     <div class="col-md-4 pc-realtime">
+                        <div class="fenceUrl">
+                            <a href="/bscreen/html.html" target="_blank">
+                             <div class="IcoBG"></div>
+                             <h2>生产调度管理系统</h2>
+                            </a>
+                         </div>   
+                     </div>
+                     <div class="col-md-4 pc-realtime">
+                        <div class="fenceUrl2">
+                            <a href="/bscreen/html2.html" target="_blank">
+                             <div class="IcoBG"></div>
+                             <h2>KPI管理系统</h2>
+                            </a>
+                         </div>   
+                     </div>
+                     <div class="col-md-4 pc-realtime">
+                        <div class="fenceUrl3">
+                            <a href="/bscreen/html3.html" target="_blank">
+                             <div class="IcoBG"></div>
+                             <h2>运行一张图</h2>
+                            </a>
+                         </div>   
+                     </div>
+                      
+                 </div>
+                 
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<!-- <script>
+    winHeight = $(window).height();//可视区域高度
+    headerHeight = $("#header").height();//头部高度
+    var tabHeight = $myTab.height();//信息列表table选项卡高度
+    var panhead = $(".panel-heading").height();
+    // tabHeight = panhead;
+    // console.log("tabHeight height ",tabHeight,"panel head",panhead)
+    var tabContHeight = $("#myTabContent").height();//table表头高度
+    var fenceTreeHeight = winHeight - 380;//围栏树高度
+    $("#electro_system").css('height',300 + "px");//电子围栏树高度
+
+    
+</script> -->
+{% endblock %}

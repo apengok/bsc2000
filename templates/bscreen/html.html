@@ -1,0 +1,634 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+
+<style>
+    html,
+    body,
+    #container {
+        width: 100%;
+        height: 95%;
+        float: left;
+        top: 50px;
+
+    }
+
+
+
+    .data-box1{border:2px solid #032d60;-webkit-box-shadow:#07417a 0 0 10px;-moz-box-shadow:#07417a 0 0 10px;box-shadow:inset 0 0 30px #07417a;position:relative}
+    .left_tb{ width:95%}
+    .fl{ float:left;width:22px;height: 28px; text-align: center;line-height: 25px}
+    .topL{width:6px;height:6px;border-top-width:1px;border-top-color: #00fffb;border-top-style:solid;border-left-width:1px;border-left-color: #00fffb;border-left-style:solid;position:absolute;top:-1px;left:-1px}
+    .topR{width:6px;height:6px;border-top-width:1px;border-top-color: #00fffb;border-top-style:solid;border-right-width:1px;border-right-color: #00fffb;border-right-style:solid;position:absolute;top:-1px;right:-1px}
+    .bottomL{width:6px;height:6px;border-bottom-width:1px;border-bottom-color: #00fffb;border-bottom-style:solid;border-left-width:1px;border-left-color: #00fffb;border-left-style:solid;position:absolute;bottom:-1px;left:-1px}
+    .bottomR{width:6px;height:6px;border-bottom-width:1px;border-bottom-color: #00fffb;border-bottom-style:solid;border-right-width:1px;border-right-color: #00fffb;border-right-style:solid;position:absolute;bottom:-1px;right:-1px}
+    .right-top{
+        width: 0px;
+        float: left;
+        margin-left: 26px;
+
+    }
+
+    .span_color{
+        color:#00fffb;
+        font-size: 22px;
+
+    }
+    .div2{
+
+    }
+</style>
+
+
+<body style="background: #002540;">
+
+
+<!--头部框-->
+<div style=" margin-top: 20px;position:relative;">
+    <div style="font-size: 25px;color:#41C8F5;font-weight: 600;float: left;position:absolute;left: 18%;top:-10%">综合管理调度系统</div>
+    <img src="{% static 'virvo/bscreen/img/top.png' %}" style="width:100%;">
+</div>
+
+
+<!--左边地图信息-->
+
+<div id="container" style="width: 58%"></div>
+
+<!--右边信息显示栏-->
+<div style="width: 42%;height: 100%;float: left;">
+  <!--  供水量-->
+    <div style="width: 100%;height: 13%;margin-top: 20px;">
+
+        <div style="height: 40%;margin-top:10px">
+            <div  style="background: url(/static/virvo/bscreen/img/k04.png)no-repeat;height: 100%;color:#00E5F3;font-size: 16px ;float: left;width: 110px;text-align: center" >
+                今日供水量
+            </div>
+
+            <div class="right-top" style="margin-left:10px">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                <span class="span_color">7</span>
+
+                </div>
+
+            </div>
+
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top">
+
+                <div class="data-box1  fl">
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">3</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">5</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">6</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" style="width: 30px;color:#00E5F3;margin-top: 5px">
+
+                万m³
+
+            </div>
+
+            <div  style="background: url(/static/virvo/bscreen/img/k04.png)no-repeat;height: 100%;color:#00E5F3;font-size: 16px ;float: left;width: 110px;text-align: center" >
+                今日供水量
+            </div>
+
+            <div class="right-top" style="float: left;width: 0px;margin-left:10px">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+
+                    <span class="span_color">3</span>
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+
+                    <span class="span_color">1</span>
+                </div>
+
+            </div>
+
+            <div class="right-top">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">4</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="right-top">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">7</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" style="float: left;width: 30px;color:#00E5F3;margin-top: 5px">
+
+                万m³
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+        <div style="height: 40%;margin-top:2px">
+            <div  style="background: url(/static/virvo/bscreen/img/k05.png)no-repeat;height: 30px;color:#00E5F3;font-size: 16px ;float: left;width: 110px;text-align: center" >
+                今日供水量
+            </div>
+
+            <div class="right-top" style="margin-left:10px">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">7</span>
+
+                </div>
+
+            </div>
+
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top">
+
+                <div class="data-box1  fl">
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">3</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">5</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">6</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" style="width: 30px;color:#00E5F3;margin-top: 5px">
+
+                万m³
+
+            </div>
+
+            <div  style="background: url(/static/virvo/bscreen/img/k05.png)no-repeat;height: 30px;color:#00E5F3;font-size: 16px ;float: left;width: 110px;text-align: center" >
+                今日供水量
+            </div>
+
+            <div class="right-top" style="float: left;width: 0px;margin-left:10px">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+
+                    <span class="span_color">3</span>
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+
+                    <span class="span_color">1</span>
+                </div>
+
+            </div>
+
+            <div class="right-top">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">4</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="right-top">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">7</span>
+
+                </div>
+
+            </div>
+
+
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" style="float: left;width: 30px;color:#00E5F3;margin-top: 5px">
+
+                万m³
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+    <!--//出水量-->
+    <div style="width: 100%;height:30%;padding-left: 40px;position:relative;">
+
+       <img src="{% static 'virvo/bscreen/img/k01.png' %}" style="width: 80%;;height:100%;margin-left: 4%;z-index: 2">
+        <div style="position:absolute;z-index: 3;top: 7%;left: 16%">
+            <div style="color: #3CC2F5;font-size: 13px;font-weight: 900">
+                总出水量瞬时
+            </div>
+            <div style="color: #56F1F2;font-size: 13px;margin-top: -5px;font-weight: 900">
+               1543.46  m³/h
+            </div>
+        </div>
+
+        <div style="position:absolute;z-index: 3;top: 31%;left: 16%">
+            <div style="color: #3CC2F5;font-size: 13px;font-weight: 900">
+                总出水量瞬时
+            </div>
+            <div style="color: #56F1F2;font-size: 13px;margin-top: -5px;font-weight: 900">
+                1543.46  m³/h
+            </div>
+        </div>
+        <div style="position:absolute;z-index: 3;top: 54%;left: 16%">
+            <div style="color: #3CC2F5;font-size: 13px;font-weight: 900">
+                总出水量瞬时
+            </div>
+            <div style="color: #56F1F2;font-size: 13px;margin-top: -5px;font-weight: 900">
+                1543.46  m³/h
+            </div>
+        </div>
+        <div style="position:absolute;z-index: 3;top: 77%;left: 16%">
+            <div style="color: #3CC2F5;font-size: 13px;font-weight: 900">
+                总出水量瞬时
+            </div>
+            <div style="color: #56F1F2;font-size: 13px;margin-top: -5px;font-weight: 900">
+                1543.46  m³/h
+            </div>
+        </div>
+
+        <div id="echarts_2" style="position: absolute;z-index: 3;top: 14.5%;left: 40%;width: 40%;height: 170px;color: #d1e6eb">
+
+        </div>
+
+    </div>
+
+    <div style="width: 100%;height: 20%;padding-left: 40px;position:relative;">
+       <img src="{% static 'virvo/bscreen/img/k07.png' %}" style="width: 53%;height:100%;margin-left: 32%">
+     <!--   <div  style="background: url(img/k07.png)no-repeat;height: 200px;color:#00E5F3;font-size: 16px " >
+
+        </div>-->
+        <div id="echarts_1" style="width: 48%;height: 100%;margin-left: 32%;position:absolute;top: 0%">
+
+        </div>
+
+    </div>
+
+    <div style="width: 100%;height: 30%;padding-left: 40px;padding-top: 20px;position:relative;">
+
+
+        <img src="{% static 'virvo/bscreen/img/k02.png' %}" style="width:68%;height: 100%;margin-left: 18%">
+        <div style="position:absolute;color: #ffffff;top: 15%;left: 27%;font-weight: 900;font-size: 12px">
+            多乡供水实时数据
+        </div>
+
+        <div style="position:absolute;top: 32%;left: 27%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">孙家</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+        <div style="position:absolute;top: 13%;left: 57%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">孙家</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+        <div style="position:absolute;top: 38%;left: 57%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">孙家</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+        <div style="position:absolute;top: 63%;left: 57%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">孙家</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+
+        <div style="position:absolute;top: 62%;left: 27%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">五里坡</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+  <!--      <div  style="background: url(img/k02.png)no-repeat;height: 300px;color:#00E5F3;font-size: 16px " >
+
+        </div>-->
+
+    </div>
+
+
+
+</div>
+
+
+</body>
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=dd42e16b22dd59555c94c7c495f4153e"></script>
+<style type="text/css">
+    /*这里是隐藏地图logo的*/
+    .amap-logo{
+        display: none;
+        opacity:0 !important;
+    }
+    .amap-copyright {
+        opacity:0;
+    }
+    /*这里是隐藏地图logo的*/
+
+
+
+
+</style>
+<script>
+    //初始化地图
+    var map = new AMap.Map('container', {
+
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 10, //初始地图级别++
+        center: [106.198207,37.983364], //初始地图中心点
+        mapStyle: "amap://styles/56c864deff98ff884386c55e3b19490d"
+    });
+
+</script>
+<script type="text/javascript" src="{% static 'virvo/bscreen/js/echarts.min.js' %}"></script>
+
+<script src="{% static 'virvo/bscreen/js/html.js' %}"></script>
+</html>

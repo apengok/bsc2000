@@ -1,0 +1,680 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+
+<style>
+    html,
+    body,
+    #container {
+        width: 100%;
+        height: 95%;
+        float: left;
+        top: 50px;
+
+    }
+
+
+
+    .data-box1{border:2px solid #032d60;-webkit-box-shadow:#07417a 0 0 10px;-moz-box-shadow:#07417a 0 0 10px;box-shadow:inset 0 0 30px #07417a;position:relative}
+    .data-box2{border:1px solid #00f5ff;position:relative}
+
+    .left_tb{ width:95%}
+    .fl{ float:left;width:22px;height: 28px; text-align: center;line-height: 25px}
+    .topL{width:6px;height:6px;border-top-width:1px;border-top-color: #00fffb;border-top-style:solid;border-left-width:1px;border-left-color: #00fffb;border-left-style:solid;position:absolute;top:-1px;left:-1px}
+    .topR{width:6px;height:6px;border-top-width:1px;border-top-color: #00fffb;border-top-style:solid;border-right-width:1px;border-right-color: #00fffb;border-right-style:solid;position:absolute;top:-1px;right:-1px}
+    .bottomL{width:6px;height:6px;border-bottom-width:1px;border-bottom-color: #00fffb;border-bottom-style:solid;border-left-width:1px;border-left-color: #00fffb;border-left-style:solid;position:absolute;bottom:-1px;left:-1px}
+    .bottomR{width:6px;height:6px;border-bottom-width:1px;border-bottom-color: #00fffb;border-bottom-style:solid;border-right-width:1px;border-right-color: #00fffb;border-right-style:solid;position:absolute;bottom:-1px;right:-1px}
+
+    .topL1{width:16px;height:16px;border-top-width:3px;border-top-color: #00fffb;border-top-style:solid;border-left-width:3px;border-left-color: #00fffb;border-left-style:solid;position:absolute;top:-3px;left:-3px}
+    .topR1{width:16px;height:16px;border-top-width:1px;border-top-color: #00fffb;border-top-style:solid;border-right-width:1px;border-right-color: #00fffb;border-right-style:solid;position:absolute;top:-1px;right:-1px}
+    .bottomL1{width:16px;height:16px;border-bottom-width:1px;border-bottom-color: #00fffb;border-bottom-style:solid;border-left-width:1px;border-left-color: #00fffb;border-left-style:solid;position:absolute;bottom:-1px;left:-1px}
+    .bottomR1{width:16px;height:16px;border-bottom-width:2px;border-bottom-color: #00fffb;border-bottom-style:solid;border-right-width:3px;border-right-color: #00fffb;border-right-style:solid;position:absolute;bottom:-3px;right:-3px}
+
+    .topL2{width:24px;height:24px;border-top-width:3px;border-top-color: #00fffb;border-top-style:solid;border-left-width:3px;border-left-color: #00fffb;border-left-style:solid;position:absolute;top:-3px;left:-3px}
+    .topR2{width:24px;height:24px;border-top-width:3px;border-top-color: #00fffb;border-top-style:solid;border-right-width:3px;border-right-color: #00fffb;border-right-style:solid;position:absolute;top:-3px;right:-3px}
+    .bottomL2{width:24px;height:24px;border-bottom-width:3px;border-bottom-color: #00fffb;border-bottom-style:solid;border-left-width:3px;border-left-color: #00fffb;border-left-style:solid;position:absolute;bottom:-3px;left:-3px}
+    .bottomR2{width:24px;height:24px;border-bottom-width:3px;border-bottom-color: #00fffb;border-bottom-style:solid;border-right-width:3px;border-right-color: #00fffb;border-right-style:solid;position:absolute;bottom:-3px;right:-3px}
+
+
+    .right-top{
+        width: 0px;
+        float: left;
+        margin-left: 26px;
+
+    }
+
+    .span_color{
+        color:#00fffb;
+        font-size: 22px;
+
+    }
+    .span_color1{
+        color:#00fffb;
+        font-size: 18px;
+        font-weight: 900;
+
+
+    }
+    .span_color2{
+        color:#00fffb;
+        font-size: 14px;
+        font-weight: 900;
+
+
+    }
+
+    .div2{
+
+    }
+</style>
+
+
+<body style="background: #002540;">
+
+
+<!--头部框-->
+<div style=" margin-top: 20px;position:relative;">
+    <div style="font-size: 25px;color:#41C8F5;font-weight: 600;float: left;position:absolute;left: 18%;top:-11%">KPI综合展示</div>
+    <div style="font-size: 25px;color:#41C8F5;font-weight: 600;float: left;position:absolute;left: 73%;top:-11%">吴忠水务</div>
+    <img src="{% static 'virvo/bscreen/img/top.png' %}" style="width:100%;">
+</div>
+
+
+
+<img src="{% static 'virvo/bscreen/img/k03.png' %}" style="float: left;width: 13%;height: 20%;margin-left: 2%">
+
+<img src="{% static 'virvo/bscreen/img/k08.png' %}" style="float: left;width: 23%;height: 15%;left: 16%;top:10%;position:absolute;z-index: 99">
+<span style="position:absolute;color: #ffffff;font-size: 24px;font-weight: 900;left: 18%;top:17%;z-index: 99;width: 20%;text-align: center;height: 10%;line-height: 10%">总产销差率：8.91%</span>
+
+<!--用水率-->
+<div style="float: left;position:absolute;top:27%;width: 30%;height: 20%">
+    <div style="width: 100%;">
+
+        <span style="color: #ffffff;font-size: 15px;width: 33%;text-align: center;float: left">压力合格率</span>
+        <span style="color: #ffffff;font-size: 15px;width: 33%;text-align: center;float: left">水质合格率</span>
+        <span style="color: #ffffff;font-size: 15px;width: 33%;text-align: center;float: left">通信合格率</span>
+
+    </div>
+
+    <div style="width: 100%;height: 100%">
+        <div style="float: left;width: 33%;height:80%" id="echarts_31" >
+
+        </div>
+        <div style="float: left;width:  33%;height: 80%" id="echarts_32">
+
+        </div>
+        <div style="float: left;width:  33%;height: 80%" id="echarts_33">
+
+        </div>
+    </div>
+
+
+</div>
+
+<!--供水供电-->
+<div style="float: left;position:absolute;top:43%;left: 2%;width:30%;height: 50%  " >
+
+
+    <div style="width: 100%;height: 33%;position:absolute;float: left">
+        <img src="{% static 'virvo/bscreen/img/k07.png' %}" style="width: 90%;height:100%;">
+        <!--   <div  style="background: url(img/k07.png)no-repeat;height: 200px;color:#00E5F3;font-size: 16px " >
+           </div>-->
+        <div style="color: #3EC3F2;position:absolute;float: left;top:8%;;width: 30%;font-size: 17px;font-weight: 900;left: 10%" >供水数据</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 15%;;width: 20%;font-size: 12px;font-weight: 900;left: 55%" >日供水</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 32%;;width: 8%;font-size: 12px;font-weight: 900;left: 55%;text-align: center;" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 50%;;width: 8%;font-size: 12px;font-weight: 900;left: 55%;text-align: center;" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 68.5%;;width: 8%;font-size: 12px;font-weight: 900;left: 55%;text-align: center;" >15</div>
+
+
+
+        <div style="color: #ffffff;position:absolute;float: left;top: 15%;;width: 20%;font-size: 12px;font-weight: 900;left: 66%" >月供水</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 32%;;width: 8%;font-size: 12px;font-weight: 900;left: 66%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 50%;;width: 8%;font-size: 12px;font-weight: 900;left: 66%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 68.5%;;width: 8%;font-size: 12px;font-weight: 900;left: 66%;text-align: center" >15</div>
+
+
+
+        <div style="color: #ffffff;position:absolute;float: left;top: 15%;;width: 20%;font-size: 12px;font-weight: 900;left: 77%" >日供水</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 32%;;width: 8%;font-size: 12px;font-weight: 900;left: 77%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 50%;;width: 8%;font-size: 12px;font-weight: 900;left: 77%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 68.5%;;width: 8%;font-size: 12px;font-weight: 900;left: 77%;text-align: center" >15</div>
+
+
+
+
+
+
+        <div id="echarts_1" style="width: 55%;height: 80%;;position:absolute;top: 20%">
+
+        </div>
+
+    </div>
+
+
+    <div style="width: 100%;height: 33%;position:absolute;float: left;top: 37%">
+        <img src="{% static 'virvo/bscreen/img/k07.png' %}" style="width: 90%;height:100%;">
+        <!--   <div  style="background: url(img/k07.png)no-repeat;height: 200px;color:#00E5F3;font-size: 16px " >
+           </div>-->
+        <div style="color: #3EC3F2;position:absolute;float: left;top:8%;;width: 30%;font-size: 17px;font-weight: 900;left: 10%" >供水数据</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 15%;;width: 20%;font-size: 12px;font-weight: 900;left: 55%" >日供水</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 32%;;width: 8%;font-size: 12px;font-weight: 900;left: 55%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 50%;;width: 8%;font-size: 12px;font-weight: 900;left: 55%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 68.5%;;width: 8%;font-size: 12px;font-weight: 900;left: 55%;text-align: center" >15</div>
+
+
+
+        <div style="color: #ffffff;position:absolute;float: left;top: 15%;;width: 20%;font-size: 12px;font-weight: 900;left: 66%" >月供水</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 32%;;width: 8%;font-size: 12px;font-weight: 900;left: 66%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 50%;;width: 8%;font-size: 12px;font-weight: 900;left: 66%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 68.5%;;width: 8%;font-size: 12px;font-weight: 900;left: 66%;text-align: center" >15</div>
+
+
+
+        <div style="color: #ffffff;position:absolute;float: left;top: 15%;;width: 20%;font-size: 12px;font-weight: 900;left: 77%" >日供水</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 32%;;width: 8%;font-size: 12px;font-weight: 900;left: 77%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 50%;;width: 8%;font-size: 12px;font-weight: 900;left: 77%;text-align: center" >15</div>
+        <div style="color: #ffffff;position:absolute;float: left;top: 68.5%;;width: 8%;font-size: 12px;font-weight: 900;left: 77%;text-align: center" >15</div>
+
+
+
+
+
+
+        <div id="echarts_11" style="width: 55%;height: 80%;;position:absolute;top: 20%">
+
+        </div>
+
+    </div>
+
+
+    <div style="width: 100%;height: 33%;position:absolute;float: left;top: 74%">
+        <img src="{% static 'virvo/bscreen/img/k07.png' %}" style="width: 90%;height:100%;">
+
+        <div id="echarts_2" style="width: 90%;height: 100%;;position:absolute;top: -5%">
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!--地图信息-->
+<div style="width: 38%;left: 15%;height: 50%;  float: left;
+    z-index: 2;user-select: none;box-sizing: border-box;-webkit-user-drag: none;
+ position: relative;     cursor: pointer;
+  ">
+    <div id="container" style="width:100%;left:0%;height:100%;"></div>
+</div>
+
+
+<div style="float: left;position:absolute;left: 33%;top: 63%;width: 33%;height: 30% ">
+
+    <div class="data-box2  fl" style="width:100%;height:60%;" >
+        <i class="topL2"></i>
+        <i class="topR2"></i>
+        <i class="bottomL2"></i>
+        <i class="bottomR2"></i>
+
+        <div style="color: #ffffff;position:absolute;left: 20%;top: 5%">用水总量</div>
+        <div style="color: #ffffff;position:absolute;left: 33%;top: 5%">售水量</div>
+        <div style="color: #ffffff;position:absolute;left: 44%;top: 5%">未计费水量</div>
+        <div style="color: #ffffff;position:absolute;left: 59%;top: 5%">产销差</div>
+        <div style="color: #ffffff;position:absolute;left: 72%;top: 5%">回收率</div>
+        <div style="color: #ffffff;position:absolute;left: 85%;top: 5%">产销差率</div>
+
+        <div style="color: #ffffff;position:absolute;left: 5%;top: 20%">胜利营销所</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 22%;top: 20%">300</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 33%;top: 20%">12200</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 46%;top: 20%">15.14</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 59%;top: 20%">15.14</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 73%;top: 20%">60%</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 87%;top: 20%">25%</div>
+
+
+
+
+
+        <div style="color: #ffffff;position:absolute;left: 5%;top: 40%">胜利营销所</div>
+
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 22%;top: 40%">300</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 33%;top: 40%">12200</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 46%;top: 40%">15.14</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 59%;top: 40%">15.14</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 73%;top: 40%">60%</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 87%;top: 40%">25%</div>
+
+        <div style="color: #ffffff;position:absolute;left: 5%;top: 60%">胜利营销所</div>
+
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 22%;top: 60%">300</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 33%;top: 60%">12200</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 46%;top: 60%">15.14</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 59%;top: 60%">15.14</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 73%;top: 60%">60%</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 87%;top: 60%">25%</div>
+
+        <div style="color: #ffffff;position:absolute;left: 5%;top: 80%">胜利营销所</div>
+
+
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 22%;top: 80%">300</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 33%;top: 80%">12200</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 46%;top: 80%">15.14</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 59%;top: 80%">15.14</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 73%;top: 80%">60%</div>
+        <div style="color: #ffffff;font-weight:900;position:absolute;left: 87%;top: 80%">25%</div>
+
+    </div>
+
+    <div style="position: absolute;top: 62%;width:100%;height: 60%">
+
+
+        <div style="width: 100%;height: 25%">
+            <span style="color: #ffffff;float: left;width: 25%;font-size: 15px;position: relative;text-align: center">工业用水</span>
+            <span style="color: #ffffff;float: left;width: 25%;font-size: 15px;position: relative;text-align: center">商业用水</span>
+            <span style="color: #ffffff;float: left;width: 25%;font-size: 15px;position: relative;text-align: center">居民用水</span>
+            <span style="color: #ffffff;float: left;width: 25%;font-size: 15px;position: relative;text-align: center">其他用水</span>
+        </div>
+
+        <div style="width: 100%;height: 70%">
+            <div style="float: left;width: 25%;height: 100%;margin-top:-20px" id="echarts_34" >
+
+            </div>
+            <div style="float: left;width: 25%;height: 100%;margin-top:-20px" id="echarts_35">
+
+            </div>
+            <div style="float: left;width: 25%;height: 100%;margin-top:-20px" id="echarts_36">
+
+            </div>
+            <div style="float: left;width: 25%;height: 100%;margin-top:-20px" id="echarts_37">
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!--右边信息显示栏-->
+<div style="width: 42%;height: 100%;float: left;padding-left: 8%;z-index: 22">
+  <!--  供水量-->
+    <div style="width: 100%;height: 13%;margin-top: 20px;padding-left: 38%">
+
+        <div style="height: 40%;margin-top:10px;text-align: center">
+            <div  style="background: url(/static/virvo/bscreen/img/k04.png)no-repeat;height: 30px;color:#00E5F3;font-size: 16px ;float: left;width: 110px;text-align: center" >
+                今日供水量
+            </div>
+
+            <div class="right-top" style="margin-left:10px">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                <span class="span_color">7</span>
+
+                </div>
+
+            </div>
+
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top">
+
+                <div class="data-box1  fl">
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">3</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">5</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">6</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" style="width: 30px;color:#00E5F3;margin-top: 5px">
+
+                万m³
+
+            </div>
+
+
+
+        </div>
+
+        <div style="height: 40%;margin-top:2px">
+            <div  style="background: url(/static/virvo/bscreen/img/k05.png)no-repeat;height: 30px;color:#00E5F3;font-size: 16px ;float: left;width: 110px;text-align: center" >
+                今日供水量
+            </div>
+
+            <div class="right-top" style="margin-left:10px">
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">7</span>
+
+                </div>
+
+            </div>
+
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top">
+
+                <div class="data-box1  fl">
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">1</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">3</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">5</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" >
+
+                <div class="data-box1  fl" >
+
+                    <i class="topL"></i>
+                    <i class="topR"></i>
+                    <i class="bottomL"></i>
+                    <i class="bottomR"></i>
+                    <span class="span_color">6</span>
+
+                </div>
+
+            </div>
+            <div class="right-top" style="width: 30px;color:#00E5F3;margin-top: 5px">
+
+                万m³
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+        <img src="{% static 'virvo/bscreen/img/B01.png' %}" style="width:110%;height: 10px;padding-left: 30%;position:relative;z-index: 99 ">
+        <div style="position:relative;padding-left: 30%;margin-top: 10px;height: 100px">
+
+           <div class="data-box2  fl" style="width: 22%;height: 60%" >
+                    <i class="topL1"></i>
+                    <i class="bottomR1"></i>
+                    <span class="span_color1">1个</span><br>
+                    <span class="span_color2">一级分区</span>
+
+                </div>
+
+            <div class="data-box2  fl" style="width: 22%;height: 60%;left: 7%" >
+                <i class="topL1"></i>
+                <i class="bottomR1"></i>
+                <span class="span_color1">5个</span><br>
+                <span class="span_color2">二级分区</span>
+
+            </div>
+
+            <div class="data-box2  fl" style="width: 22%;height: 60%;left: 13%" >
+                <i class="topL1"></i>
+                <i class="bottomR1"></i>
+                <span class="span_color1">15个</span><br>
+                <span class="span_color2">三级分区</span>
+
+
+            </div>
+
+            <div class="data-box2  fl" style="width: 22%;height: 60%;left: 20%" >
+                <i class="topL1"></i>
+                <i class="bottomR1"></i>
+                <span class="span_color1">155个</span><br>
+                <span class="span_color2">四级分区</span>
+
+            </div>
+        </div>
+
+
+    <div style="width: 100%;height: 35%;padding-left: 40px;padding-top: 20px;position:relative;">
+
+
+        <img src="{% static 'virvo/bscreen/img/k02.png' %}" style="width:90%;height: 100%;margin-left: 18%">
+        <div style="position:absolute;color: #ffffff;top: 15%;left: 32%;font-weight: 900;font-size: 12px">
+            重点漏损区域
+        </div>
+
+        <div style="position:absolute;top: 32%;left: 27%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">孙家</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+        <div style="position:absolute;top: 13%;left: 68%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">孙家</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+        <div style="position:absolute;top: 38%;left: 68%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">孙家</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+        <div style="position:absolute;top: 63%;left: 68%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">孙家</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+
+        <div style="position:absolute;top: 62%;left: 27%;font-weight: 900;font-size: 12px">
+            <div >
+                <span style="color: #41C8F5">泵站名称:</span>
+                <span style="color: #ffffff">五里坡</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时瞬时流量:</span>
+                <span style="color: #ffffff">399.84m³/h</span>
+            </div>
+            <div >
+                <span style="color: #41C8F5">实时压力:</span>
+                <span style="color: #ffffff">0.85kpa</span>
+            </div>
+        </div>
+
+
+  <!--      <div  style="background: url(img/k02.png)no-repeat;height: 300px;color:#00E5F3;font-size: 16px " >
+
+        </div>-->
+
+    </div>
+
+    <div style="width: 100%;height: 35%;padding-left: 90px;padding-top: 20px;position:relative;">
+
+    <div id="echarts_4" style="width: 100%;height: 100%"></div>
+
+    </div>
+
+
+
+
+
+</div>
+
+
+</body>
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=dd42e16b22dd59555c94c7c495f4153e"></script>
+<style type="text/css">
+    /*这里是隐藏地图logo的*/
+    .amap-logo{
+        display: none;
+        opacity:0 !important;
+    }
+    .amap-copyright {
+        opacity:0;
+    }
+    /*这里是隐藏地图logo的*/
+
+
+
+
+</style>
+<script>
+    //初始化地图
+    var map = new AMap.Map('container', {
+
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 15, //初始地图级别++
+        center: [106.198207,37.983364], //初始地图中心点
+        mapStyle: "amap://styles/56c864deff98ff884386c55e3b19490d"
+    });
+
+</script>
+<script type="text/javascript" src="{% static 'virvo/bscreen/js/echarts.min.js' %}"></script>
+
+<script src="{% static 'virvo/bscreen/js/html2.js' %}"></script>
+</html>

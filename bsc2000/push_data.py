@@ -29,6 +29,11 @@ scheduler = BackgroundScheduler()
 scheduler.add_jobstore(DjangoJobStore(), "default")
 
 
+def close_old_connections():
+    for conn in connections.all():
+        conn.close_if_unusable_or_obsolete()
+
+
 @register_job(scheduler, "interval", seconds=1200, replace_existing=True)
 def auto_push_yuangu_bigmeter_data():
     '''
@@ -37,6 +42,9 @@ def auto_push_yuangu_bigmeter_data():
     http://58.213.198.18:8081/CityInterface/rest/services/CountyProduct.svc/PostMDataList
     '''
     # push_url = 'http://localhost:8000/CityInterface/rest/services/CountyProduct.svc/PostMDataList'
+
+    close_old_connections()
+
     push_url = 'http://58.213.198.18:8081/CityInterface/rest/services/CountyProduct.svc/PostMDataList'
 
     belongto_names = ['南京远古','六合远古','南京远古东珀']
