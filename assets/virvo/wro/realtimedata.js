@@ -159,7 +159,7 @@
             var columnDefs = [ 
                 { "orderable": false, "targets": [ 0 ] },
                 { "orderSequence": [ "asc","desc" ], "targets": [ 1 ] },
-                { "orderable": false, "targets": [ 2 ] },
+                { "orderable": false, "targets": [ 3,7 ] },
                 // { "orderable": false, "targets": [ 3 ] },
                 // { "orderSequence": [ "desc", "asc", "asc" ], "targets": [ 2 ] },
                 { "orderSequence": [ "asc","desc" ], "targets": [ 3 ] }
@@ -320,6 +320,7 @@
                 pageable : true, //是否分页
                 showIndexColumn : true, //是否显示第一列的索引列
                 enabledChange : true,
+                ordering:true,
                 pageNumber:20
             };
             //创建表格

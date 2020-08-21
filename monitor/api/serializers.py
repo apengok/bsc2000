@@ -34,6 +34,43 @@ from core.models import (
 )
 
 class BigmeterPushDataSerializer(ModelSerializer):
+    meterv = SerializerMethodField()
+    commstate = SerializerMethodField()
+
+    class Meta:
+        model = Bigmeter
+
+        fields = ['serialnumber','username','commstate','fluxreadtime','flux','plustotalflux','reversetotalflux',
+            'pressure','meterv','gprsv','signlen']
+
+    def get_meterv(self,obj):
+        try:
+            meterv = obj.meterv
+            if meterv.startswith(">") or meterv.startswith("<"):
+                meterv = meterv[1:]
+            if '~' in meterv:
+                meterv = meterv[:meterv.index('~')-1]
+            if meterv.endswith("%"):
+                meterv = meterv[:-1]
+            return meterv
+        except:
+            return 0
+
+    def get_commstate(self,obj):
+            now = datetime.datetime.now()
+            d7 = now - datetime.timedelta(days=7)
+            try:
+                dn = datetime.datetime.strptime(obj.fluxreadtime,"%Y-%m-%d %H:%M:%S")
+                if d7 < dn:
+                    return "1"
+                
+            except:
+                pass
+
+            return "0"
+
+
+class BigmeterPushDataSerializer_1(ModelSerializer):
     DeviceID = ReadOnlyField(source='serialnumber')
     DeviceName = ReadOnlyField(source='username')
     RealData = SerializerMethodField()
@@ -45,10 +82,10 @@ class BigmeterPushDataSerializer(ModelSerializer):
         fields = ['DeviceID','DeviceName','RealData','HistoryData']
 
     def get_RealData(self,obj):
-
+        
         return {
-            "PT":obj.fluxreadtime if obj.fluxreadtime else '1970-01-01 00:00:00',
-            "PV":obj.plustotalflux if obj.plustotalflux else '0.0'
+            "PT":obj.fluxreadtime if obj.fluxreadtime else "1970-01-01 00:00:00",
+            "PV":obj.plustotalflux if obj.plustotalflux else "0.0",
         }
 
     def get_HistoryData(self,obj):
@@ -59,6 +96,7 @@ class BigmeterRTSerializer(ModelSerializer):
     belongto = SerializerMethodField()
     alarm = SerializerMethodField()
     commstate = SerializerMethodField()
+    manufacturer = SerializerMethodField()
     
     # fluxreadtime = SerializerMethodField()
     # serialnumber = SerializerMethodField()
@@ -98,6 +136,12 @@ class BigmeterRTSerializer(ModelSerializer):
             pass
 
         return 0
+    
+    def get_manufacturer(self,obj):
+        try:
+            return Meter.objects.get(serialnumber=obj.serialnumber).manufacturer
+        except:
+            return obj.manufacturer
 
     # def get_fluxreadtime(self,obj):
     #     try:

@@ -49,18 +49,40 @@ def auto_push_yuangu_bigmeter_data():
 
     belongto_names = ['南京远古','六合远古','南京远古东珀']
 
+    extra_names = ["zxll","ssll","fxll","yl","jbdl","ycdl","xhqd","zt"]
+    extra_dbnames = ['plustotalflux','flux','reversetotalflux','pressure','meterv','gprsv','signlen','commstate']
+    
+
     for name in belongto_names:
+        push_data = []
+
         belongto = Organization.objects.get(name=name)
 
         queryset = belongto.station_list_queryset('')
         queryset_list = [s.amrs_bigmeter for s in queryset]
 
         serializer_data = BigmeterPushDataSerializer(queryset_list,many=True).data
+        for sd in serializer_data:
+            DeviceID = sd.get("serialnumber")
+            DeviceName = sd.get("username")
+            pt = sd.get("fluxreadtime","1970-01-01 00:00:00")
+            for i in range(len(extra_names)):
+                # print(extra_dbnames[i],':',sd.get(extra_dbnames[i]))
+                pv = sd.get(extra_dbnames[i])
+                push_data.append({
+                    "DeviceID":DeviceID + '-' + extra_names[i],
+                    "DeviceName":DeviceName,
+                    "RealData":{
+                        "PT":pt if pt else '1970-01-01 00:00:00',
+                        "PV":pv if pv else '0.0'
+                    },
+                    "HistoryData":[]
+                })
         
         # print(serializer_data)
         try:
             # 111.231.140.214
-            res = requests.post(push_url,json=serializer_data).text
+            res = requests.post(push_url,json=push_data).text
             # logger_info.info(f"Web Server response information: {res}")
             # print(res)
         except Exception as e:

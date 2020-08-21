@@ -522,11 +522,11 @@
             myTable = new TG_Tabel.createNew(setting);
             //表格初始化
             myTable.init();
-
-            // new $.fn.dataTable.FixedColumns(myTable,{
-            //     leftColumns:2,  //开启左侧两列固定
+            console.log('fixed columns')
+            new $.fn.dataTable.FixedColumns(myTable,{
+                leftColumns:2,  //开启左侧两列固定
                 
-            // });
+            });
             
 
             //隐藏大于当日日期的日期

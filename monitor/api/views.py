@@ -82,6 +82,12 @@ class BigmeterRTListAPIView(ListAPIView):
         selectTreeType = self.request.GET.get("selectTreeType")
         simpleQueryParam = self.request.GET.get("simpleQueryParam")
 
+        order_column = self.request.GET.get('order[0][column]')
+        order_dir = self.request.GET.get('order[0][dir]')
+
+        colo = self.request.GET.get('columns[%s][data]'%order_column) or 'none'
+        print(order_column,order_dir,colo)
+
         organ = self.request.user.belongto
         
         if groupName:# and groupType == 'group':
@@ -110,10 +116,15 @@ class BigmeterRTListAPIView(ListAPIView):
         queryset_list = [s.amrs_bigmeter for s in station_queryset]
         queryset_list += [s.amrs_pressure for s in pressure_queryset]
 
-        queryset_list = sorted(queryset_list, key=lambda x: x.fluxreadtime if x.fluxreadtime else '')
-        queryset_list = queryset_list[::-1]
+        if colo == 'none':
+            queryset_list = sorted(queryset_list, key=lambda x: x.fluxreadtime if x.fluxreadtime else '') #works fine
+        else:
+            queryset_list = sorted(queryset_list, key=lambda x: getattr(x,colo) if getattr(x,colo) else '')
         
-        print('time elapse:',time.time()-t1)
+        if order_dir != 'asc':
+            queryset_list = queryset_list[::-1]
+        
+        # print('time elapse:',time.time()-t1)
         
         return queryset_list
 
@@ -255,8 +266,29 @@ def PostMData(request):
 
     queryset = belongto.station_list_queryset('')
     queryset_list = [s.amrs_bigmeter for s in queryset]
+    extra_names = ["zxll","ssll","fxll","yl","jbdl","ycdl","xhqd","zt"]
+    extra_dbnames = ['plustotalflux','flux','reversetotalflux','pressure','meterv','gprsv','signlen','commstate']
+    push_data = []
 
     serializer_data = BigmeterPushDataSerializer(queryset_list,many=True).data
-    print(type(serializer_data))
+    for sd in serializer_data:
+        DeviceID = sd.get("serialnumber")
+        DeviceName = sd.get("username")
+        pt = sd.get("fluxreadtime","1970-01-01 00:00:00")
+        for i in range(len(extra_names)):
+            # print(extra_dbnames[i],':',sd.get(extra_dbnames[i]))
+            pv = sd.get(extra_dbnames[i])
+            push_data.append({
+                "DeviceID":DeviceID + '-' + extra_names[i],
+                "DeviceName":DeviceName,
+                "RealData":{
+                    "PT":pt if pt else '1970-01-01 00:00:00',
+                    "PV":pv if pv else '0.0'
+                },
+                "HistoryData":[]
+            })
+
+    # print(type(serializer_data))
     
-    return Response(serializer_data)
+    return Response(push_data)
+    # return Response(serializer_data)
