@@ -51,7 +51,7 @@ from amrs.models import (
 
 from .serializers import (
     BigmeterCreateSerializer, 
-    
+    BigMeterTempSerializer
 )
 
 
@@ -148,7 +148,6 @@ class BigmeterCreateAPIView(CreateAPIView):
         return Response(serializer.errors)
 
 
-
 @api_view(['GET'])
 def flowdata_dailyuse(request):
     stationid = request.GET.get("station_id") # DMABaseinfo pk
@@ -243,3 +242,17 @@ def flowdata_dailyuse(request):
             "success":1}
 
     return Response(ret)
+
+
+    
+@api_view(['GET'])
+def datatalbe_test(request):
+    return Response(serializer.errors)
+
+from core.pagination import TempDataTablePageNumberPagination
+class TempTestListAPIView(ListAPIView):
+    serializer_class = BigMeterTempSerializer
+    pagination_class = TempDataTablePageNumberPagination #PageNumberPagination
+    
+    def get_queryset(self,*args,**kwargs):
+        return Bigmeter.objects.all()
