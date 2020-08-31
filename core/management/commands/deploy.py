@@ -12,6 +12,10 @@ from core.models import Organization
 from core.menus import buildbasetree
 import json
 
+from amrs.models import (
+    Watermeter,
+    Bigmeter,
+)
 
 logger_info = logging.getLogger('info_logger')
 
@@ -64,6 +68,14 @@ class Command(BaseCommand):
             help='initializer Organization and super Role'
         )
 
+        parser.add_argument(
+            '--watermeter_repeat',
+            action='store_true',
+            dest='watermeter_repeat',
+            default=False,
+            help='watermeter_repeat Organization and super Role'
+        )
+
 
 
 
@@ -73,6 +85,16 @@ class Command(BaseCommand):
         count = 0
         aft = 0
 
+        if options['watermeter_repeat']:
+            belongto = Organization.objects.get(name='宁夏水投吴忠')
+
+            vwatermeter_list = belongto.watermeter_list_queryset('')
+            for vm in vwatermeter_list:
+                amrs = vm.amrs_watermeter
+                wateraddr = amrs.wateraddr
+                findit = Watermeter.objects.filter(wateraddr=wateraddr).count()
+                if findit > 1:
+                    print(vm.amrs_watermeter_id,amrs.communityid,amrs.nodeaddr,amrs.wateraddr,amrs.serialnumber)
         
 
         if options['initializer']:

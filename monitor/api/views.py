@@ -54,6 +54,7 @@ from .serializers import (
     MapStationSerializer,
     MapSecondWaterSerializer,
     BigmeterPushDataSerializer,
+    ChangshaPushDataSerializer,
     )
 
 import logging
@@ -118,6 +119,7 @@ class BigmeterRTListAPIView(ListAPIView):
 
         if colo == 'none':
             queryset_list = sorted(queryset_list, key=lambda x: x.fluxreadtime if x.fluxreadtime else '') #works fine
+            queryset_list = queryset_list[::-1]
         else:
             queryset_list = sorted(queryset_list, key=lambda x: getattr(x,colo) if getattr(x,colo) else '')
         
@@ -261,7 +263,7 @@ def PostMDataList(request):
 
 
 @api_view(['GET','POST'])
-def PostMData(request):
+def PostMData_yuangu_test(request):
     belongto = Organization.objects.get(name='六合远古')
 
     queryset = belongto.station_list_queryset('')
@@ -291,4 +293,17 @@ def PostMData(request):
     # print(type(serializer_data))
     
     return Response(push_data)
-    # return Response(serializer_data)
+
+@api_view(['GET','POST'])
+def PostMData(request):
+    belongto = Organization.objects.get(name='六合远古')
+
+    queryset = belongto.station_list_queryset('')
+    queryset_list = [s.amrs_bigmeter for s in queryset]
+    extra_names = ["zxll","ssll","fxll","yl","jbdl","ycdl","xhqd","zt"]
+    extra_dbnames = ['plustotalflux','flux','reversetotalflux','pressure','meterv','gprsv','signlen','commstate']
+    push_data = []
+
+    serializer_data = ChangshaPushDataSerializer(queryset_list,many=True).data
+    
+    return Response(serializer_data)

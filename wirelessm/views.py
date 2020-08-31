@@ -1523,3 +1523,270 @@ def exportbyselect(request):
     response = HttpResponse(dataset.xls, content_type='text/xls')
     response['Content-Disposition'] = 'attachment; filename='+ escape_uri_path("小表导出.xls")
     return response
+
+
+class WatermeterBatchUpdateView(TemplateView,UserPassesTestMixin):
+    """
+    批量导入修改户表
+    """
+    template_name = "wirelessm/batchupdatewatermeter.html"
+        
+    def test_func(self):
+        
+        if self.request.user.has_menu_permission_edit('neighborhoodmetermanager_wirelessm'):
+            return True
+        return False
+
+    def handle_no_permission(self):
+        data = {
+                "mheader": "户表导入",
+                "err_msg":"您没有权限进行操作，请联系管理员."
+                    
+            }
+        # return HttpResponse(json.dumps(err_data))
+        return render(self.request,"entm/permission_error.html",data)
+
+    def get_context_data(self, **kwargs):
+        context = super(WatermeterBatchUpdateView, self).get_context_data(**kwargs)
+        context["page_title"] = "导入户表"
+        
+        return context
+
+    # def get_object(self):
+    #     # print(self.kwargs)
+    #     return User.objects.get(id=self.kwargs["pk"])
+
+    def check_row(self, row, **kwargs):
+        # user = kwargs["user"]
+        # print("row :::",row)
+
+        # for k in row:
+        #     print(k,row[k],type(row[k]))
+
+        err_msg = []
+
+        serialnumber = str(row[u'表编号(水表表身编码)'])
+        
+        # 从excel读上来的数据全是数字都是float类型
+        if '.' in serialnumber:
+            if isinstance(row[u'表编号(水表表身编码)'],float):
+                serialnumber = str(int(row[u'表编号(水表表身编码)']))
+                row[u'表编号(水表表身编码)'] = serialnumber
+
+        bflag = Watermeter.objects.filter(serialnumber=serialnumber).exists()
+        if not bflag:
+            err_msg.append(u"表编号(水表表身编码)%s不存在"%(serialnumber))
+
+        # 小区
+        # communityname = row[u'所属小区'] #communityid
+        # bflag = VCommunity.objects.filter(name=communityname).exists()
+        # if not bflag:
+        #     err_msg.append(u"该小区%s不存在"%(communityname))
+
+        # 集中器
+        concentratorname = row[u'所属集中器']
+        # print('所属集中器',concentratorname)
+        bflag = Concentrator.objects.filter(name=concentratorname).exists()
+        if not bflag:
+            err_msg.append(u"该集中器%s不存在"%(concentratorname))
+        else:
+
+            amrs_concentrator = Concentrator.objects.get(name=concentratorname)
+            concentrator = amrs_concentrator.vconcentrator
+            bflag = VCommunity.objects.filter(vconcentrators__id=concentrator.id).exists()
+            if not bflag:
+                err_msg.append(u"该集中器%s没有绑定小区"%(communityname))
+        
+        wateraddr = str(row[u'关联IMEI'])
+        
+        # 从excel读上来的数据全是数字都是float类型
+        if '.' in wateraddr:
+            if isinstance(row[u'关联IMEI'],float):
+                wateraddr = str(int(row[u'关联IMEI']))
+                row[u'关联IMEI'] = wateraddr
+
+        
+
+        if wateraddr == '' or wateraddr is None:
+            wateraddr = serialnumber
+        else:
+            bflag = SimCard.objects.filter(simcardNumber=wateraddr).exists()
+            if not bflag:
+                err_msg.append(u"该IMEI %s 不存在"%(wateraddr))
+
+        row[u'关联IMEI'] = wateraddr
+
+        # 用户代码(收费编号)
+        numbersth = str(row[u'用户代码(收费编号)'])
+        if '.' in numbersth:
+            if isinstance(row[u'用户代码(收费编号)'],float):
+                numbersth = str(int(row[u'用户代码(收费编号)']))
+                row[u'用户代码(收费编号)'] = numbersth
+
+        # 栋号
+        buildingname = str(row[u'楼号'])
+        if '.' in buildingname:
+            if isinstance(row[u'楼号'],float):
+                buildingname = str(int(row[u'楼号']))
+                row[u'楼号'] = buildingname
+
+        # 单元号、房号
+        roomname = str(row[u'单元号、房号'])
+        if '.' in roomname:
+            if isinstance(row[u'单元号、房号'],float):
+                roomname = str(int(row[u'单元号、房号']))
+                row[u'单元号、房号'] = roomname
+
+        # 用户电话
+        usertel = str(row[u'用户电话'])
+        if '.' in usertel:
+            if isinstance(row[u'用户电话'],float):
+                usertel = str(int(row[u'用户电话']))
+                row[u'用户电话'] = usertel
+
+        # dn
+        dn = str(row[u'口径'])
+        if '.' in dn:
+            if isinstance(row[u'口径'],float):
+                dn = str(int(row[u'口径']))
+                row[u'口径'] = dn
+
+        # 
+        metercontrol = str(row[u'是否阀控表'])
+        if metercontrol == '是' or metercontrol == '阀控表':
+            row[u'是否阀控表'] = 1
+        else:
+            row[u'是否阀控表'] = 0
+
+
+        # import dosage and readtime
+        dosage = str(row[u'表初始读数'])
+        
+        # 从excel读上来的数据全是数字都是float类型
+        # if '.' in dosage:
+        #     if isinstance(row[u'表读数'],float):
+        #         dosage = str(int(row[u'表读数']))
+        #         row[u'表读数'] = dosage
+
+        readtime = row[u'安装日期']
+        if readtime == '':
+            row[u'安装日期'] = datetime.date.today().strftime('%Y-%m-%d')
+        else:
+            try:
+                if isinstance(readtime,str):
+                    b = datetime.datetime.strptime(readtime.strip(),"%Y-%m-%d")
+                else:
+                    readtime = float(row[u'安装日期'])
+                    b = minimalist_xldate_as_datetime(readtime,0)
+                row[u'安装日期'] = b.strftime('%Y-%m-%d')
+            except Exception as e:
+                err_msg.append(u"{}".format(e))
+                err_msg.append(u"日期格式不对:yyyy-mm-dd")
+        
+        return err_msg
+
+
+    def post(self,request,*args,**kwargs):
+        
+        context = self.get_context_data(**kwargs)
+
+        user = request.user
+
+        # watermeter_resource = ImportWatermeterResource()
+        dataset = Dataset()
+        dataset.headers = ('serialnumber', 'communityid','meter_catlog','wateraddr','numbersth','buildingname','roomname',
+        'username','usertel','dn','manufacturer','useraddr','installationsite','ValveMeter','madedate','dosage','readtime')
+        user_post = self.request.FILES['file']
+        # print('new_persons:',user_post.read())
+        file_contents = user_post.read()  #.decode('iso-8859-15')
+        imported_data = dataset.load(file_contents,'xls')
+        # print('height:',dataset.height,'width:',dataset.width)
+
+        row_count = 0
+        err_msgs = []
+        import_lists = []
+        for row in imported_data.dict:
+            if row[u'表编号(水表表身编码)'] == '':
+                continue
+            row_count += 1
+            print('\r\n\r\nrow:',row)
+            err = self.check_row(row,**kwargs)
+            
+            if len(err) > 0:
+                emsg = u'第%s条错误:<br/>'%(row_count) + '<br/>'.join(e for e in err)
+                err_msgs.append(emsg)
+            else:
+                # 所属集中器
+                concentratorname = row[u'所属集中器']
+                amrs_concentrator = Concentrator.objects.get(name=concentratorname)
+                # 获取集中器绑定的小区
+                concentrator = amrs_concentrator.vconcentrator
+                community = VCommunity.objects.filter(vconcentrators__id=concentrator.id).first()
+                # concentrator = community.vconcentrators.first()
+
+                row[u'所属集中器'] = concentrator
+                
+                row[u'所属小区'] = community
+                belongto =  community.belongto
+                
+                data = {}
+                amrs_data = {
+                    'numbersth':row[u'用户代码(收费编号)'], 
+                    'serialnumber':row[u'表编号(水表表身编码)'], 
+                    'wateraddr':row[u'关联IMEI'],
+                    'roomname':row[u'单元号、房号'],
+                    'username':row[u'用户姓名'],
+                    'usertel':row[u'用户电话'],
+                    'dn':row[u'口径'],
+                    'manufacturer':row[u'厂家'],
+                    'installationsite':row[u'安装位置'],
+                    'madedate':row[u'安装日期'],
+                }
+                data = {
+                    'belongto':belongto.id,
+                    'communityid':community.id,
+                    'useraddr':row[u'用户地址'],
+                    'descriptions':row[u'备注'],
+                    'amrs_watermeter':amrs_data
+                }
+
+                import_lists.append(data)
+
+
+        err_count = len(err_msgs)
+        success_count = row_count - err_count
+        
+        if err_count > 0:
+            msg = '导入结果:正确%s条<br />'%(success_count)+'错误%s条<br/>'%(err_count)+'<br/>'.join(e for e in err_msgs)
+            
+        else:
+            msg = '导入结果:成功导入%s条<br />'%(success_count)+'失败%s条<br/>'%(err_count)
+            
+            # print(dataset)
+            # result = watermeter_resource.import_data(dataset, dry_run=False,raise_errors=True,collect_failed_rows=True,**kwargs)  # Actually import now
+            cache.set('TOTAL_IMPORT_COUNT',len(import_lists))
+            cache.set('imported_num',1)
+            for data in import_lists:
+                amrs_data = data.pop("amrs_watermeter")
+                wateraddr = amrs_data.pop("wateraddr")
+                # 先更新amrs watermeter
+                amrs_wm = Watermeter.objects.get(wateraddr=wateraddr)
+                for attr,value in amrs_data.items():
+                    setattr(amrs_wm,attr,value)
+                amrs_wm.save()
+
+                # 更新vwatermeter
+                useraddr = data.pop("useraddr")
+                VWatermeter.objects.filter(amrs_watermeter=amrs_wm).update(useraddr=useraddr)
+
+
+                
+        
+        data={"exceptionDetailMsg":"null",
+                "msg":msg,
+                "obj":"null",
+                "success":True
+        }
+
+        return HttpResponse(json.dumps(data))
+

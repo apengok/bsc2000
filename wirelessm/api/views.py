@@ -112,7 +112,10 @@ class WatermeterListAPIView(ListAPIView):
 
         if simpleQueryParam:
             queryset_list = queryset_list.filter(
-                    Q(amrs_watermeter__serialnumber__icontains=simpleQueryParam)
+                    Q(amrs_watermeter__serialnumber__icontains=simpleQueryParam)|
+                    Q(amrs_watermeter__wateraddr__icontains=simpleQueryParam)|
+                    Q(amrs_watermeter__roomname__icontains=simpleQueryParam)|
+                    Q(amrs_watermeter__numbersth__icontains=simpleQueryParam)
                     # Q(imei__icontains=query)
                     ).distinct()
         return queryset_list

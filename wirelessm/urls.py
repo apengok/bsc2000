@@ -50,5 +50,7 @@ urlpatterns = [
     url(r'^watermeter/import',views.WatermeterImportView.as_view(),name='import'),
     url(r'^watermeter/download',views.watermeterdownload,name='watermeterdownload'),
 
+    # 批量修改
+    url(r'^watermeter/batchupdate',views.WatermeterBatchUpdateView.as_view(),name='batchupdate'),
     
 ]

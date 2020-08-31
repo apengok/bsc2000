@@ -232,19 +232,22 @@ def getFenceDetails(request):
                 "type":fence.shape.zonetype
             }
             jd = json.loads(fence.shape.geomjson)
+            print("jd:",jd)
             
             if jd.get('type') == 'FeatureCollection':
                 feature = jd['features'][0]['geometry']
             else:
                 feature = jd['geometry']
             feature["properties"] = properties
+            # feature['features'][0]["properties"] = properties 
             data.append(feature)
-        except:
+        except Exception as e:
+            print(e)
             pass
         
     
         
-    # print(data)
+    print(data)
     FeatureCollection = {
         "type":"FeatureCollection",
         "features":data

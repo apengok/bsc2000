@@ -70,6 +70,51 @@ class BigmeterPushDataSerializer(ModelSerializer):
             return "0"
 
 
+
+class ChangshaPushDataSerializer(ModelSerializer):
+    DeviceID = ReadOnlyField(source='serialnumber')
+    DeviceName = ReadOnlyField(source='username')
+    RealData = SerializerMethodField()
+    HistoryData = SerializerMethodField()
+
+    class Meta:
+        model = Bigmeter
+
+        fields = ['DeviceID','DeviceName','RealData','HistoryData']
+
+    def get_RealData(self,obj):
+        def get_commstate(obj):
+            now = datetime.datetime.now()
+            d7 = now - datetime.timedelta(days=7)
+            try:
+                dn = datetime.datetime.strptime(obj.fluxreadtime,"%Y-%m-%d %H:%M:%S")
+                if d7 < dn:
+                    return "在线"
+                
+            except:
+                pass
+
+            return "离线"
+        
+        return {
+            "fluxreadtime":obj.fluxreadtime if obj.fluxreadtime else "1970-01-01 00:00:00",
+            "plustotalflux":obj.plustotalflux if obj.plustotalflux else "0.0",
+            "flux":obj.flux if obj.flux else "0.0",
+            "reversetotalflux":obj.reversetotalflux if obj.reversetotalflux else "0.0",
+            "pressure":obj.pressure if obj.pressure else "0.0",
+            "meterv":obj.meterv if obj.meterv else "0.0",
+            "gprsv":obj.gprsv if obj.gprsv else "0.0",
+            "signlen":obj.signlen if obj.signlen else "0.0",
+            "lng":obj.lng if obj.lng else "",
+            "lat":obj.lat if obj.lat else "",
+            "installationsite":obj.installationsite if obj.installationsite else "",
+            "commstat":get_commstate(obj),
+        }
+
+    def get_HistoryData(self,obj):
+        return []
+
+
 class BigmeterPushDataSerializer_1(ModelSerializer):
     DeviceID = ReadOnlyField(source='serialnumber')
     DeviceName = ReadOnlyField(source='username')

@@ -429,13 +429,32 @@
                     if(data.features.length ==0){
                         return;
                     }
+                    var props = data.features[0].properties;
+                    console.log(props);
                     var format = new ol.format.GeoJSON({defaultDataProjection:'EPSG:4326'});//{dataProjection: 'EPSG:3857'}
                     var features = format.readFeatures(data.features[0]) //{dataProjection: 'EPSG:3857',featureProjection:'EPSG:3857'}
                     // var features = format.readFeatures(JSON.parse(data.features[0]))
                     console.log(features)
+                    
                     vectorLayer1.getSource().addFeatures(features); //vectorLayer1==map.getLayerGroup().getLayersArray()[2]
                     
                     var polygon = features[0].getGeometry();
+                    polygon.setProperties(props);
+                    var style =  new ol.style.Style({
+                    
+                        stroke: new ol.style.Stroke({
+                            color: "#4289c6",
+                            width: 3,
+                            lineDash: [8, 6]
+                        }),
+                        fill: new ol.style.Fill({
+                            color: "#de25de"
+                            
+                        }),
+                        
+                        
+                    })
+                    features[0].setStyle(style);
                     console.log(polygon)
                     // vectorLayer1.changed();
                     console.log(map)
