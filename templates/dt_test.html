@@ -1,0 +1,156 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html class="no-js">
+<head>
+<title>Datables test</title>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10" />
+<meta http-equiv="Expires" content="0"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Cache-Control" content="no-store"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="{% static 'Datatables/datatables.css' %}">
+
+<script src="{% static 'virvo/resources/js/jquery-1.10.2.min.js' %}"></script>
+<script src="{% static 'Datatables/datatables.js' %}"></script>
+
+{% block stylesheet %}
+
+{% endblock %}
+</head>
+<body>
+    <h1>Datatable and fixed column test</h1>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>serialnumber</th>
+                <th>username</th>
+                <th>usertype</th>
+                <th>lng</th>
+                <th>lat</th>
+                <th>commaddr</th>
+                <th>simid</th>
+                <th>madedate</th>
+                <th>metertype</th>
+                <th>installationsite</th>
+                <th>commstate</th>
+                <th>gprsv</th>
+                <th>meterv</th>
+                <th>signlen</th>
+                <th>pressure</th>
+                <th>plustotalflux</th>
+                <th>reversetotalflux</th>
+                <th>flux</th>
+                <th>totalflux</th>
+                <th>fluxreadtime</th>
+            </tr>
+        </thead>
+        
+    </table>
+
+    <script>
+        var columns = [
+            // {
+            //     //第一列，用来显示序号
+            //     "data" : null,
+            //     "class" : "text-center"
+            // },
+            {
+                "data" : "serialnumber",
+                "class" : "text-center"
+            },
+            {
+                "data" : "username",
+                "class" : "text-center"
+            },
+            {
+                "data" : "usertype",
+                "class" : "text-center"
+            },
+            {
+                "data" : "lng",
+                "class" : "text-center"
+            },
+            {
+                "data" : "lat",
+                "class" : "text-center"
+            },
+            {
+                "data" : "commaddr",
+                "class" : "text-center"
+            },
+            {
+                "data" : "simid",
+                "class" : "text-center"
+            },
+            {
+                "data" : "madedate",
+                "class" : "text-center"
+            },
+            {
+                "data" : "metertype",
+                "class" : "text-center"
+            },
+            {
+                "data" : "installationsite",
+                "class" : "text-center"
+            },
+            {
+                "data" : "commstate",
+                "class" : "text-center"
+            },
+            {
+                "data" : "gprsv",
+                "class" : "text-center"
+            },
+            {
+                "data" : "meterv",
+                "class" : "text-center"
+            },
+            {
+                "data" : "signlen",
+                "class" : "text-center"
+            },
+            {
+                "data" : "pressure",
+                "class" : "text-center"
+            },
+            {
+                "data" : "plustotalflux",
+                "class" : "text-center"
+            },
+            {
+                "data" : "reversetotalflux",
+                "class" : "text-center"
+            },
+            {
+                "data" : "flux",
+                "class" : "text-center"
+            },
+            {
+                "data" : "totalflux",
+                "class" : "text-center"
+            },
+            {
+                "data" : "fluxreadtime",
+                "class" : "text-center"
+            },
+        ]
+        $(document).ready(function() {
+            $('#example').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ajax": "/api/amrs/datatable/test/",
+                "columns":columns,
+                scrollY:        300,
+                scrollX:        true,
+                scrollCollapse: true,
+                paging:         false,
+                fixedColumns:   true,
+                fixedColumns:   {
+                    leftColumns: 2
+                }
+            } );
+        } );
+    </script>
+</body>
+</html>

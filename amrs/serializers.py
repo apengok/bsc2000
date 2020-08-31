@@ -99,7 +99,21 @@ class HdbFlowDataMonthSerializer(ModelSerializer):
         model = HdbFlowDataMonth
         fields = ['hdate','dosage']        
 
-          
+class BigMeterTempSerializer(ModelSerializer):
+    class Meta:
+        model = Bigmeter
+        fields = ['serialnumber','username','usertype','lng','lat','commaddr','simid','madedate','metertype','installationsite',
+        'commstate',
+        'gprsv',
+        'meterv',
+        'signlen',
+        'pressure',
+        'plustotalflux',
+        'reversetotalflux',
+        'flux',
+        'totalflux',
+        'fluxreadtime',]
+
 
 class BigmeterCreateSerializer(ModelSerializer):
     belongto = CharField(label='所属组织', max_length=100)
