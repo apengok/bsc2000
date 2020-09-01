@@ -232,12 +232,12 @@ def getFenceDetails(request):
                 "type":fence.shape.zonetype
             }
             jd = json.loads(fence.shape.geomjson)
-            print("jd:",jd)
+            # print("jd:",jd)
             
             if jd.get('type') == 'FeatureCollection':
                 feature = jd['features'][0]['geometry']
             else:
-                feature = jd['geometry']
+                feature = jd #jd['geometry']
             feature["properties"] = properties
             # feature['features'][0]["properties"] = properties 
             data.append(feature)
@@ -247,7 +247,7 @@ def getFenceDetails(request):
         
     
         
-    print(data)
+    # print(data)
     FeatureCollection = {
         "type":"FeatureCollection",
         "features":data
@@ -285,7 +285,7 @@ def fenceselected(request):
         if jd.get('type') == 'FeatureCollection':
             feature = jd['features'][0]['geometry']
         else:
-            feature = jd['geometry']
+            feature = jd #jd['geometry']
         feature["properties"] = properties
         # feature['features'][0]["properties"] = properties 
         data.append(feature)
@@ -323,7 +323,7 @@ def fencepreview(request):
     if jd.get('type') == 'FeatureCollection':
         feature = jd['features'][0]['geometry']
     else:
-        feature = jd['geometry']
+        feature = jd #jd['geometry']
     feature["properties"] = properties
 
     # return Response(feature)

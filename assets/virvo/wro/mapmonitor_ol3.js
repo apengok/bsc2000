@@ -2572,14 +2572,15 @@ map.addControl(slider);
 
 var dma_style =function(feature) { 
 
-    
+    console.log(feature)
     var strokeColor = feature.getProperties().strokeColor;
     var fillColor = feature.getProperties().fillColor;
+    console.log(strokeColor,fillColor)
     var name = feature.getProperties().name;
     
     var color = ol.color.asArray(fillColor);
     color = color.slice();
-    color[3] = 0.2; //opacity
+    color[3] = 0.5; //opacity
 
     var style =  new ol.style.Style({
         

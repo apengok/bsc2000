@@ -429,27 +429,37 @@
                     if(data.features.length ==0){
                         return;
                     }
-                    var props = data.features[0].properties;
-                    console.log(props);
-                    var format = new ol.format.GeoJSON({defaultDataProjection:'EPSG:4326'});//{dataProjection: 'EPSG:3857'}
-                    var features = format.readFeatures(data.features[0]) //{dataProjection: 'EPSG:3857',featureProjection:'EPSG:3857'}
-                    // var features = format.readFeatures(JSON.parse(data.features[0]))
-                    console.log(features)
+                    var features = (new ol.format.GeoJSON()).readFeatures(data,{featureProjection: 'EPSG:4326'});
+                    vectorLayer1.getSource().addFeature(features[0]); 
+                    // var props = data.features[0].properties;
+                    // var strokecolor = props.strokeColor;
+                    // var fillcolor = props.fillColor;
+                    // if(fillcolor == ""){
+                    //     fillcolor = "#9c869c"
+                    // }
+                    var strokeColor = features[0].getProperties().strokeColor;
+                    var fillColor = features[0].getProperties().fillColor;
+                    var color = ol.color.asArray(fillColor);
+                    color = color.slice();
+                    color[3] = 0.5; //opacity
+                    // console.log(props);
+                    // var format = new ol.format.GeoJSON({defaultDataProjection:'EPSG:4326'});//{dataProjection: 'EPSG:3857'}
+                    // var features = format.readFeatures(data.features[0]) //{dataProjection: 'EPSG:3857',featureProjection:'EPSG:3857'}
+                    // // var features = format.readFeatures(JSON.parse(data.features[0]))
+                    // console.log(features)
                     
-                    vectorLayer1.getSource().addFeatures(features); //vectorLayer1==map.getLayerGroup().getLayersArray()[2]
+                    // vectorLayer1.getSource().addFeatures(features); //vectorLayer1==map.getLayerGroup().getLayersArray()[2]
                     
                     var polygon = features[0].getGeometry();
-                    polygon.setProperties(props);
                     var style =  new ol.style.Style({
                     
                         stroke: new ol.style.Stroke({
-                            color: "#4289c6",
+                            color: strokeColor,
                             width: 3,
                             lineDash: [8, 6]
                         }),
                         fill: new ol.style.Fill({
-                            color: "#de25de"
-                            
+                            color: color
                         }),
                         
                         

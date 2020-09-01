@@ -479,8 +479,10 @@ def getdmageojson(request):
         if jd.get('type') == 'FeatureCollection':
             feature = jd['features'][0]['geometry']
         else:
-            feature = jd['geometry']
+            feature = jd #jd['geometry']
+        # print('jaksdhfeeeee7890-=====================',feature)
         feature["properties"] = properties #json.dumps(properties)
+        # feature['features'][0]["properties"] = properties 
         data.append(feature)
         
     # print(data)
