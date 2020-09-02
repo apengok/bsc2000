@@ -214,6 +214,7 @@ var deviceNumberNull = "\u7EC8\u7AEF\u53F7\u4E0D\u80FD\u4E3A\u7A7A";
 
     laydate.render({elem: '#madedate',theme: '#6dcff6'});
 
+    var dn  = "{{ form.dn.value|default:'15' }}";
     var metertype  = "{{ form.metertype.value|default:'0' }}";
     var wateraddr =  "{{ form.wateraddr.value|default:'0' }}";
 

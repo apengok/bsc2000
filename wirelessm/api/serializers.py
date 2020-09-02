@@ -170,6 +170,7 @@ class WQDetailSerializer(ModelSerializer):
     rvalue = SerializerMethodField()
     roomname = SerializerMethodField()
     dur_use = SerializerMethodField()
+    valvestate = SerializerMethodField()
 
     class Meta:
         model = Watermeter
@@ -251,6 +252,10 @@ class WQDetailSerializer(ModelSerializer):
             content = ''
         return content
 
+    def get_valvestate(self,obj):
+        if obj.valvestate is not None:
+            return "开" if obj.valvestate == "1" or obj.valvestate == 1 else "关"
+        return ''
 
 
 class WQSerializer(ModelSerializer):

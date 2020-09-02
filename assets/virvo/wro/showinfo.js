@@ -65,7 +65,7 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    // console.log(data.obj)
+                    console.log(data.obj)
                     if(data.success)
                     {
                         
@@ -80,7 +80,7 @@
                         $("#installationsite").text(data.obj.installationsite);
                         $("#manufacturer").text(data.obj.manufacturer);
                         $("#dn").text(data.obj.dn);
-                        $("#meter_catlog").text(data.obj.meter_catlog);
+                        $("#meter_catlog").text(data.obj.metertype);
                         $("#valvestate").text(data.obj.valvestate);
                         $("#tmonth").text(data.tmonth);
                         $("#tyestoday").text(data.tyestoday);

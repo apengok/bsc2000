@@ -1607,12 +1607,12 @@ class WatermeterBatchUpdateView(TemplateView,UserPassesTestMixin):
 
         
 
-        if wateraddr == '' or wateraddr is None:
-            wateraddr = serialnumber
-        else:
-            bflag = SimCard.objects.filter(simcardNumber=wateraddr).exists()
-            if not bflag:
-                err_msg.append(u"该IMEI %s 不存在"%(wateraddr))
+        # if wateraddr == '' or wateraddr is None:
+        #     wateraddr = serialnumber
+        # else:
+        #     bflag = SimCard.objects.filter(simcardNumber=wateraddr).exists()
+        #     if not bflag:
+        #         err_msg.append(u"该IMEI %s 不存在"%(wateraddr))
 
         row[u'关联IMEI'] = wateraddr
 
@@ -1733,8 +1733,10 @@ class WatermeterBatchUpdateView(TemplateView,UserPassesTestMixin):
                 amrs_data = {
                     'numbersth':row[u'用户代码(收费编号)'], 
                     'serialnumber':row[u'表编号(水表表身编码)'], 
+                    'metertype':row[u'表类型(抄表远传方式)'],
                     'wateraddr':row[u'关联IMEI'],
                     'roomname':row[u'单元号、房号'],
+                    'buildingname':row[u'楼号'],
                     'username':row[u'用户姓名'],
                     'usertel':row[u'用户电话'],
                     'dn':row[u'口径'],
@@ -1769,10 +1771,15 @@ class WatermeterBatchUpdateView(TemplateView,UserPassesTestMixin):
             for data in import_lists:
                 amrs_data = data.pop("amrs_watermeter")
                 wateraddr = amrs_data.pop("wateraddr")
+                serialnumber = amrs_data.pop("serialnumber")
                 # 先更新amrs watermeter
-                amrs_wm = Watermeter.objects.get(wateraddr=wateraddr)
+                if wateraddr == '' or wateraddr is None:
+                    amrs_wm = Watermeter.objects.get(serialnumber=serialnumber)
+                else:
+                    amrs_wm = Watermeter.objects.get(wateraddr=wateraddr)
                 for attr,value in amrs_data.items():
-                    setattr(amrs_wm,attr,value)
+                    if value:
+                        setattr(amrs_wm,attr,value)
                 amrs_wm.save()
 
                 # 更新vwatermeter

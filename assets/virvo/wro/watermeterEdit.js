@@ -17,7 +17,7 @@
     var useraddr = $("#useraddr").val();
     var installsite = $("#installationsite").val();
     // var metertype = $("#metertype").val();
-    var dn = $("#dn").val();
+    // var dn = $("#dn").val();
     var manufacturer = $("#manufacturer").val();
     var metercontrol = $("#metercontrol").val();
     var madedate = $("#madedate").val();
@@ -52,8 +52,11 @@
             $.fn.zTree.init($("#ztreeDemo"), setting, null);
             // laydate.render({elem: '#installDate', theme: '#6dcff6'});
             // laydate.render({elem: '#procurementDate', theme: '#6dcff6'});
-
-            
+console.log('dn=',dn)
+            $("#dn option").filter(function() {
+                // console.log($(this).text())
+                return $(this).text() == dn;
+            }).attr('selected', true);
 
             // document.getElementById('metertype').value = metertype
             console.log(metertype)
