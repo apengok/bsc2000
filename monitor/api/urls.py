@@ -6,7 +6,9 @@ from .views import (
     BigmeterRTListAPIView,
     getmapstationlist,
     getmapsecondwaterlist,
-    showinfoStatics
+    showinfoStatics,
+    getWatermeterflow,
+
 )
 
 app_name='monitor-api'
@@ -22,6 +24,7 @@ urlpatterns = [
 
     # 
     url(r'^realtimedata/showinfoStatics/$',showinfoStatics,name='showinfoStatics'),
+    url(r'^realtimedata/getWatermeterflow/$',getWatermeterflow,name='getWatermeterflow'),
 
     # url(r'^dma/getDmaSelect/$', getDmaSelect, name='dmaselect'),
     # url(r'^dma/list/$', DMAListAPIView.as_view(), name='dmalist'),

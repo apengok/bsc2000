@@ -358,7 +358,7 @@
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
                 type: "GET",
-                url: "/api/wirelessm/watermeter/getWatermeterflow_data/",
+                url: "/api/monitor/realtimedata/getWatermeterflow_data/",
                 data: {
                   "commaddr": commaddr,
                   "syear":t1,
@@ -413,7 +413,7 @@
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
                 type: "GET",
-                url: "/api/wirelessm/watermeter/getWatermeterflow/",
+                url: "/api/monitor/realtimedata/getWatermeterflow/",
                 data: {
                   "commaddr": commaddr,
                   "syear":t1,

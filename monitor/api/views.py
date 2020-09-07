@@ -44,6 +44,7 @@ from amrs.models import (
     Bigmeter,
     SecondWater,
     Bigmeter,
+    HdbFlowData,
 )
 # from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 # from .permissions import IsOwnerOrReadOnly
@@ -59,6 +60,9 @@ from .serializers import (
     BigmeterRTShowinfoSerializer,
     )
 
+from amrs.serializers import (
+    HdbFlowDataSerializer,
+)
 import logging
 import logging.handlers
 
@@ -345,26 +349,25 @@ def showinfoStatics(request):
 def getWatermeterflow(request):
     
     '''
-        vwaterid equal watermeter__id
+        commaddr equal watermeter__id
     '''
     if request.method == "GET":
-        vwaterid = int(request.GET.get("vwaterid", None))
+        commaddr = int(request.GET.get("commaddr", None))
         syear = int(request.GET.get("syear", None))
         smonth = int(request.GET.get("smonth", None))
         sday = int(request.GET.get("sday", None))
-        # vwaterid = request.GET.get("vwaterid")
         
 
     if request.method == "POST":
-        vwaterid = int(request.POST.get("vwaterid", None))
+        commaddr = int(request.POST.get("commaddr", None))
         syear = int(request.POST.get("syear", None))
         smonth = int(request.POST.get("smonth", None))
         sday = int(request.POST.get("sday", None))
         
-    # vwaterid=3219
+    # commaddr=3219
     # smonth=3
     # sday=31
-    if vwaterid is None:
+    if commaddr is None:
         return HttpResponse(json.dumps({"success":"true","records":[]}))
 
     user = request.user
@@ -372,16 +375,15 @@ def getWatermeterflow(request):
     today = datetime.datetime.today()
     ymon = today.strftime("%Y-%m")
 
-    watermeter = Watermeter.objects.get(id=vwaterid)
+    # watermeter = Bigmeter.objects.get(id=commaddr)
 
     qmonth = '{}-{:02d}-{:02d}'.format(syear,smonth,sday)
-    print('this water:',watermeter,watermeter.wateraddr,qmonth)
-    queryset = HdbWatermeterData.objects.filter(
-            Q(wateraddr=watermeter.wateraddr) &
+    queryset = HdbFlowData.objects.filter(
+            Q(commaddr=commaddr) &
             # Q(waterid=watermeter.id) &
             Q(readtime__startswith=qmonth)
         ).distinct().order_by('readtime')
-    dosage_serializer_data =  HdbWatermeterFlowSerializer(queryset,many=True).data
+    dosage_serializer_data =  HdbFlowDataSerializer(queryset,many=True).data
     print(dosage_serializer_data)
 
     datel = ['0:00']
@@ -550,23 +552,23 @@ def getWatermeterflow(request):
 @api_view(['GET','POST'])
 def getWatermeterflow_data(request):
     if request.method == "GET":
-        vwaterid = int(request.GET.get("vwaterid", None))
+        commaddr = int(request.GET.get("commaddr", None))
         syear = int(request.GET.get("syear", None))
         smonth = int(request.GET.get("smonth", None))
         sday = int(request.GET.get("sday", None))
-        # vwaterid = request.GET.get("vwaterid")
+        # commaddr = request.GET.get("commaddr")
         
 
     if request.method == "POST":
-        vwaterid = int(request.POST.get("vwaterid", None))
+        commaddr = int(request.POST.get("commaddr", None))
         syear = int(request.POST.get("syear", None))
         smonth = int(request.POST.get("smonth", None))
         sday = int(request.POST.get("sday", None))
         
-    # vwaterid=3219
+    # commaddr=3219
     # smonth=3
     # sday=31
-    if vwaterid is None:
+    if commaddr is None:
         return HttpResponse(json.dumps({"success":"true","records":[]}))
 
     user = request.user
@@ -574,16 +576,15 @@ def getWatermeterflow_data(request):
     today = datetime.datetime.today()
     ymon = today.strftime("%Y-%m")
 
-    watermeter = Watermeter.objects.get(id=vwaterid)
+    # watermeter = Watermeter.objects.get(id=commaddr)
 
     qmonth = '{}-{:02d}-{:02d}'.format(syear,smonth,sday)
-    print('this water:',watermeter,watermeter.wateraddr,qmonth)
-    queryset = HdbWatermeterData.objects.filter(
-            Q(wateraddr=watermeter.wateraddr) &
+    queryset = HdbFlowData.objects.filter(
+            Q(commaddr=commaddr) &
             # Q(waterid=watermeter.id) &
             Q(readtime__startswith=qmonth)
         ).distinct().order_by('readtime')
-    dosage_serializer_data =  HdbWatermeterRawFlowSerializer(queryset,many=True).data
+    dosage_serializer_data =  HdbFlowDataSerializer(queryset,many=True).data
     print(dosage_serializer_data)
 
     result = dict()
