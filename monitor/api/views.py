@@ -17,6 +17,7 @@ from rest_framework.generics import (
     )
 
 import time
+import datetime
 
 from rest_framework.permissions import (
     AllowAny,
@@ -55,6 +56,7 @@ from .serializers import (
     MapSecondWaterSerializer,
     BigmeterPushDataSerializer,
     ChangshaPushDataSerializer,
+    BigmeterRTShowinfoSerializer,
     )
 
 import logging
@@ -307,3 +309,288 @@ def PostMData(request):
     serializer_data = ChangshaPushDataSerializer(queryset_list,many=True).data
     
     return Response(serializer_data)
+
+
+
+@api_view(['GET','POST'])
+def showinfoStatics(request):
+    '''
+        realtime-showinfo.js 通过站点名显示表信息
+    '''
+    commaddr = request.GET.get("commaddr", None)
+    print("commaddr=",commaddr)        
+    if commaddr is None:
+        return ResourceWarning({"success":"true","records":[]})
+
+    user = request.user
+    organs = user.belongto
+    today = datetime.datetime.today()
+    ymon = today.strftime("%Y-%m")
+    watermeter = Bigmeter.objects.get(commaddr=commaddr)
+    meter_serializer_data = BigmeterRTShowinfoSerializer(watermeter).data
+
+    
+    
+    result = dict()
+    result["obj"] = meter_serializer_data
+    result["success"] = "true"
+    
+    
+    
+    return Response(result)
+
+
+
+@api_view(['GET','POST'])
+def getWatermeterflow(request):
+    
+    '''
+        vwaterid equal watermeter__id
+    '''
+    if request.method == "GET":
+        vwaterid = int(request.GET.get("vwaterid", None))
+        syear = int(request.GET.get("syear", None))
+        smonth = int(request.GET.get("smonth", None))
+        sday = int(request.GET.get("sday", None))
+        # vwaterid = request.GET.get("vwaterid")
+        
+
+    if request.method == "POST":
+        vwaterid = int(request.POST.get("vwaterid", None))
+        syear = int(request.POST.get("syear", None))
+        smonth = int(request.POST.get("smonth", None))
+        sday = int(request.POST.get("sday", None))
+        
+    # vwaterid=3219
+    # smonth=3
+    # sday=31
+    if vwaterid is None:
+        return HttpResponse(json.dumps({"success":"true","records":[]}))
+
+    user = request.user
+    organs = user.belongto
+    today = datetime.datetime.today()
+    ymon = today.strftime("%Y-%m")
+
+    watermeter = Watermeter.objects.get(id=vwaterid)
+
+    qmonth = '{}-{:02d}-{:02d}'.format(syear,smonth,sday)
+    print('this water:',watermeter,watermeter.wateraddr,qmonth)
+    queryset = HdbWatermeterData.objects.filter(
+            Q(wateraddr=watermeter.wateraddr) &
+            # Q(waterid=watermeter.id) &
+            Q(readtime__startswith=qmonth)
+        ).distinct().order_by('readtime')
+    dosage_serializer_data =  HdbWatermeterFlowSerializer(queryset,many=True).data
+    print(dosage_serializer_data)
+
+    datel = ['0:00']
+    for i in range(24):
+        s1 = '{}:30'.format(i)
+        s2 = '{}:00'.format(i+1)
+        datel.append(s1)
+        datel.append(s2)
+
+    def get_data_between_time(t1,t2):
+        dt1 = datetime.datetime.strptime(t1,"%H:%M") 
+        dt2 = datetime.datetime.strptime(t2,"%H:%M") 
+        data_between = []
+        data_len = len(dosage_serializer_data)
+        sflag = True
+        before_first = ''
+        for i in range(data_len):
+            s = dosage_serializer_data[i]
+            # print(s.get("readtime")[11:16],s.get("totalflux"))
+            dts = datetime.datetime.strptime(s.get("readtime")[11:16],"%H:%M") 
+            if dts > dt1 and dts <= dt2:
+                # 找到了 记录比较值
+                
+                if sflag:
+                    sflag = False
+                    if i == 0:
+                        before_first = dosage_serializer_data[0].get("totalflux")
+                    else:
+                        before_first = dosage_serializer_data[i-1].get("totalflux")
+                    print('before_first',before_first)
+                data_between.append(s.get("totalflux"))
+        
+        if len(data_between) > 0:
+            print(data_between,before_first)
+            # 当天只有一条数据记录时，计算好这个数据落在的时间段直接返回
+            if data_len == 1:
+                return float(before_first)
+            # 时间区间内最后一个数据减去 比较值
+            return float(data_between[-1]) - float(before_first)
+
+        return '-'
+            
+            
+
+    # print(datel)
+    # print(len(datel))
+    ret_data = []
+    for i in range(len(datel)-1):
+        t1 = datel[i]
+        if i == len(datel)-2:
+            t2 = "23:59"
+        else:
+            t2 = datel[i+1]
+        ret = get_data_between_time(t1,t2)
+        flag = 'valid'
+        if ret == '-':
+            flag = 'invalid'
+        # print(t1,"ret=",ret)
+        t2 = datel[i+1]
+        ret_data.append({
+            "readtime":t2,
+            "totalflux":ret,
+            "flag":flag
+        })
+
+    def update_avg(target,value):
+        for s in ret_data:
+            if s.get("readtime") in target:
+                s["totalflux"] = value
+
+    # 对时间段内没有数据记录的 计算平均值
+    flag = 'begin'
+    cnt = 1
+    tmp = []
+    seris_data = []
+    for s in ret_data:
+        
+        if s.get("flag") == 'invalid':
+            tmp.append(s.get("readtime"))
+            cnt += 1
+            flag = 'start'
+        
+        if s.get("flag") == 'valid' and flag == 'start':
+            value = s.get("totalflux")
+            avg_value = float(value) / cnt
+            print('need update ',tmp)
+            print('avg=',avg_value)
+            # 它自己因为被平均了，也要换成平均值
+            tmp.append(s.get("readtime"))
+            # 写入平均值到 ret_data
+            update_avg(tmp,avg_value)
+            
+            flag = 'end'
+            cnt = 1
+            tmp = []
+                
+    # 得出无效数据点的位置
+    flags = [1 if s.get("flag") == 'valid' else 0 for s in ret_data]
+    neg =[]
+    shift = 0
+    flag = ''
+    for i in range(0,len(flags)):
+        st = flags[i]
+        if st == 0 and flag != 'start':
+            flag = 'start'
+            shift = i
+        if st == 1 and flag == 'start':
+            neg.append([shift,i])
+            flag = 'restart'
+
+        if i+1 == len(flags) and flag == 'start':
+            neg.append([shift,i])
+    # valid
+    pos =[]
+    shift = 0
+    flag = ''
+    for i in range(0,len(flags)):
+        st = flags[i]
+        if st == 1 and flag != 'start':
+            flag = 'start'
+            shift = i
+        if st == 0 and flag == 'start':
+            pos.append([shift,i])
+            flag = 'restart'
+
+        if i+1 == len(flags) and flag == 'start':
+            pos.append([shift,i])
+    
+    def gene_seris(target,st):
+
+        p0 = target[0]
+        p1 = target[1]
+        tmp = []
+        for i in range(len(ret_data)):
+            if i>=p0 and i<=p1:
+                tmp.append(ret_data[i].get("totalflux"))
+            else:
+                tmp.append('-')
+        return tmp
+
+    pos_data = []
+    neg_data = []
+
+    for s in pos:
+        pos_data.append(gene_seris(s,1))
+    for s in neg:
+        neg_data.append(gene_seris(s,0))
+
+
+
+    del datel[0]
+    result = dict()
+    result["rawdata"] = dosage_serializer_data
+    result["flowdata"] = ret_data #dosage_serializer_data
+    result["pos"] = pos
+    result["neg"] = neg
+    result["pos_data"] = pos_data
+    result["neg_data"] = neg_data
+    result["datel"] = datel
+    result["success"] = "true"
+    
+    
+    return Response(result)
+
+
+@api_view(['GET','POST'])
+def getWatermeterflow_data(request):
+    if request.method == "GET":
+        vwaterid = int(request.GET.get("vwaterid", None))
+        syear = int(request.GET.get("syear", None))
+        smonth = int(request.GET.get("smonth", None))
+        sday = int(request.GET.get("sday", None))
+        # vwaterid = request.GET.get("vwaterid")
+        
+
+    if request.method == "POST":
+        vwaterid = int(request.POST.get("vwaterid", None))
+        syear = int(request.POST.get("syear", None))
+        smonth = int(request.POST.get("smonth", None))
+        sday = int(request.POST.get("sday", None))
+        
+    # vwaterid=3219
+    # smonth=3
+    # sday=31
+    if vwaterid is None:
+        return HttpResponse(json.dumps({"success":"true","records":[]}))
+
+    user = request.user
+    organs = user.belongto
+    today = datetime.datetime.today()
+    ymon = today.strftime("%Y-%m")
+
+    watermeter = Watermeter.objects.get(id=vwaterid)
+
+    qmonth = '{}-{:02d}-{:02d}'.format(syear,smonth,sday)
+    print('this water:',watermeter,watermeter.wateraddr,qmonth)
+    queryset = HdbWatermeterData.objects.filter(
+            Q(wateraddr=watermeter.wateraddr) &
+            # Q(waterid=watermeter.id) &
+            Q(readtime__startswith=qmonth)
+        ).distinct().order_by('readtime')
+    dosage_serializer_data =  HdbWatermeterRawFlowSerializer(queryset,many=True).data
+    print(dosage_serializer_data)
+
+    result = dict()
+    result["rawdata"] = dosage_serializer_data
+    result["success"] = "true"
+    
+    
+    
+    return Response(result)
+

@@ -136,6 +136,24 @@ class BigmeterPushDataSerializer_1(ModelSerializer):
     def get_HistoryData(self,obj):
         return []
 
+
+class BigmeterRTShowinfoSerializer(ModelSerializer):
+    yestoday_use = SerializerMethodField()
+    month_use = SerializerMethodField()
+    year_use = SerializerMethodField()
+
+    class Meta:
+        model = Bigmeter
+        fields = ('pickperiod','reportperiod','dn','metertype','lng','lat','fluxreadtime','yestoday_use','month_use','year_use')
+
+    def get_yestoday_use(self,obj):
+        return 1
+    def get_month_use(self,obj):
+        return 2
+
+    def get_year_use(self,obj):
+        return 3
+
 class BigmeterRTSerializer(ModelSerializer):
     id = ReadOnlyField(source='commaddr')
     belongto = SerializerMethodField()

@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^realtimedata/?$',views.RealTimeDataView.as_view(),name='realtimedata'),
     url(r'^realtimedata/export/?$',views.exportbyselect,name='exportbyselect'),
     url(r'^rtdata/showalarm/(?P<pk>[0-9]+)/$',views.RtdataAmarm.as_view(),name='rtalarm'),
+    url(r'^realtimedata/showinfo/(?P<pk>[0-9]+)/?$',views.RtdShowInfoView.as_view(),name='realtimedatashowinfo'),
 
     # 车辆监控
     url(r'^vehicle/?$',views.VehicleView.as_view(),name='vehicle'),

@@ -179,6 +179,8 @@
                         "data" : "username",
                         "class" : "text-center",
                         render : function(data, type, row, meta) {
+                            ret_html='<a href="/monitor/realtimedata/showinfo/'+row.id+'/"  data-target="#commonSIWin" data-toggle="modal"  >'+data+'</a>&nbsp;';
+                            return ret_html;
                             if (data != null) {
                                 return data;
                             } else{

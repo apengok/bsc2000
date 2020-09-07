@@ -818,3 +818,26 @@ def exportbyselect(request):
     # response['Content-Disposition'] = 'attachment; filename=%s.xls' % urlquote(name)
     book.save(response)
     return response
+
+
+class RtdShowInfoView(TemplateView):
+    '''
+    实时数据页面 根据用户名选择显示页面信息
+    '''
+    # model = VWatermeter
+    template_name = "monitor/realtimedata-showinfo.html"
+
+    def get_object(self):
+        return Bigmeter.objects.get(commaddr=self.kwargs["pk"])
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(RtdShowInfoView, self).get_context_data(*args, **kwargs)
+        print(args,kwargs)
+        context["page_title"] = "实时数据"
+        context["page_menu"] = "用户信息"
+        obj = self.get_object()
+        # print("dasfefaesdfsdf----",obj.numbersth,obj.id,obj.serialnumber)
+        context["object"] = self.get_object()
+        context["numbersth"] = obj.username
+
+        return context
