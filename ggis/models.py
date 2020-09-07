@@ -16,7 +16,7 @@ import json
 from mptt.models import MPTTModel, TreeForeignKey
 
 from ggis.GGaussCoordConvert import Mercator2lonLat
-from django.contrib.gis.geos import GEOSGeometry
+# from django.contrib.gis.geos import GEOSGeometry
 from django.db import connection
 
 from core.models import Organization
