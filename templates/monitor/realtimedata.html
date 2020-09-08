@@ -6,6 +6,10 @@
 {% block breadcrumb %}
 {% endblock %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static '/ol/v3.20.1-dist/ol.css' %}"/>
+{% endblock %}
+
 {% block main_content %}
 
         <div class="row">
@@ -198,6 +202,7 @@
 
 
 {% block javascript %}
+<script type="text/javascript" src="{% static '/ol/v3.20.1-dist/ol-debug.js' %}"></script>
 <script>
   var userGroupDeleteConfirm = "\u60A8\u786E\u5B9A\u8981\u5220\u9664\u8BE5\u7EC4\u7EC7\u5417";
   var systemError = "\u5BF9\u4E0D\u8D77\uFF0C\u7CFB\u7EDF\u8D70\u4E22\u4E86\uFF0C\u8BF7\u8054\u7CFB\u7BA1\u7406\u5458";

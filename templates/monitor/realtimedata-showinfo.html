@@ -35,7 +35,7 @@
 
 
         }
-#userdaily ,#usermonthly ,#userflowrt{
+#userdaily ,#usermonthly ,#userflowrt,#instanceflowrt{
   height: 500px;
   display: block;
   /* width:90%; */
@@ -145,6 +145,7 @@
             
           </tbody>
         </table>
+        <div style="border: 1px solid black;height: 275px;" id="map"></div>
         
       </div>
 
@@ -154,6 +155,9 @@
         <div id="exTab2" class="container">	
           <ul class="nav nav-tabs">
             <li class="active">
+              <a  href="#instance-content" data-toggle="tab">瞬时流量</a>
+            </li>
+            <li >
               <a  href="#hour-content" data-toggle="tab">时用水</a>
             </li>
             <li id="day-tab">
@@ -162,10 +166,67 @@
             <li id="mon-tab">
               <a href="#mon-content" data-toggle="tab">月用水</a>
             </li>
+            <li id="alarm-tab">
+              <a href="#alarm-content" data-toggle="tab">报警信息</a>
+            </li>
           </ul>
           
           <div class="tab-content ">
-            <div class="tab-pane active" id="hour-content">
+            <!-- 瞬时用水 -->
+            <div class="tab-pane active" id="instance-content">
+              <div >
+                <div  style="padding-top: 20px;">
+                  <div class="row">
+                      
+                    <!-- <div class="col-md-2">
+                          <select  id="select000"></select> 
+                    </div>
+                    <div class="col-md-2">
+                      <select  id="select001" ></select> 
+                    </div>
+                    <div class="col-md-2">
+                      <select  id="select002" ></select> 
+                    </div> -->
+                    <div class="col-md-6 col-sm-8 searchListSelect">
+                      <input style="cursor: pointer; background-color: #fafafa;"
+                          class="form-control layer-date laydate-icon"
+                          id="timeInterval" name="timeInterval" readonly />
+                      <label id="timeInterval-error" class="error" for="timeInterval" style="display: none;">开始时间请不要超过上个月一号</label>
+                  </div>
+                    <div class="col-md-1">
+                      <button id="inquirefluxflow" type="button" class="btn btn-primary search-btn" name="1" >查询</button>
+                    </div>
+                    <!-- <div class="col-md-1">
+                      <button id="inquireflow-data" type="button" class="btn btn-primary search-btn" name="2" >数据</button>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-md-12"  id='instanceflow-show-data'  style="display: none;">
+                  <table id="instancerawdata-table" border="1" >
+              
+                    <thead>
+                      
+                      <tr>
+                        <th  data-field="seqno" >序号</th>
+                        <th  data-field="readtime"  >采样时间</th>
+                        <th  data-field="flux" >瞬时流量m³</th>
+                      </tr>
+                      
+          
+                      
+                    </thead>
+                  </table>
+                </div>
+                
+                <!-- <div class="col-md-12" id="flaw-show-echart" style="display: block;"> -->
+                    <div id="instanceflowrt" ></div>
+                <!-- </div> -->
+                
+              </div>
+            </div>
+
+            <!-- 时用水 -->
+            <div class="tab-pane " id="hour-content">
               <div >
                 <div  style="padding-top: 20px;">
                   <div class="row">
@@ -295,6 +356,47 @@
               </div>
               
             </div>
+            <!-- 报警信息 -->
+            <div class="tab-pane" id="alarm-content">
+              <div style="padding-top: 20px;">
+                <div class="row">
+                  
+                  <div class="col-md-2">
+                    <select  id="select4" ></select> 
+                  </div>
+                  
+                  <div class="col-md-1">
+                    <button id="inquireAlarm" type="button" class="btn btn-primary search-btn" name="5" >查询</button>
+                  </div>
+                  <!-- <div class="col-md-1">
+                    <button id="inquireMonthly-data" type="button" class="btn btn-primary search-btn" name="6" >数据</button>
+                  </div> -->
+                </div>
+              </div>
+  
+              <div class="col-md-12"  id='alarm-show-data' >
+                <table id="alarm-table"  >
+          
+                  <thead>
+                  
+                    <tr>
+                      <th data-field="seqno" >序号</th>
+                      <th data-field="alarmtime"  >报警时间</th>
+                      <th data-field="alarmcontent" >报警内容</th>
+                      <!-- <th data-field="reversetotalflux" >反向流量m³</th> -->
+                    </tr>
+                  
+    
+                  
+                  </thead>
+                </table>
+              </div>
+  
+              
+              
+            </div>
+            <!-- alarm panal end -->
+
           </div>
         </div>
       </div>

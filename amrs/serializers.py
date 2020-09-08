@@ -77,6 +77,12 @@ class HdbPressureDataSerializer(ModelSerializer):
         fields = ['readtime','pressure']
 
 
+
+class HdbFlowDataInstanceSerializer(ModelSerializer):        
+    class Meta:
+        model = HdbFlowData
+        fields = ['readtime','flux']
+
 class HdbFlowDataSerializer(ModelSerializer):        
     class Meta:
         model = HdbFlowData

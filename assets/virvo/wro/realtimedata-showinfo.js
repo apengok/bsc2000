@@ -13,6 +13,126 @@
     var subChk = $("input[name='subChk']");
     var userdaily;
     var usermonthly;
+    var sTime;
+    var eTime;
+    var vectorLayer;
+    var map;
+    var lng = "",lat="";
+
+    var ol3ops = {
+        init:function(){
+            
+            var controls = [
+                new ol.control.Attribution({collapsed: false}),
+                // new ol.control.FullScreen(),
+                new ol.control.MousePosition({projection: 'EPSG:4326',coordinateFormat: ol.coordinate.createStringXY(5)}),
+                
+            ];
+
+            // 墨卡托
+            // var vec_layer = ol3ops.crtLayerXYZ("vec_w","EPSG:3857",1);
+            // var cta_wlayer = ol3ops.crtLayerXYZ("cta_w","EPSG:3857",1);
+            // var cva_clayer = ol3ops.crtLayerXYZ("cva_w","EPSG:3857",1);
+            
+            // 经纬度
+            var vec_layer = ol3ops.crtLayerXYZ("vec_c","EPSG:4326",1);
+            var cta_wlayer = ol3ops.crtLayerXYZ("cta_c","EPSG:4326",1);
+            var cva_clayer = ol3ops.crtLayerXYZ("cva_c","EPSG:4326",1);
+
+            var iconStyle = new ol.style.Style({
+                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                  anchor: [0.5, 46],
+                  anchorXUnits: 'fraction',
+                  anchorYUnits: 'pixels',
+                  src: '/static/virvo/images/u3054.png'
+                }))
+              });
+        
+            var createMarker = function(coord){
+              var iconFeature = new ol.Feature({
+                geometry: new ol.geom.Point(coord),
+                name: 'Null Island',
+                population: 4000,
+                rainfall: 500
+              });
+        
+              iconFeature.setStyle(iconStyle);
+              return iconFeature;
+            }
+        
+              
+            vectorLayer = new ol.layer.Vector({
+                projection: 'EPSG:4326',
+                source: new ol.source.Vector()
+              });
+
+            // var center = [118.39469563,29.888188578];
+            var center;
+            if(!isNaN(Number.parseFloat(lng)) && !isNaN(Number.parseFloat(lng)) ){
+                center = [Number.parseFloat(lng),Number.parseFloat(lat)];
+            } else{
+                var longitude = $("#entlongitude").val();
+                var latitude = $("#entlatitude").val();
+                var zoomIn = $("#entzoomIn").val();
+                var maxZoom = 18;
+
+
+                if(longitude == "" || latitude == "" || zoomIn == ""){
+                    longitude = 113.93125
+                    latitude = 22.53579
+                    zoomIn = 16
+                }
+                else{
+                    longitude = Number.parseFloat(longitude);
+                    latitude = Number.parseFloat(latitude);
+                    zoomIn = Number.parseFloat(zoomIn);
+                }
+                center = [longitude,latitude];
+            }
+            console.log(center)
+            map = new ol.Map({
+                layers: [vec_layer,cta_wlayer,cva_clayer,vectorLayer],
+                controls: controls,
+                target: 'map',
+                view: new ol.View({
+                    projection: 'EPSG:4326',
+                    center: center,
+                //   center:  new ol.proj.transform(center,"EPSG:4326","EPSG:3857"),
+                    maxZoom : 18,
+                    zoom: 14
+                })
+              });
+
+            if(lng != "" && lat != ""){
+                if(!isNaN(lng) && !isNaN(lat))
+                {
+                    console.log(lng,lat)
+                    vectorLayer.getSource().clear();
+                    var marker = createMarker(center)
+                    vectorLayer.getSource().addFeature(marker);
+                    // map.updateSize();
+                }
+            }
+            
+
+        },
+        crtLayerXYZ:function(type, proj, opacity){
+            var layer = new ol.layer.Tile({
+                 source: new ol.source.XYZ({
+                     url: 'http://t'+Math.round(Math.random()*7)+'.tianditu.com/DataServer?T='+type+'&x={x}&y={y}&l={z}&tk=e0955897c7f8a5adeba75b55bb11b600',
+                     projection: proj
+                 }),
+                 opacity: opacity
+             });
+             layer.id = type;
+             return layer;
+        },
+        
+
+
+
+    };//ol3op end
+
     
     showInfo = {
         init: function(){
@@ -81,6 +201,10 @@
                         $("#userid").text(data.obj.userid);
                         $("#username").text(data.obj.username);
                         
+                        lng = data.obj.lng;
+                        lat = data.obj.lat;
+                        console.log(lng,lat)
+                        ol3ops.init();
 
                         
                     }
@@ -347,6 +471,158 @@
                 select.append($(tmpl.replace(/\$name/g,  add0(12 - i))));
             }
         },
+        getinstanceflow_data:function(){
+            // $("#flow-show-data").css("display","block")
+            // $("#flaw-show-echart").css("display","none")
+            
+            
+            commaddr = $("#objId").val();
+            // console.log("commaddr=",commaddr,t1,t2);
+            $.ajax({
+                type: "GET",
+                url: "/api/monitor/realtimedata/getinstanceflow_data/",
+                data: {
+                  "commaddr": commaddr,
+                  "stime":sTime,
+                  "etime":eTime
+                },
+                dataType: "json",
+                success: function (data) {
+                    // console.log(data)
+                    if(data.success)
+                    {
+                        var data_flow = [];
+                        
+
+                        dm = data.rawdata; //object
+                        // console.log(dm)
+                        $.each(dm,function(i,d){
+                            
+                            var e = {};
+                            e.seqno =i+1;
+                            e.readtime = d.readtime;
+                            e.flux = d.flux;
+                            // e.reversetotalflux = d.reversetotalflux;
+                            data_flow.push(e);
+                        })
+                        
+                        console.log(data_flow)
+                            $("#instancerawdata-table").bootstrapTable("destroy");
+                            $("#instancerawdata-table").bootstrapTable({
+                                data: data_flow,
+                                classes: 'table table-condensed table-no-bordered', 
+                                striped: false,
+                                height: "300"
+                            })
+                            // $("#rawdata-table").bootstrapTable({'load':data_flow})
+                    }
+
+                }
+            });
+        },
+        getinstanceflow:function(){
+            // $("#flow-show-data").css("display","none")
+            // $("#flaw-show-echart").css("display","block")
+            showInfo.getinstanceflow_data();
+
+
+            
+            
+            commaddr = $("#objId").val();
+            // console.log("commaddr=",commaddr,t1,t2);
+            $.ajax({
+                type: "GET",
+                url: "/api/monitor/realtimedata/getinstanceflow/",
+                data: {
+                  "commaddr": commaddr,
+                  "stime":sTime,
+                  "etime":eTime
+                },
+                dataType: "json",
+                success: function (data) {
+                    // console.log(data)
+                    if(data.success)
+                    {
+                        var data_flow = [];
+                        var data_seris = [];
+                        var series_data = [];
+
+
+                        dm = data.rawdata; //object
+                        $.each(dm,function(i,d){
+                            // console.log(i,":",d)
+                            h = d.readtime.substring(10,16)
+                            v = d.flux
+                            flag = d.flag
+                            if(v<0){
+                                v = "-";
+                            }
+                            data_flow.push(v);
+                            data_seris.push(h);
+                        })
+
+                        console.log(data_seris)
+                        console.log(data_flow)
+                        
+                        option0 = {
+                            // title: {
+                            //     left: 'center',
+                            //     text: '时段用水量统计图',
+                            // },
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    dataZoom: {
+                                        yAxisIndex: 'none'
+                                    },
+                                    dataView : {
+                                        show: true, readOnly: true,
+                                        optionToContent : function(opt) {
+                                            var table = $("#instanceflow-show-data").html();
+                                            return table;
+                                        }
+                                    },
+                                    
+                                    magicType: {type: ['line', 'bar']},
+                                    restore: {},
+                                    saveAsImage: {}
+                                }
+                            },
+                            dataZoom: {
+                                show: false,
+                                start : 0
+                            },
+                            // legend: {
+                            //     data:['曲线','柱状图']
+                            // },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,  // 让折线图从X轴0刻度开始
+                                data: data_seris,//['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
+                            },
+                            yAxis: {
+                                name:'流量(吨)',
+                                nameLocation:'middle',
+                                nameGap:30,
+                                type: 'value'
+                            },
+                            // series:series_data
+                            series: [{
+                                data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
+                                type: 'line',
+                                smooth: false
+                            }]
+                        };
+            
+                        instanceflowrt = echarts.init(document.getElementById('instanceflowrt'));
+                        instanceflowrt.clear();
+                        instanceflowrt.setOption(option0);
+            
+                    }
+
+                }
+            });
+        },
         getWatermeterflow_data:function(){
             // $("#flow-show-data").css("display","block")
             // $("#flaw-show-echart").css("display","none")
@@ -565,7 +841,7 @@
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
                 type: "GET",
-                url: "/api/wirelessm/watermeter/getWatermeterdaily_data/",
+                url: "/api/monitor/realtimedata/getWatermeterdaily_data/",
                 data: {
                   "commaddr": commaddr,
                   "syear":t1,
@@ -616,7 +892,7 @@
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
                 type: "GET",
-                url: "/api/wirelessm/watermeter/getWatermeterdaily_data/",
+                url: "/api/monitor/realtimedata/getWatermeterdaily_data/",
                 data: {
                   "commaddr": commaddr,
                   "syear":t1,
@@ -758,7 +1034,7 @@
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
                 type: "GET",
-                url: "/api/wirelessm/watermeter/getWatermeterMonth_data/",
+                url: "/api/monitor/realtimedata/getWatermeterMonth_data/",
                 data: {
                   "commaddr": commaddr,
                   "syear":t1,
@@ -809,7 +1085,7 @@
             // console.log("commaddr=",commaddr);
             $.ajax({
                 type: "GET",
-                url: "/api/wirelessm/watermeter/getWatermeterMonth_data/",
+                url: "/api/monitor/realtimedata/getWatermeterMonth_data/",
                 data: {
                   "commaddr": commaddr,
                   "syear":t3,
@@ -947,6 +1223,13 @@
         $('input').inputClear();
         showInfo.init();
 
+        // showInfo.renderSelectYear("#select000");
+        // showInfo.renderSelectMonth("#select001");
+        // showInfo.renderSelectDay("#select002");
+        $('#timeInterval').dateRangePicker({dateLimit:30});
+        showInfo.startDay(-7);
+        $('#timeInterval').val(startTime + '--' + endTime);
+
         showInfo.renderSelectYear("#select00");
         showInfo.renderSelectMonth("#select01");
         showInfo.renderSelectDay("#select02");
@@ -954,6 +1237,7 @@
         showInfo.renderSelectYear("#select1");
         showInfo.renderSelectMonth("#select2");
         showInfo.renderSelectYear("#select3");
+        showInfo.renderSelectYear("#select4");
 
         $("#select1").on('change',function(){
             var yearSelect = $(this).val();
@@ -986,28 +1270,28 @@
         })
         
 
-        // $("#inquireflow-data").on('click',function(){
-        //     showInfo.getWatermeterflow_data();
-        // });
+        $("#inquirefluxflow").on('click',function(){
+        showInfo.estimate();
+        showInfo.getinstanceflow();
+        });
         $("#inquireflow").on('click',function(){
             showInfo.getWatermeterflow();
         });
-        // $("#inquireDaily-data").on('click',function(){
-        //     showInfo.getWatermeterdaily_data();
-        // });
+        
         $("#inquireDaily").on('click',function(){
             showInfo.getWatermeterdaily();
         });
-        // $("#inquireMonthly-data").on('click',function(){
-        //     showInfo.getWatermeterMonth_data();
-        // });
+        
         $("#inquireMonthly").on('click',function(){
             showInfo.getWatermeterMonth();
         });
 
         
         showInfo.showinfoStatics();
-        showInfo.getWatermeterflow();
+        // ol3ops.init();
+        showInfo.estimate();
+        showInfo.getinstanceflow();
+        // showInfo.getWatermeterflow();
         // showInfo.getWatermeterdaily();
         // showInfo.getWatermeterMonth();
         
@@ -1042,6 +1326,9 @@
                 clearInterval(search);
             });
         }
+
+        // 解决怪异问题：地图在页面打开是不显示，窗口大小改变后才显示
+        setTimeout(function(){map.updateSize();}, 200);
         
     })
 })(window,$)
