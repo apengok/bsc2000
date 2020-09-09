@@ -551,7 +551,7 @@
                         dm = data.rawdata; //object
                         $.each(dm,function(i,d){
                             // console.log(i,":",d)
-                            h = d.readtime.substring(10,16)
+                            h = d.readtime; //.substring(10,16)
                             v = d.flux
                             flag = d.flag
                             if(v<0){
@@ -588,10 +588,18 @@
                                     saveAsImage: {}
                                 }
                             },
-                            dataZoom: {
-                                show: false,
-                                start : 0
-                            },
+                            dataZoom: [
+                                {
+                                    type: 'inside',
+                                    // xAxisIndex: [0, 1],
+                                    start: 0,
+                                    end: 100
+                                 }
+                            ],
+                            // dataZoom: {
+                            //     show: false,
+                            //     start : 0
+                            // },
                             // legend: {
                             //     data:['曲线','柱状图']
                             // },
@@ -1291,14 +1299,17 @@
         // ol3ops.init();
         showInfo.estimate();
         showInfo.getinstanceflow();
-        // showInfo.getWatermeterflow();
-        // showInfo.getWatermeterdaily();
-        // showInfo.getWatermeterMonth();
+        showInfo.getWatermeterflow();
+        showInfo.getWatermeterdaily();
+        showInfo.getWatermeterMonth();
         
 
+        $('#hour-tab').on('shown.bs.tab', function (e) {
+            userflowrt.resize();
+        })
+
         $('#day-tab').on('shown.bs.tab', function (e) {
-            console.log("showing...in tab")
-            // myChart.setOption(options);
+            
             userdaily.resize()
         })
 
@@ -1309,7 +1320,7 @@
         $('input').inputClear().on('onClearEvent',function(e,data){
             var id = data.id;
             if(id == 'search_condition'){
-                search_ztree('commubitytreeDemo', id,'assignment');
+                search_ztree('commubitytreeDemo', id,'station');
             };
         });
 
