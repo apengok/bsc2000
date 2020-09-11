@@ -8,6 +8,18 @@
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static '/ol/v3.20.1-dist/ol.css' %}"/>
+
+<style type="text/css">
+  div.dataTables_wrapper{overflow:hidden;user-select:text!important;-ms-user-select:text!important;-moz-user-select:text!important;-webkit-user-select:text!important}
+  
+  /* .table th {
+    font-size: 12px;
+  }; */
+  .table tbody td,.table thead tr th text-center sorting{
+    font-size: 12px;
+  };
+  
+</style>
 {% endblock %}
 
 {% block main_content %}
@@ -23,7 +35,10 @@
                                     <div style="font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';font-weight: 700;font-style: normal;font-size: 16px;color: inherit;margin: 10px 10px 0 20px;">全部站点({{ total_station_num }})
                                     </div>
                                 </div>
-                                
+                                <div id="goHidden" class="actions2 pull-right"
+                                  style="top:-35px!important;left:5px!important">
+                                  <i class="fa fa-chevron-left"></i>
+                                </div>
                             </div>
                             <div class="panel-body fixed-table-body  form-horizontal" style="padding-top:10px;">
                                 <div id="station_status" class="form-group">
@@ -80,18 +95,20 @@
                         </div>
                     </div>
             
-            
+                    <div id="goShow" style="top:14px;display: none;">
+                      <i id="goHidden" class="fa fa-chevron-right"></i>
+                  </div>
 
 
             <div class="col-md-2" style="padding-right: 0px; padding-left:0px;"></div>
             <div id="content-right" class="col-md-10 real-time-command-list" style="padding-right: 0px; padding-left:10px;padding-bottom: 0px;">
               <div class="panel panel-default">
-                <div class="panel-heading" id="stretch2" >
+                <!-- <div class="panel-heading" id="stretch2" >
                   <h3 class="panel-title fwb">实时数据列表</h3>
                   <div class="actions pull-right listActions">
                     <i class="fa chevron-down"  id="stretch2-chevron" ></i>
                   </div>
-                </div>
+                </div> -->
                 <div class="panel-body fixed-table-body"  id="stretch2-body">
                   <input value="" id="permission" type="hidden" />
                   <input value="{{ user.id }}" id="currentUserId" type="hidden" />
@@ -143,20 +160,23 @@
                             <th >所属组织</th>
                             <th >表具编号</th>
                             <th >厂家</th>
-                            <!-- <th >报警</th> -->
-                            <th >口径</th>
+                            <th >表计类型</th>
+                            <th >口径<br>mm</th>
                             <th >状态</th>
                             <th >最新采样时间</th>
-                            <th >采样间隔min</th>
-                            <th >上报间隔h</th>
-                            <th >瞬时流量m³/h</th>
-                            <th >正向流量m³</th>
-                            <th >反向流量m³</th>
-                            <th >压力Mpa </th>
-                            <th >基表电量%</th>
-                            <th >远传电量%</th>
-                            <th >信号强度%</th>
-                            <th >报警</th>
+                            <!-- <th >采样间隔min</th> -->
+                            <!-- <th >上报间隔h</th> -->
+                            <th >瞬时流量<br>m³/h</th>
+                            <th >正向流量<br>m³</th>
+                            <th >压力<br>Mpa </th>
+                            <th >日用水量 </th>
+                            <th >月用水量 </th>
+                            <th >时段用水量 </th>
+                            <th >反向流量<br>m³</th>
+                            <th >基表电量<br>%</th>
+                            <th >远传电量<br>%</th>
+                            <!-- <th >信号强度%</th> -->
+                            <th >报警信息</th>
                           
                       </tr>
                   </thead>

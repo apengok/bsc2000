@@ -161,15 +161,20 @@ class BigmeterRTSerializer(ModelSerializer):
     commstate = SerializerMethodField()
     manufacturer = SerializerMethodField()
     
-    # fluxreadtime = SerializerMethodField()
-    # serialnumber = SerializerMethodField()
-    # reportperiod = SerializerMethodField()
+    metertype = SerializerMethodField()
+    day_use = SerializerMethodField()
+    month_use = SerializerMethodField()
+    range_use = SerializerMethodField()
     
     class Meta:
         model = Bigmeter
         fields = ['id','userid','belongto','username','serialnumber','commstate','dn','fluxreadtime','manufacturer',
             'pickperiod','reportperiod','flux','plustotalflux','reversetotalflux','pressurereadtime',
-            'pressure','meterv','gprsv','signlen','alarm'
+            'pressure','meterv','gprsv','signlen','alarm',
+            'metertype',
+            'day_use',
+            'month_use',
+            'range_use'
         ]
 
     def get_belongto(self,obj):
@@ -201,10 +206,23 @@ class BigmeterRTSerializer(ModelSerializer):
         return 0
     
     def get_manufacturer(self,obj):
+        return '机械水表'
         try:
             return Meter.objects.get(serialnumber=obj.serialnumber).manufacturer
         except:
             return obj.manufacturer
+
+    def get_metertype(self,obj):
+        return '中科君达'
+
+    def get_day_use(self,obj):
+        return '12345'
+
+    def get_month_use(self,obj):
+        return '12345'
+
+    def get_range_use(self,obj):
+        return '12345'
 
     # def get_fluxreadtime(self,obj):
     #     try:

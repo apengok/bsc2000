@@ -260,7 +260,7 @@ to{transform:rotate(90deg)}}
 .delType3{right:20px;top:10px}
 .btnStylePadding{padding-left:30px;padding-right:30px}
 .edit-area-marbottom{margin-bottom:2px !important;}
-table.table-hover thead tr th{white-space:nowrap;text-align:center;font-size:15px;}
+table.table-hover thead tr th{white-space:nowrap;text-align:center;font-size:12px;}
 table.table-hover tbody tr td{text-align:center;vertical-align:middle}
 table.table-hover tbody tr .dataTables_empty{text-align:left!important}
 .main-content-wrapper #main-content .fa-pencil::before{content:"";background-image:url(/static/virvo/resources/img/edit.svg);width:14px;height:14px;display:block;position:absolute;top:8px;left:8px;background-size: 14px 14px}

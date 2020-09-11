@@ -49,16 +49,8 @@
         var paneHeaderHeight = $(".panel-heading").height();
         // console.log("paneHeaderHeight",paneHeaderHeight);
 
-        // var tabHeight = $myTab.height();//信息列表table选项卡高度
-        // var tabContHeight = $("#myTabContent").height();//table表头高度
-        // var fenceTreeHeight = winHeight - 193;//围栏树高度
-        // $("#fenceZtree").css('height',fenceTreeHeight + "px");//电子围栏树高度
-        // //地图高度
-        // newMapHeight = winHeight - headerHeight - tabHeight - 10;
-        // $MapContainer.css({
-        //     "height": newMapHeight + 'px'
-        // });
-        //车辆树高度
+        
+        //树高度
         var newContLeftH = winHeight - headerHeight - stationStateHeight - 2*paneHeaderHeight - 80;
         // //sidebar高度
         // $(".sidebar").css('height',newContLeftH + 'px');
@@ -74,14 +66,15 @@
             "height":newContLeftH + 'px'
         });
         $contentRight.css({
-            "width": 100 - newwidth + "%"
+            "width": 100 - newwidth + "%",
+            "height":newContLeftH + 'px'
         });
         
         //加载时隐藏left同时计算宽度
         $sidebar.attr("class", "sidebar sidebar-toggle");
        $mainContentWrapper.attr("class", "main-content-wrapper main-content-toggle-left");
         // //操作树高度自适应
-        var newTreeH = winHeight - headerHeight - 503;
+        var newTreeH = winHeight - headerHeight ;
         // console.log("")
         organTree.css({
             "height": newTreeH + "px"
@@ -137,7 +130,8 @@
                 "width": newwidth + "%"
             });
             $contentRight.css({
-                "width": 100 - newwidth + "%"
+                "width": 100 - newwidth + "%",
+                "height":newTreeH + "px"
             });
           //操作树高度自适应
             var newTreeH = winHeight - headerHeight - 503;
@@ -213,7 +207,10 @@
                     {
                         "data" : "manufacturer",
                         "class" : "text-center",
-                        
+                    } ,
+                    {
+                        "data" : "metertype",
+                        "class" : "text-center",
                     } ,
                     {
                         "data" : "dn",
@@ -247,15 +244,15 @@
 
                         }
                     }, 
-                    {
-                        "data" : "pickperiod",
-                        "class" : "text-center",
+                    // {
+                    //     "data" : "pickperiod",
+                    //     "class" : "text-center",
                         
 
-                    },
-                    {
-                        "data":"reportperiod",
-                    },
+                    // },
+                    // {
+                    //     "data":"reportperiod",
+                    // },
                      {
                         "data" : "flux",
                         "class" : "text-center",
@@ -265,12 +262,25 @@
                         "data" : "plustotalflux",
                         "class" : "text-center",
                         
-                    }, {
-                        "data" : "reversetotalflux",
+                    },  {
+                        "data" : "pressure",
                         "class" : "text-center",
                         
-                    }, {
-                        "data" : "pressure",
+                    },
+                    {
+                        "data" : "day_use",
+                        "class" : "text-center",
+                    } ,
+                    {
+                        "data" : "month_use",
+                        "class" : "text-center",
+                    } ,
+                    {
+                        "data" : "range_use",
+                        "class" : "text-center",
+                    } ,
+                    {
+                        "data" : "reversetotalflux",
                         "class" : "text-center",
                         
                     }, {
@@ -282,11 +292,13 @@
                         "class" : "text-center",
                         
                     
-                    },{
-                        "data":"signlen",
-                        "class":"text-center",
+                    },
+                    // {
+                    //     "data":"signlen",
+                    //     "class":"text-center",
                         
-                    }, {
+                    // }, 
+                    {
                         "data" : "alarm",
                         "class" : "text-center",
                         render:function(data,type,row,meta){
@@ -425,6 +437,63 @@
             selectTreeType = treeNode.otype;
             myTable.requestData();
         },
+        //左侧数据日历及对象树隐藏方法
+    leftToolBarHideFn: function () {
+        if ($('#scalingBtn').hasClass('fa-chevron-down')) {
+        //   oldMHeight = $("#map").height();
+        //   oldTHeight = $(".trackPlaybackTable .dataTables_scrollBody").height();
+          $('#scalingBtn').attr('class', 'fa fa-chevron-up');
+        }
+        ;
+        $("#content-left").hide();
+        $("#content-right").attr("class", "col-md-12 content-right");
+        $("#content-right").css("width", "100%");
+        $("#goShow").show();
+        //点击隐藏轨迹回放查询
+        // $("#map").css({
+        //   "height": (initialMapH - 5) + "px"
+        // });
+        // $(".trackPlaybackTable .dataTables_scrollBody").css({
+        //   "height": 0 + "px"
+        // });
+      },
+      //左侧数据日历及对象树显示方法
+      leftToolBarShowFn: function () {
+        $('#scalingBtn').attr('class', 'fa fa-chevron-down');
+        // if ($(".dataTables_scrollBody").length == 0) {
+        //   $("#map").css({
+        //     "height": initialMapH + "px"
+        //   });
+        //   $(".trackPlaybackTable .dataTables_scrollBody").css({
+        //     "height": 0 + "px"
+        //   });
+        // } else {
+        //   $("#map").css({
+        //     "height": oldMHeight + "px"
+        //   });
+        //   $(".trackPlaybackTable .dataTables_scrollBody").css({
+        //     "height": oldTHeight + "px"
+        //   });
+        // }
+        $("#content-left").show();
+        $("#content-right").attr("class", "col-md-9 content-right");
+        if ($(".sidebar").hasClass("sidebar-toggle")) {
+          $("#content-right").css({
+            "width": 100 - newwidth + "%"
+          });
+          $("#content-left").css({
+            "width": newwidth + "%"
+          });
+        } else {
+          $("#content-right").css({
+            "width": "75%"
+          });
+          $("#content-left").css({
+            "width": "25%"
+          });
+        }
+        $("#goShow").hide();
+      },
 
     }
 
@@ -436,7 +505,7 @@
         $('input').inputClear().on('onClearEvent',function(e,data){
             var id = data.id;
             if(id == 'search_condition'){
-                search_ztree('treeDemo', id,'assignment');
+                search_ztree('treeDemo', id,'station');
             };
         });
         //IE9
@@ -444,7 +513,7 @@
             var search;
             $("#search_condition").bind("focus",function(){
                 search = setInterval(function(){
-                    search_ztree('treeDemo', 'search_condition','assignment');
+                    search_ztree('treeDemo', 'search_condition','station');
                 },500);
             }).bind("blur",function(){
                 clearInterval(search);
@@ -468,12 +537,13 @@
         $("#del_model").bind("click",realtimeData.delModel);
         //加载完成后执行
         $("#refreshTable").on("click",realtimeData.refreshTable);
-        // 组织架构模糊搜索
-        $("#search_condition").on("input oninput",function(){
-            search_ztree('treeDemo', 'search_condition', 'assignment');
-        });
+        
 
         pageLayout.init();
+
+    $("#goHidden").on("click", realtimeData.leftToolBarHideFn);
+    $("#goShow").on("click", realtimeData.leftToolBarShowFn);
+
 
         $('.dumb').click(function() {
             
@@ -515,5 +585,10 @@
 
             organTree.css('height',newTreeH + 'px');
         } );
+
+        // 组织架构模糊搜索
+        $("#search_condition").on("input oninput",function(){
+            search_ztree('treeDemo', 'search_condition', 'station');
+        });
     })
 })(window,$)

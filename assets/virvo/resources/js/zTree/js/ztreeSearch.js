@@ -65,7 +65,7 @@ function searchByFlag_ztree(treeId, searchConditionId, flag,type) {
 	}    
     if (searchCondition != "") {
     	searchParam = searchCondition;
-        if (type == "group" || type == "community") {  // 企业
+        if (type == "group" || type == "community" ||type == "station") {  // 企业
             // 需要显示是节点（包含父节点）
             var showNodes = [];
             if (highlightNodes != null) {
