@@ -19,7 +19,10 @@ from amrs.models import (
     Bigmeter,
     SecondWater,
     Alarm,
+    HdbFlowDataDay,
+    HdbFlowDataMonth,
 )
+from amrs.utils import flow_day_dosage,HdbFlow_month_use
 
 from core.models import (
     Organization,
@@ -206,7 +209,6 @@ class BigmeterRTSerializer(ModelSerializer):
         return 0
     
     def get_manufacturer(self,obj):
-        return '机械水表'
         try:
             return Meter.objects.get(serialnumber=obj.serialnumber).manufacturer
         except:
@@ -216,13 +218,23 @@ class BigmeterRTSerializer(ModelSerializer):
         return '中科君达'
 
     def get_day_use(self,obj):
-        return '12345'
+        sday = datetime.date.today().strftime("%Y-%m-%d")
+        dosage = 0
+        querysets = HdbFlowDataDay.objects.filter(commaddr=obj.commaddr,hdate=sday)
+        if querysets.exists():
+            dosage = querysets[0].dosage
+        return dosage
 
     def get_month_use(self,obj):
-        return '12345'
+        sday = datetime.date.today().strftime("%Y-%m")
+        dosage = 0
+        querysets = HdbFlowDataMonth.objects.filter(commaddr=obj.commaddr,hdate=sday)
+        if querysets.exists():
+            dosage = querysets[0].dosage
+        return dosage
 
     def get_range_use(self,obj):
-        return '12345'
+        return ''
 
     # def get_fluxreadtime(self,obj):
     #     try:

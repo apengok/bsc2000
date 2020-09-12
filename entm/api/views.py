@@ -36,6 +36,7 @@ from amrs.models import Watermeter
 from .serializers import (
     # PostCreateUpdateSerializer, 
     OrganizationTreeSerializer, 
+    OrganizationTreeSerializer_countstation,
     DmaTreeSerializer,
     StationTreeSerializer,
     PressureTreeSerializer,
@@ -152,6 +153,7 @@ def oranizationtree(request):
     protocolflag = request.GET.get("isProtocol") or ''
     secondwaterflag = request.GET.get("isSecondwater") or ''
     concentratorflag = request.GET.get("isConcentrator") or ''
+    iscountstation = request.GET.get("iscountstation") or ''
     user = request.user
     
     # if user.is_anonymous:
@@ -162,7 +164,10 @@ def oranizationtree(request):
     
     # 组织
     organ_lists = organs.get_descendants(include_self=True).all()
-    organ_serializer = OrganizationTreeSerializer(organ_lists,many=True)
+    if iscountstation == '1':
+        organ_serializer = OrganizationTreeSerializer_countstation(organ_lists,many=True)
+    else:   
+        organ_serializer = OrganizationTreeSerializer(organ_lists,many=True)
     
     p_dma_no='' #dma_lists[0]['dma_no'] 
     

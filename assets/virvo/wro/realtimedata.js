@@ -3,6 +3,8 @@
     var selectTreepId="";
     var selectTreeType = '';
 
+    // focus,biguser,alarm
+    var station_color_list = ["#02470e","#8c4380","#f20804"];
     //显示隐藏列
     var menu_text = "";
     var table = $("#dataTable tr th:gt(1)");
@@ -173,7 +175,7 @@
                         "data" : "username",
                         "class" : "text-center",
                         render : function(data, type, row, meta) {
-                            ret_html='<a href="/monitor/realtimedata/showinfo/'+row.id+'/"  data-target="#commonSIWin" data-toggle="modal"  >'+data+'</a>&nbsp;';
+                            ret_html='<a href="/monitor/realtimedata/realtimeData/'+row.id+'/"  data-target="#commonSIWin" data-toggle="modal"  >'+data+'</a>&nbsp;';
                             return ret_html;
                             if (data != null) {
                                 return data;
@@ -237,7 +239,7 @@
                         render : function(data,type,row,meta){
                             if(row.pressure != "" && row.pressure != null && (row.flux == "" || row.flux == null))
                             {
-                                console.log(row)
+                                // console.log(row)
                                 return row.pressurereadtime;
                             }
                             return data;
@@ -335,12 +337,19 @@
                 showIndexColumn : true, //是否显示第一列的索引列
                 enabledChange : true,
                 ordering:true,
-                pageNumber:20
+                pageNumber:20,
+                drawCallbackFun:realtimeData.drawCallbackFun,
             };
             //创建表格
             myTable = new TG_Tabel.createNew(setting);
             //表格初始化
             myTable.init();
+
+
+        },
+        drawCallbackFun:function(){
+// alert("akjdsfjsdf")
+            
         },
         //全选
         cleckAll: function(){
@@ -389,7 +398,8 @@
                         "isOrg" : "1",
                         "isStation":"1",
                         "isPressure":"1",
-                        "isFilter":"1",
+                        "isFilter":"0",
+                        "iscountstation":"1"
                     },
                     dataFilter: realtimeData.groupAjaxDataFilter
                 },
@@ -421,7 +431,46 @@
             return responseData;
         },
         AsyncSuccess:function(treeId) {
+            realtimeData.updateTreeNodeColor();
             close_ztree("treeDemo");
+            
+        },
+        updateTreeNodeColor:function(){
+            //
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getCheckedNodes(true);
+            allNodes = treeObj.getNodes();
+            var childNodes = treeObj.transformToArray(allNodes[0]);
+            
+            for ( var j = 0; j < childNodes.length; j++) {
+    
+                
+                
+                if (childNodes[j].otype == "station") {
+    
+                    var tmp_d_t = parseFloat(childNodes[j].leakrate);
+    
+                
+                    //set color 
+                    var colorstr;
+                    if(childNodes[j].focus == "1"){
+                        colorstr = station_color_list[0];
+                    }else if(childNodes[j].biguser == "1"){
+                        colorstr = station_color_list[1];
+                    }else if(childNodes[j].alarm == "1"){
+                        colorstr = station_color_list[2];
+                    }else {
+                        colorstr = "#333333";
+                    }
+                    treeObj.setting.view.fontCss["color"] = colorstr;
+                    
+                    //调用updateNode(node)接口进行更新
+                    treeObj.updateNode(childNodes[j]);
+                    
+                    
+                }
+            }
+    
             
         },
         //点击节点
@@ -494,6 +543,227 @@
         }
         $("#goShow").hide();
       },
+      //开始时间
+      startDay: function (day) {
+        var timeInterval = $('#timeInterval').val().split('--');
+        var startValue = timeInterval[0];
+        var endValue = timeInterval[1];
+        if (startValue == "" || endValue == "") {
+            var today = new Date();
+            var targetday_milliseconds = today.getTime() + 1000 * 60 * 60
+                * 24 * day;
+
+            today.setTime(targetday_milliseconds); //注意，这行是关键代码
+
+            var tYear = today.getFullYear();
+            var tMonth = today.getMonth();
+            var tDate = today.getDate();
+            tMonth = realtimeData.doHandleMonth(tMonth + 1);
+            tDate = realtimeData.doHandleMonth(tDate);
+            var num = -(day + 1);
+            startTime = tYear + "-" + tMonth + "-" + tDate + " "
+                + "00:00:00";
+            var end_milliseconds = today.getTime() + 1000 * 60 * 60 * 24
+                * parseInt(num);
+            today.setTime(end_milliseconds); //注意，这行是关键代码
+            var endYear = today.getFullYear();
+            var endMonth = today.getMonth();
+            var endDate = today.getDate();
+            endMonth = realtimeData.doHandleMonth(endMonth + 1);
+            endDate = realtimeData.doHandleMonth(endDate);
+            endTime = endYear + "-" + endMonth + "-" + endDate + " "
+                + "23:59:59";
+        } else {
+            var startTimeIndex = startValue.slice(0, 10).replace("-", "/").replace("-", "/");
+            var vtoday_milliseconds = Date.parse(startTimeIndex) + 1000 * 60 * 60 * 24 * day;
+            var dateList = new Date();
+            dateList.setTime(vtoday_milliseconds);
+            var vYear = dateList.getFullYear();
+            var vMonth = dateList.getMonth();
+            var vDate = dateList.getDate();
+            vMonth = realtimeData.doHandleMonth(vMonth + 1);
+            vDate = realtimeData.doHandleMonth(vDate);
+            startTime = vYear + "-" + vMonth + "-" + vDate + " "
+                + "00:00:00";
+            if (day == 1) {
+                endTime = vYear + "-" + vMonth + "-" + vDate + " "
+                    + "23:59:59";
+            } else {
+                var endNum = -1;
+                var vendtoday_milliseconds = Date.parse(startTimeIndex) + 1000 * 60 * 60 * 24 * parseInt(endNum);
+                var dateEnd = new Date();
+                dateEnd.setTime(vendtoday_milliseconds);
+                var vendYear = dateEnd.getFullYear();
+                var vendMonth = dateEnd.getMonth();
+                var vendDate = dateEnd.getDate();
+                vendMonth = realtimeData.doHandleMonth(vendMonth + 1);
+                vendDate = realtimeData.doHandleMonth(vendDate);
+                endTime = vendYear + "-" + vendMonth + "-" + vendDate + " "
+                    + "23:59:59";
+            }
+        }
+    },
+    doHandleMonth: function (month) {
+        var m = month;
+        if (month.toString().length == 1) {
+            m = "0" + month;
+        }
+        return m;
+    },
+    //当前时间
+    getsTheCurrentTime: function () {
+        var nowDate = new Date();
+        startTime = nowDate.getFullYear()
+            + "-"
+            + (parseInt(nowDate.getMonth() + 1) < 10 ? "0"
+                + parseInt(nowDate.getMonth() + 1)
+                : parseInt(nowDate.getMonth() + 1))
+            + "-"
+            + (nowDate.getDate() < 10 ? "0" + nowDate.getDate()
+                : nowDate.getDate()) + " " + "00:00:00";
+        endTime = nowDate.getFullYear()
+            + "-"
+            + (parseInt(nowDate.getMonth() + 1) < 10 ? "0"
+                + parseInt(nowDate.getMonth() + 1)
+                : parseInt(nowDate.getMonth() + 1))
+            + "-"
+            + (nowDate.getDate() < 10 ? "0" + nowDate.getDate()
+                : nowDate.getDate())
+            + " "
+            + ("23")
+            + ":"
+            + ("59")
+            + ":"
+            + ("59");
+        var atime = $("#atime").val();
+        if (atime != undefined && atime != "") {
+            startTime = atime;
+        }
+    },
+    unique: function (arr) {
+        var result = [], hash = {};
+        for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+            if (!hash[elem]) {
+                result.push(elem);
+                hash[elem] = true;
+            }
+        }
+        return result;
+    },
+    estimate: function () {
+        var timeInterval = $('#timeInterval').val().split('--');
+        sTime = timeInterval[0];
+        eTime = timeInterval[1];
+        realtimeData.getsTheCurrentTime();
+        if (eTime > endTime) {                              //查询判断
+            layer.msg(endTimeGtNowTime, {move: false});
+            key = false
+            return;
+        }
+        if (sTime > eTime) {
+            layer.msg(endtimeComStarttime, {move: false});
+            key = false;
+            return;
+        }
+        var nowdays = new Date();                       // 获取当前时间  计算上个月的第一天
+        var year = nowdays.getFullYear();
+        var month = nowdays.getMonth();
+        if (month == 0) {
+            month = 12;
+            year = year - 1;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+        var firstDay = year + "-" + month + "-" + "01 00:00:00";//上个月的第一天
+        if (sTime < firstDay) {                                 //查询判断开始时间不能超过       上个月的第一天
+            $("#timeInterval-error").html(starTimeExceedOne).show();
+            /*layer.msg(starTimeExceedOne, {move: false});
+            key = false;*/
+            return;
+        }
+        $("#timeInterval-error").hide();
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");       //遍历树节点，获取vehicleID 存入集合
+        var nodes = treeObj.getCheckedNodes(true);
+        vid = "";
+        for (var j = 0; j < nodes.length; j++) {
+            if (nodes[j].type == "vehicle") {
+                vid += nodes[j].id + ",";
+            }
+        }
+        key = true;
+        startTime=sTime;
+        endTime=eTime;
+    },
+    getrangeflow_data:function(){
+        return;
+        // myTable.requestData();
+        // $("#flow-show-data").css("display","block")
+        // $("#flaw-show-echart").css("display","none")
+        var table = $("#dataTable").dataTable();
+        
+        
+        var rows = table.fnGetNodes();
+        var list = [];
+        $.each(table.fnGetNodes(), function (index, value) {
+            console.log(index,value);
+            
+
+            var commaddr = $(value).find('td:eq(5)').html();
+            var station_type = $(value).find('td:eq(6)').html();
+            
+            console.log(commaddr)
+            
+        $('#dataTable').find('tr#'+index).find('td:eq(15)').html('newValue');
+    });
+        $('#dataTable').find('td:eq(15)').html('newValue');
+        return;
+        // table.cell('#td_5_' + data.job_id).data(variable)
+        commaddr = $("#objId").val();
+        // console.log("commaddr=",commaddr,t1,t2);
+        $.ajax({
+            type: "GET",
+            url: "/api/monitor/realtimedata/getrangeflow_data/",
+            data: {
+              "commaddr": commaddr,
+              "stime":sTime,
+              "etime":eTime
+            },
+            dataType: "json",
+            success: function (data) {
+                // console.log(data)
+                if(data.success)
+                {
+                    var data_flow = [];
+                    
+
+                    dm = data.rawdata; //object
+                    // console.log(dm)
+                    $.each(dm,function(i,d){
+                        
+                        var e = {};
+                        e.seqno =i+1;
+                        e.readtime = d.readtime;
+                        e.flux = d.flux;
+                        // e.reversetotalflux = d.reversetotalflux;
+                        data_flow.push(e);
+                    })
+                    
+                    console.log(data_flow)
+                        $("#instancerawdata-table").bootstrapTable("destroy");
+                        $("#instancerawdata-table").bootstrapTable({
+                            data: data_flow,
+                            classes: 'table table-condensed table-no-bordered', 
+                            striped: false,
+                            height: "300"
+                        })
+                        // $("#rawdata-table").bootstrapTable({'load':data_flow})
+                }
+
+            }
+        });
+    },
+
 
     }
 
@@ -502,6 +772,11 @@
         
         realtimeData.init();
         realtimeData.groupListTree();
+
+        $('#timeInterval').dateRangePicker({dateLimit:30});
+        realtimeData.startDay(-7);
+        $('#timeInterval').val(startTime + '--' + endTime);
+
         $('input').inputClear().on('onClearEvent',function(e,data){
             var id = data.id;
             if(id == 'search_condition'){
@@ -544,6 +819,10 @@
     $("#goHidden").on("click", realtimeData.leftToolBarHideFn);
     $("#goShow").on("click", realtimeData.leftToolBarShowFn);
 
+    $("#inquirefluxflow").on('click',function(){
+        realtimeData.estimate();
+        realtimeData.getrangeflow_data();
+        });
 
         $('.dumb').click(function() {
             
@@ -556,8 +835,9 @@
                 
         });
 
-        $('#dataTable').on( 'draw.dt', function ( e, settings, len ) {
+        $('#dataTable').on( 'draw', function ( e, settings, len ) {
             // console.log( 'New page length: '+len );
+            
             winHeight = $(window).height();
             var newpageheight = $('#dataTable').height();
             var sidebarHeight = $('.sidebar').height()

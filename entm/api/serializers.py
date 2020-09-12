@@ -22,13 +22,13 @@ from core.models import (
     VSecondWater,
 )
 
-
-class OrganizationTreeSerializer(ModelSerializer):
+class OrganizationTreeSerializer_countstation(ModelSerializer):
     # user = UserDetailSerializer(read_only=True)
     id = SerializerMethodField()
     dma_no = SerializerMethodField()
     otype = SerializerMethodField()
     icon = SerializerMethodField()
+    name = SerializerMethodField()
 
     class Meta:
         model = Organization
@@ -43,6 +43,48 @@ class OrganizationTreeSerializer(ModelSerializer):
             'icon',
             'uuid'
         ]
+
+    def get_name(self,obj):
+        cont = obj.station_list_queryset('').count()
+        return '{} ({})'.format(obj.name,cont)
+
+    def get_id(self,obj):
+        return obj.cid
+
+    def get_dma_no(self,obj):
+        return ""
+
+    def get_otype(self,obj):
+        return "group"
+
+    def get_icon(self,obj):
+        return "/static/virvo/resources/img/wenjianjia.png"
+
+class OrganizationTreeSerializer(ModelSerializer):
+    # user = UserDetailSerializer(read_only=True)
+    id = SerializerMethodField()
+    dma_no = SerializerMethodField()
+    otype = SerializerMethodField()
+    icon = SerializerMethodField()
+    # name = SerializerMethodField()
+
+    class Meta:
+        model = Organization
+        fields = [
+            'name',
+            'id',
+            'pId',
+            'dma_no',
+            'attribute',
+            'organlevel',
+            'otype',
+            'icon',
+            'uuid'
+        ]
+
+    # def get_name(self,obj):
+    #     cont = obj.station_list_queryset('').count()
+    #     return '{} ({})'.format(obj.name,cont)
 
     def get_id(self,obj):
         return obj.cid
@@ -114,6 +156,7 @@ class StationTreeSerializer(ModelSerializer):
     commaddr = ReadOnlyField(source='amrs_bigmeter.pk')
     dma_station_type = SerializerMethodField()
     uuid = SerializerMethodField()
+    alarm = SerializerMethodField()
 
     class Meta:
         model = Station
@@ -126,7 +169,10 @@ class StationTreeSerializer(ModelSerializer):
             'otype',
             'dma_station_type',
             'icon',
-            'uuid'
+            'uuid',
+            'focus',
+            'biguser',
+            'alarm'
         ]
 
     def get_name(self,obj):
@@ -147,7 +193,10 @@ class StationTreeSerializer(ModelSerializer):
         return ''
 
     def get_icon(self,obj):
-        return "/static/virvo/resources/img/station.png"        
+        return "/static/virvo/resources/img/station.png"     
+
+    def get_alarm(self,obj):
+        return '0'   
 
 
 

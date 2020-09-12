@@ -312,8 +312,8 @@ def flow_day_dosage(commaddr,day):
     day_str = day.strftime("%Y-%m-%d")
     query1 = HdbFlowData.objects.filter(commaddr=commaddr,readtime__startswith=day_str)
     f1 = HdbFlowDataSerializer(query1,many=True).data
-    print(f1)
-    print("retrieve data from hdb_flow_data time elapse is ",time.time() - t1)
+    # print(f1)
+    # print("retrieve data from hdb_flow_data time elapse is ",time.time() - t1)
     sday = day + datetime.timedelta(days=1)
     day_str = sday.strftime("%Y-%m-%d")
     query2 = HdbFlowData.objects.filter(commaddr=commaddr,readtime__startswith=day_str)

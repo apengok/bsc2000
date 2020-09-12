@@ -128,9 +128,19 @@
                       </div>
                       
                     </div>
-                    <div class="pull-left">
+                    <div class=" pull-left" style="padding-left: 5px;">
+                      <!--  -->
+                      
+                        <input style="cursor: pointer; background-color: #fafafa;"
+                            class="layer-date laydate-icon"
+                            id="timeInterval" name="timeInterval" readonly />
+                        <label id="timeInterval-error" class="error" for="timeInterval" style="display: none;">开始时间请不要超过上个月一号</label>
+                    
+                        <button id="inquirefluxflow" type="button" class="btn btn-primary search-btn" name="1" >查询</button>
+                      
                       <button type="button" 
-                        class="btn btn-outline "><a href="/monitor/realtimedata/export" class="dumb" id="exportId"><i class="glyphicon glyphicon-log-out icoPaddingLeft"></i>导出</a></button>
+                        class="btn btn-outline "><a href="/monitor/realtimedata/export" class="dumb" id="exportId"><i class="glyphicon glyphicon-log-out icoPaddingLeft"></i>导出</a>
+                      </button>
                     </div>
                     <div class="columns btn-group pull-right refShowRight">
                       <button id="refreshTable" class="btn btn-default"
