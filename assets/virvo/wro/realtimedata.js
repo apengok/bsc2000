@@ -2,7 +2,7 @@
     var selectTreeId = '';
     var selectTreepId="";
     var selectTreeType = '';
-
+    var sTime,eTime;
     // focus,biguser,alarm
     var station_color_list = ["#02470e","#8c4380","#f20804"];
     //显示隐藏列
@@ -44,12 +44,12 @@
         // });
         // winHeight = $(window).height();//可视区域高度
         winHeight = $(".sidebar").height();//sidebar height
-        // console.log("wHeight:",winHeight);
+        console.log("wHeight:",winHeight);
         headerHeight = $("#header").height();//头部高度
         var stationStateHeight = $("#station_status").height()
-        // console.log("station status height",stationStateHeight);
+        console.log("station status height",stationStateHeight);
         var paneHeaderHeight = $(".panel-heading").height();
-        // console.log("paneHeaderHeight",paneHeaderHeight);
+        console.log("paneHeaderHeight",paneHeaderHeight);
 
         
         //树高度
@@ -61,25 +61,27 @@
         logoWidth = $("#header .brand").width();
         btnIconWidth = $("#header .toggle-navigation").width();
         windowWidth = $(window).width();
-        newwidth = (logoWidth + btnIconWidth + 40) / windowWidth * 100;
-        //左右自适应宽度
-        $contentLeft.css({
-            "width": newwidth -0.3+ "%",
-            "height":newContLeftH + 'px'
-        });
-        $contentRight.css({
-            "width": 100 - newwidth + "%",
-            "height":newContLeftH + 'px'
-        });
+        newwidth = (logoWidth + btnIconWidth + 40) / windowWidth * 100 - 0.5;
+        
         
         //加载时隐藏left同时计算宽度
         $sidebar.attr("class", "sidebar sidebar-toggle");
        $mainContentWrapper.attr("class", "main-content-wrapper main-content-toggle-left");
         // //操作树高度自适应
-        var newTreeH = winHeight - headerHeight ;
-        // console.log("")
+        var newTreeH = winHeight - headerHeight - 2*stationStateHeight - 2*paneHeaderHeight;
+        console.log("newTreeH=",newTreeH)
         organTree.css({
             "height": newTreeH + "px"
+        });
+
+        //左右自适应宽度
+        $contentLeft.css({
+            "width": newwidth + "%",
+            "height":newTreeH +  + 'px'
+        });
+        $contentRight.css({
+            "width": 100 - newwidth + "%",
+            "height":newTreeH + 'px'
         });
         // //视频区域自适应
         // var mainContentHeight = $contentLeft.height();
@@ -108,6 +110,8 @@
         };
         $(".imitateMenuBg").toggleClass("imitateMenuBg-left");
         $(".defaultFootBg").toggleClass("defaultFootBg-left");
+
+        
         window.onresize=function(){
             winHeight = $(window).height();//可视区域高度
             console.log("onresize:",winHeight);
@@ -155,7 +159,7 @@
             var columnDefs = [ 
                 { "orderable": false, "targets": [ 0 ] },
                 { "orderSequence": [ "asc","desc" ], "targets": [ 1 ] },
-                { "orderable": false, "targets": [ 3,7 ] },
+                { "orderable": false, "targets": [ 3,7,13,14,15 ] },
                 // { "orderable": false, "targets": [ 3 ] },
                 // { "orderSequence": [ "desc", "asc", "asc" ], "targets": [ 2 ] },
                 { "orderSequence": [ "asc","desc" ], "targets": [ 3 ] }
@@ -213,6 +217,20 @@
                     {
                         "data" : "metertype",
                         "class" : "text-center",
+                        render : function(data, type, row, meta) {
+                            if (data == "0") {
+                                return "电磁水表";
+                            } else if (data == "1"){
+                                return "超声水表";
+                            } else if (data == "2"){
+                                return "机械水表";
+                            }else if (data == "3"){
+                                return "插入电磁";
+                            }else {
+                                return data;
+                            }
+
+                        }
                     } ,
                     {
                         "data" : "dn",
@@ -263,7 +281,10 @@
                     },{
                         "data" : "plustotalflux",
                         "class" : "text-center",
-                        
+                        render : function(data,type,row,meta){
+                            return Number((parseFloat(data)).toFixed(0));
+
+                        }
                     },  {
                         "data" : "pressure",
                         "class" : "text-center",
@@ -284,7 +305,10 @@
                     {
                         "data" : "reversetotalflux",
                         "class" : "text-center",
-                        
+                        render : function(data,type,row,meta){
+                            return Number((parseFloat(data)).toFixed(0));
+
+                        }                                                                                                                            
                     }, {
                         "data" : "meterv",
                         "class" : "text-center",
@@ -319,6 +343,9 @@
                 d.groupName = selectTreeId;
                 d.groupType = selectTreeType;
 
+                d.sTime = sTime;
+                d.eTime = eTime;
+
             };
             //表格setting
             var setting = {
@@ -338,7 +365,7 @@
                 enabledChange : true,
                 ordering:true,
                 pageNumber:20,
-                drawCallbackFun:realtimeData.drawCallbackFun,
+                // drawCallbackFun:realtimeData.drawCallbackFun,
             };
             //创建表格
             myTable = new TG_Tabel.createNew(setting);
@@ -448,9 +475,7 @@
                 
                 if (childNodes[j].otype == "station") {
     
-                    var tmp_d_t = parseFloat(childNodes[j].leakrate);
-    
-                
+                    
                     //set color 
                     var colorstr;
                     if(childNodes[j].focus == "1"){
@@ -696,8 +721,10 @@
         endTime=eTime;
     },
     getrangeflow_data:function(){
+        // return;
+        realtimeData.estimate();
+        myTable.requestData();
         return;
-        // myTable.requestData();
         // $("#flow-show-data").css("display","block")
         // $("#flaw-show-echart").css("display","none")
         var table = $("#dataTable").dataTable();
@@ -776,6 +803,7 @@
         $('#timeInterval').dateRangePicker({dateLimit:30});
         realtimeData.startDay(-7);
         $('#timeInterval').val(startTime + '--' + endTime);
+        realtimeData.estimate();
 
         $('input').inputClear().on('onClearEvent',function(e,data){
             var id = data.id;

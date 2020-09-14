@@ -55,7 +55,7 @@ from amrs.models import (
 from .serializers import (
     # PostCreateUpdateSerializer, 
     StationListSerializer, 
-    BigmeterRTSerializer,
+    create_BigmeterRTSerializer,
     MapStationSerializer,
     MapSecondWaterSerializer,
     BigmeterPushDataSerializer,
@@ -77,13 +77,19 @@ import logging.handlers
 
 class BigmeterRTListAPIView(ListAPIView):
     # queryset = MyRoles.objects.all()
-    serializer_class = BigmeterRTSerializer
+    # serializer_class = BigmeterRTSerializer
     filter_backends= [SearchFilter, OrderingFilter]
     permission_classes = [AllowAny]
     # ordering_fields = ['fluxreadtime']
     # ordering = ['-fluxreadtime']
     # search_fields = ['simcardNumber', 'imei']
     # pagination_class = PostPageNumberPagination #PageNumberPagination
+
+    def get_serializer_class(self):
+        sTime = self.request.GET.get("sTime")
+        eTime = self.request.GET.get("eTime")
+
+        return create_BigmeterRTSerializer(sTime,eTime)
 
     def get_queryset(self, *args, **kwargs):
         t1 =time.time()
@@ -133,7 +139,14 @@ class BigmeterRTListAPIView(ListAPIView):
         if colo == 'none':
             queryset_list = sorted(queryset_list, key=lambda x: x.fluxreadtime if x.fluxreadtime else '') #works fine
             queryset_list = queryset_list[::-1]
+        elif colo in [ 'flux','plustotalflux','reversetotalflux']:
+            try:
+                queryset_list = sorted(queryset_list, key=lambda x: float(getattr(x,colo)) if getattr(x,colo) else 0)
+            except:
+                queryset_list = sorted(queryset_list, key=lambda x: getattr(x,colo) if getattr(x,colo) else '')
+
         else:
+            
             queryset_list = sorted(queryset_list, key=lambda x: getattr(x,colo) if getattr(x,colo) else '')
         
         if order_dir != 'asc':

@@ -46,7 +46,7 @@ class OrganizationTreeSerializer_countstation(ModelSerializer):
 
     def get_name(self,obj):
         cont = obj.station_list_queryset('').count()
-        return '{} ({})'.format(obj.name,cont)
+        return '{}<span style="color:blue;"> ({})</span>'.format(obj.name,cont)
 
     def get_id(self,obj):
         return obj.cid

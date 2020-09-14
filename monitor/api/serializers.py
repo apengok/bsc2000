@@ -8,6 +8,8 @@ from rest_framework.serializers import (
     ReadOnlyField
     )
 
+from django.db.models import Avg, Max, Min, Sum
+
 
 # from accounts.api.serializers import UserDetailSerializer
 # from comments.api.serializers import CommentSerializer
@@ -157,111 +159,123 @@ class BigmeterRTShowinfoSerializer(ModelSerializer):
     def get_year_use(self,obj):
         return 3
 
-class BigmeterRTSerializer(ModelSerializer):
-    id = ReadOnlyField(source='commaddr')
-    belongto = SerializerMethodField()
-    alarm = SerializerMethodField()
-    commstate = SerializerMethodField()
-    manufacturer = SerializerMethodField()
-    
-    metertype = SerializerMethodField()
-    day_use = SerializerMethodField()
-    month_use = SerializerMethodField()
-    range_use = SerializerMethodField()
-    
-    class Meta:
-        model = Bigmeter
-        fields = ['id','userid','belongto','username','serialnumber','commstate','dn','fluxreadtime','manufacturer',
-            'pickperiod','reportperiod','flux','plustotalflux','reversetotalflux','pressurereadtime',
-            'pressure','meterv','gprsv','signlen','alarm',
-            'metertype',
-            'day_use',
-            'month_use',
-            'range_use'
-        ]
+def create_BigmeterRTSerializer(sTIme,eTime):
+    class BigmeterRTSerializer(ModelSerializer):
+        id = ReadOnlyField(source='commaddr')
+        belongto = SerializerMethodField()
+        alarm = SerializerMethodField()
+        commstate = SerializerMethodField()
+        manufacturer = SerializerMethodField()
+        
+        metertype = SerializerMethodField()
+        day_use = SerializerMethodField()
+        month_use = SerializerMethodField()
+        range_use = SerializerMethodField()
+        
+        class Meta:
+            model = Bigmeter
+            fields = ['id','userid','belongto','username','serialnumber','commstate','dn','fluxreadtime','manufacturer',
+                'pickperiod','reportperiod','flux','plustotalflux','reversetotalflux','pressurereadtime',
+                'pressure','meterv','gprsv','signlen','alarm',
+                'metertype',
+                'day_use',
+                'month_use',
+                'range_use'
+            ]
 
-    def get_belongto(self,obj):
-        try:
-            return obj.station.belongto.name
-        except:
-            pass
-        try:
-            return obj.vpressure.belongto.name
-        except:
-            pass
-        return ''
+        def get_belongto(self,obj):
+            try:
+                return obj.station.belongto.name
+            except:
+                pass
+            try:
+                return obj.vpressure.belongto.name
+            except:
+                pass
+            return ''
 
-    def get_alarm(self,obj):
-        return 0
-        return  Alarm.objects.filter(commaddr=obj.commaddr).count()
+        def get_alarm(self,obj):
+            return 0
+            return  Alarm.objects.filter(commaddr=obj.commaddr).count()
 
-    def get_commstate(self,obj):
-        now = datetime.datetime.now()
-        d7 = now - datetime.timedelta(days=7)
-        try:
-            dn = datetime.datetime.strptime(obj.fluxreadtime,"%Y-%m-%d %H:%M:%S")
-            if d7 < dn:
-                return 1
+        def get_commstate(self,obj):
+            now = datetime.datetime.now()
+            d7 = now - datetime.timedelta(days=7)
+            try:
+                dn = datetime.datetime.strptime(obj.fluxreadtime,"%Y-%m-%d %H:%M:%S")
+                if d7 < dn:
+                    return 1
+                
+            except:
+                pass
+
+            return 0
+        
+        def get_manufacturer(self,obj):
+            try:
+                return Meter.objects.get(serialnumber=obj.serialnumber).manufacturer
+            except:
+                return obj.manufacturer
+
+        def get_metertype(self,obj):
+            try:
+                return Meter.objects.get(serialnumber=obj.serialnumber).mtype
+            except:
+                return ''
+
+        def get_day_use(self,obj):
+            sday = datetime.date.today().strftime("%Y-%m-%d")
+            dosage = 0
+            querysets = HdbFlowDataDay.objects.filter(commaddr=obj.commaddr,hdate=sday)
+            if querysets.exists():
+                dosage = querysets[0].dosage
+            return round(float(dosage),2)
+
+        def get_month_use(self,obj):
+            sday = datetime.date.today().strftime("%Y-%m")
+            dosage = 0
+            querysets = HdbFlowDataMonth.objects.filter(commaddr=obj.commaddr,hdate=sday)
+            if querysets.exists():
+                dosage = querysets[0].dosage
+            return round(float(dosage),2)
+
+        def get_range_use(self,obj):
+            if sTIme is None:
+                return ''
+            flows=HdbFlowDataDay.objects.filter(commaddr=obj.commaddr,hdate__range=[sTIme,eTime]).aggregate(Sum('dosage'))
+            flow=flows['dosage__sum']
+            if flow is None:
+                flow = 0
+            return round(float(flow),2)
+
+        # def get_fluxreadtime(self,obj):
+        #     try:
+        #         return obj.station.meter.dn
+        #     except:
+        #         pass
             
-        except:
-            pass
+        #     return ''
 
-        return 0
-    
-    def get_manufacturer(self,obj):
-        try:
-            return Meter.objects.get(serialnumber=obj.serialnumber).manufacturer
-        except:
-            return obj.manufacturer
+        # def get_reportperiod(self,obj):
+        #     try:
+        #         return obj.station.meter.check_cycle
+        #     except:
+        #         pass
+            
+        #     return ''
 
-    def get_metertype(self,obj):
-        return '中科君达'
+        # def get_serialnumber(self,obj):
+        #     try:
+        #         return obj.station.meter.serialnumber
+        #     except:
+        #         pass
+        #     try:
+        #         return obj.vpressure.serialnumber
+        #     except:
+        #         pass
+        #     return ''
 
-    def get_day_use(self,obj):
-        sday = datetime.date.today().strftime("%Y-%m-%d")
-        dosage = 0
-        querysets = HdbFlowDataDay.objects.filter(commaddr=obj.commaddr,hdate=sday)
-        if querysets.exists():
-            dosage = querysets[0].dosage
-        return dosage
-
-    def get_month_use(self,obj):
-        sday = datetime.date.today().strftime("%Y-%m")
-        dosage = 0
-        querysets = HdbFlowDataMonth.objects.filter(commaddr=obj.commaddr,hdate=sday)
-        if querysets.exists():
-            dosage = querysets[0].dosage
-        return dosage
-
-    def get_range_use(self,obj):
-        return ''
-
-    # def get_fluxreadtime(self,obj):
-    #     try:
-    #         return obj.station.meter.dn
-    #     except:
-    #         pass
-        
-    #     return ''
-
-    # def get_reportperiod(self,obj):
-    #     try:
-    #         return obj.station.meter.check_cycle
-    #     except:
-    #         pass
-        
-    #     return ''
-
-    # def get_serialnumber(self,obj):
-    #     try:
-    #         return obj.station.meter.serialnumber
-    #     except:
-    #         pass
-    #     try:
-    #         return obj.vpressure.serialnumber
-    #     except:
-    #         pass
-    #     return ''
+    return BigmeterRTSerializer
 
 class StationListSerializer(ModelSerializer):
     belongto = SerializerMethodField()
