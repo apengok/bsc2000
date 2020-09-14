@@ -41,8 +41,12 @@ CORS_ORIGIN_WHITELIST = (
 
 #add geospatial something
 # GEOS_LIBRARY_PATH = 'C:/OSGeo4W64/bin/geos_c.dll'
-# GDAL_LIBRARY_PATH = 'C:/OSGeo4W64/bin/gdal111.dll'
+# GDAL_LIBRARY_PATH = 'D:/ProgramData/Anaconda3/envs/kingda/Lib/site-packages/osgeo/gdal301.dll'
 
-#add geospatial something -my home env
+GDAL_LIBRARY_PATH = 'C:/Users/HP/Envs/venpy36\Lib/site-packages/osgeo/gdal301.dll'
 # GEOS_LIBRARY_PATH = 'C:/OSGeo4W/bin/geos_c.dll'
 # GDAL_LIBRARY_PATH = 'C:/OSGeo4W/bin/gdal300.dll'
+
+#add geospatial something -my home env
+# GEOS_LIBRARY_PATH = 'D:/pengwl/webapp/bsc2000/extra_geos_lib/geos_c.dll'
+# GDAL_LIBRARY_PATH = 'D:/pengwl/webapp/bsc2000/extra_geos_lib/gdal300.dll'
