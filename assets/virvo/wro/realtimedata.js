@@ -61,7 +61,7 @@
         logoWidth = $("#header .brand").width();
         btnIconWidth = $("#header .toggle-navigation").width();
         windowWidth = $(window).width();
-        newwidth = (logoWidth + btnIconWidth + 40) / windowWidth * 100 - 0.5;
+        newwidth = (logoWidth + btnIconWidth + 40) / windowWidth * 100 +0.2;
         
         
         //加载时隐藏left同时计算宽度
@@ -179,7 +179,7 @@
                         "data" : "username",
                         "class" : "text-center",
                         render : function(data, type, row, meta) {
-                            ret_html='<a href="/monitor/realtimedata/realtimeData/'+row.id+'/"  data-target="#commonSIWin" data-toggle="modal"  >'+data+'</a>&nbsp;';
+                            ret_html='<a href="/monitor/realtimedata/showinfo/'+row.id+'/"  data-target="#commonSIWin" data-toggle="modal"  >'+data+'</a>&nbsp;';
                             return ret_html;
                             if (data != null) {
                                 return data;

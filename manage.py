@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bsc2000.settings.dev-nogeos')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bsc2000.settings.dev')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
