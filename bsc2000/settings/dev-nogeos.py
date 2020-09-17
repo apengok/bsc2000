@@ -48,5 +48,5 @@ CORS_ORIGIN_WHITELIST = (
 # GDAL_LIBRARY_PATH = 'C:/OSGeo4W/bin/gdal300.dll'
 
 #add geospatial something -my home env
-# GEOS_LIBRARY_PATH = 'D:/pengwl/webapp/bsc2000/extra_geos_lib/geos_c.dll'
-# GDAL_LIBRARY_PATH = 'D:/pengwl/webapp/bsc2000/extra_geos_lib/gdal300.dll'
+GEOS_LIBRARY_PATH = 'D:/pengwl/webapp/bsc2000/extra_geos_lib/geos_c.dll'
+GDAL_LIBRARY_PATH = 'D:/pengwl/webapp/bsc2000/extra_geos_lib/gdal300.dll'

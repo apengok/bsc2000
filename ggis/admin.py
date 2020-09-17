@@ -4,8 +4,11 @@ from django.contrib import admin
 from . import models
 from core.mixins import ExportCsvMixin
 import json
-from django.contrib.gis.db import models as gis_model
-from django.contrib.gis.geos import GEOSGeometry
+# from django.contrib.gis.db import models as gis_model
+# from django.contrib.gis.geos import GEOSGeometry
+
+from django.db import models as gis_model
+
 import traceback
 from django.db import connection
 # Register your models here.

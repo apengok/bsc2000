@@ -38,6 +38,11 @@ from core.models import (
     DMABaseinfo,
 )
 
+class OrganizationWholeSerializer(ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = '__all__'
+
 class BigmeterPushDataSerializer(ModelSerializer):
     meterv = SerializerMethodField()
     commstate = SerializerMethodField()

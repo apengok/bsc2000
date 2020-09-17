@@ -23,7 +23,7 @@ from entm.views import i18n_javascript,error_404,error_500,StaticView,faviconred
 from accounts.views import LoginView
 
 from dmam.api.views import test_zxesi_view,getCurrentAlarm
-from monitor.api.views import PostMDataList,PostMData
+from monitor.api.views import PostMDataList,PostMData,syncdata_bybelongto
 
 urlpatterns = [
     url(r'^$',LoginView.as_view(), name='login'),
@@ -85,6 +85,7 @@ urlpatterns = [
     url(r'^CityInterface/rest/services/CountyProduct.svc/PostMData',PostMData,name='PostMData'),
     url(r'^pis/rest/unityPlatform/getDeviceState',test_zxesi_view,name='test_zxesi'),
     url(r'^pis/rest/unityPlatform/getCurrentAlarm',getCurrentAlarm,name='getCurrentAlarm'),
+    url(r'^syncdata/bybelongto',syncdata_bybelongto,name='syncdata_bybelongto'),
 
 ]
 

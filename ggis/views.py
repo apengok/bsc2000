@@ -35,7 +35,10 @@ from core.mixins import AjaxableResponseMixin
 from django.db import connection
 
 from .models import FenceDistrict,FenceShape
-from django.contrib.gis.geos import Polygon
+try:
+    from django.contrib.gis.geos import Polygon
+except:
+    pass
 
 from core.models import Organization,WaterUserType,DMABaseinfo,DmaStation,Station,Meter,VCommunity,VConcentrator,DmaGisinfo
 from amrs.models import Bigmeter,District,Community,HdbFlowData,HdbFlowDataDay,HdbFlowDataMonth,HdbPressureData

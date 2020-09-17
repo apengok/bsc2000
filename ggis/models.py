@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# from django.db import models
-from django.contrib.gis.db import models
+try:
+    from django.contrib.gis.db import models
+    gdal_success = 1
+except:
+    from django.db import models
+    gdal_success = 0
+
 from django.urls import reverse
 import datetime
 from django.db.models import Q
@@ -54,7 +59,10 @@ class FenceShape(models.Model):
     shape   = models.CharField('形状',max_length=30,null=True,blank=True)
     
     # 增加geometry 数据类型直接保存geom
-    geomdata = models.GeometryField(srid=0, blank=True, null=True)
+    if gdal_success:
+        geomdata = models.GeometryField(srid=0, blank=True, null=True)
+    else:
+        geomdata = models.TextField(blank=True, null=True)
     geomjson = models.TextField(blank=True, null=True)
     
 

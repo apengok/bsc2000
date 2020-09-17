@@ -8,7 +8,7 @@ import logging
 import string
 import itertools
 from accounts.models import MyRoles,User
-from core.models import Organization
+from core.models import Organization,Personalized
 from core.menus import buildbasetree
 import json
 
@@ -167,6 +167,29 @@ class Command(BaseCommand):
             except:
                 print("failed to set user role and belongto.")
                 return
+            count+=1
+
+            # personlized
+            personl = {
+                "ptype":"default",
+                "loginLogo":"LOGO-KINGDA.png",
+                "webIco":"favicon.ico",
+                "homeLogo":"LOGO-KINGDA.png",
+                "topTitle":"智慧水务管控一体化",
+                "copyright":"©2015-2017威尔沃自动化设备（深圳）有限公司",
+                "websiteName":"www.virvo.com.cn",
+                "recordNumber":"京ICP备15041746号-1",
+                "frontPageMsg":"personality_systemconfig",
+                "frontPageMsgUrl":"/sysm/personalized/list/",
+                "updateDataUsername":"admin"
+                # "updateDataTime":,
+                # "belongto":
+            }
+            try:
+                Personalized.objects.create(**personl)
+
+            except:
+                print("failed to set default personlize information...")
             count+=1
             
             

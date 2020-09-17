@@ -44,7 +44,7 @@ from amrs.models import (
     Bigmeter,
     SecondWater
 )
-from django.contrib.gis.geos import Polygon
+# from django.contrib.gis.geos import Polygon
 from ggis.models import FenceDistrict,FenceShape
 # from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 # from .permissions import IsOwnerOrReadOnly

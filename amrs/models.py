@@ -5,7 +5,7 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = True` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.db.models import Q
@@ -26,7 +26,7 @@ class District(models.Model):
     parentid = models.IntegerField(db_column='ParentId', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'district'
 
     def __unicode__(self):
@@ -50,7 +50,7 @@ class Alarm(models.Model):
     commaddr = models.CharField(db_column='CommAddr', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'alarm'
 
     def __unicode__(self):
@@ -66,7 +66,7 @@ class AlarmProcess(models.Model):
     alarmid = models.IntegerField(db_column='AlarmId', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'alarm_process'
 
     def __unicode__(self):
@@ -77,7 +77,7 @@ class Amrsparam(models.Model):
     paramvalue = models.CharField(db_column='paramValue', max_length=128)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'amrsparam'
 
 
@@ -139,7 +139,7 @@ class Bigmeter(models.Model):
     
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bigmeter'
         ordering = ['-fluxreadtime']
 
@@ -153,7 +153,7 @@ class BindBigmeter(models.Model):
     commaddr = models.CharField(db_column='CommAddr', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bind_bigmeter'
 
 
@@ -163,7 +163,7 @@ class BindCommunity(models.Model):
     communityid = models.CharField(db_column='CommunityId', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bind_community'
 
 
@@ -173,7 +173,7 @@ class BindGroupRole(models.Model):
     grouprolekey = models.CharField(db_column='GroupRoleKey', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bind_group_role'
 
 
@@ -183,7 +183,7 @@ class BindMenuGroupRole(models.Model):
     grouprolekey = models.CharField(db_column='GroupRoleKey', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bind_menu_group_role'
 
 
@@ -193,7 +193,7 @@ class BindMenuUserRole(models.Model):
     userrolekey = models.CharField(db_column='UserRoleKey', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bind_menu_user_role'
 
 
@@ -203,7 +203,7 @@ class BindUserGroup(models.Model):
     userid = models.IntegerField(db_column='UserId', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bind_user_group'
 
 
@@ -213,7 +213,7 @@ class BindUserRole(models.Model):
     userrolekey = models.CharField(db_column='UserRoleKey', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'bind_user_role'
 
 
@@ -230,7 +230,7 @@ class Changewatermeter(models.Model):
     waterid = models.IntegerField(db_column='WaterId', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'changewatermeter'
 
 
@@ -242,7 +242,7 @@ class Community(models.Model):
     districtid = models.IntegerField(db_column='DistrictId', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'community'
 
     def __str__(self):
@@ -292,7 +292,7 @@ class Concentrator(models.Model):
     replystatus = models.CharField(db_column='replystatus', max_length=128, blank=True, null=True)  # Field name made lowercase.
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'concentrator'
 
     def __unicode__(self):
@@ -310,7 +310,7 @@ class FireHydrant(models.Model):
     coortype = models.CharField(db_column='CoorType', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'fire_hydrant'
 
     def __unicode__(self):
@@ -328,7 +328,7 @@ class HdbCommunityRdc(models.Model):
     sortidx = models.IntegerField(db_column='SortIdx', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_community_rdc'
         unique_together = (('hdate', 'community'),)
 
@@ -372,7 +372,7 @@ class HdbFlowData(models.Model):
     objects = HdbFlowDataManager()
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_flow_data'
         unique_together = (('commaddr', 'readtime'),)
 
@@ -391,7 +391,7 @@ class HdbFlowDataDay(models.Model):
 
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_flow_data_day'
         unique_together = (('commaddr', 'hdate'),)
 
@@ -406,7 +406,7 @@ class HdbFlowDataHour(models.Model):
     dosage = models.CharField(db_column='Dosage', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_flow_data_hour'
         unique_together = (('commaddr', 'hdate'),)
 
@@ -422,7 +422,7 @@ class HdbFlowDataMonth(models.Model):
 
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_flow_data_month'
         unique_together = (('commaddr', 'hdate'),)
 
@@ -440,7 +440,7 @@ class HdbPressureData(models.Model):
     meterv = models.CharField(db_column='MeterV', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_pressure_data'
         unique_together = (('commaddr', 'readtime'),)
 
@@ -456,7 +456,7 @@ class HdbSimflow(models.Model):
     monthdownflow = models.CharField(db_column='MonthDownFlow', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_simflow'
 
     def __unicode__(self):
@@ -570,7 +570,7 @@ class HdbWatermeterDay(models.Model):
     objects = HdbWatermeterDayManager()
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_watermeter_day'
         indexes = [
            models.Index(fields=['waterid', 'communityid',]),
@@ -747,7 +747,7 @@ class HdbWatermeterMonth(models.Model):
     objects = HdbWatermeterMonthManager()
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_watermeter_month'
         unique_together = (('waterid', 'hdate', 'communityid'),)
 
@@ -820,7 +820,7 @@ class Imexport(models.Model):
     opetime = models.CharField(db_column='OpeTime', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'imexport'
 
 
@@ -832,7 +832,7 @@ class Metercomm(models.Model):
     commprotocol = models.CharField(db_column='CommProtocol', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'metercomm'
 
     def __unicode__(self):
@@ -855,7 +855,7 @@ class Meterprotocol(models.Model):
     manufacturer = models.CharField(db_column='Manufacturer', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'meterprotocol'
 
     def __unicode__(self):
@@ -913,7 +913,7 @@ class PipeMapNode(models.Model):
     visible = models.IntegerField(db_column='Visible', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'pipe_map_node'
 
     def __unicode__(self):
@@ -944,7 +944,7 @@ class PipeMapNodeType(models.Model):
     unit10 = models.CharField(db_column='Unit10', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'pipe_map_node_type'
 
 
@@ -961,7 +961,7 @@ class PipePressure(models.Model):
     coortype = models.CharField(db_column='CoorType', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'pipe_pressure'
 
     def __unicode__(self):
@@ -975,7 +975,7 @@ class SecondDistrict(models.Model):
     parentid = models.IntegerField(db_column='ParentId', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'second_district'
 
     def __unicode__(self):
@@ -1011,7 +1011,7 @@ class SecondWater(models.Model):
     commtag = models.CharField(db_column='CommTag', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'second_water'
 
     def __unicode__(self):
@@ -1024,7 +1024,7 @@ class StnAlarmBind(models.Model):
     bindtype = models.CharField(db_column='BindType', max_length=32, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'stn_alarm_bind'
 
     def __unicode__(self):
@@ -1050,7 +1050,7 @@ class Syncscada(models.Model):
     offset = models.IntegerField(db_column='Offset', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'syncscada'
 
     def __unicode__(self):
@@ -1068,7 +1068,7 @@ class SystemLog(models.Model):
     commaddr = models.CharField(db_column='CommAddr', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'system_log'
 
 
@@ -1087,7 +1087,7 @@ class User(models.Model):
     loginip = models.CharField(db_column='LoginIp', max_length=30, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user'
 
 
@@ -1098,7 +1098,7 @@ class UserGroup(models.Model):
     platformname = models.CharField(db_column='PlatformName', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user_group'
 
 
@@ -1108,7 +1108,7 @@ class UserGroupRole(models.Model):
     description = models.CharField(db_column='Description', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user_group_role'
 
 
@@ -1123,7 +1123,7 @@ class UserMenu(models.Model):
     parentid = models.IntegerField(db_column='ParentId', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user_menu'
 
 
@@ -1133,7 +1133,7 @@ class UserRole(models.Model):
     description = models.CharField(db_column='Description', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'user_role'
 
 
@@ -1182,7 +1182,7 @@ class Watermeter(models.Model):
     deviceid = models.CharField(db_column='deviceid', max_length=256, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'watermeter'
         unique_together = (('communityid', 'nodeaddr', 'wateraddr'),)
 
@@ -1205,7 +1205,7 @@ class HdbWatermeterData(models.Model):
 
     
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hdb_watermeter_data'
         unique_together = (('wateraddr', 'readtime'),)
 
@@ -1300,7 +1300,7 @@ class MeterParameter(models.Model):
     commandtype  = models.CharField(db_column='commandtype', max_length=64, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'meterparameter'
 
     def __unicode__(self):
