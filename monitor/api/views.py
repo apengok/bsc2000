@@ -334,7 +334,20 @@ def PostMData(request):
     
     return Response(serializer_data)
 
-
+from .serializers import OrganizationWholeSerializer
+@api_view(['GET','POST'])
+def syncdata_bybelongto(request):
+    belongto = Organization.objects.get(pk=17)
+    querylist = belongto.sub_organizations(include_self=True)
+    serializer_data = OrganizationWholeSerializer(querylist,many=True).data
+    
+    ret = {
+        "Code":"0000",
+        "info": "设备及数据全部成功插入",
+        "errMsg":"",
+        "belongto":serializer_data
+    }
+    return Response(ret)
 
 @api_view(['GET','POST'])
 def showinfoStatics(request):
