@@ -21,6 +21,7 @@ from amrs.models import (
     Bigmeter,
     SecondWater,
     Alarm,
+    HdbFlowData,
     HdbFlowDataDay,
     HdbFlowDataMonth,
 )
@@ -230,28 +231,39 @@ def create_BigmeterRTSerializer(sTIme,eTime):
 
         def get_day_use(self,obj):
             sday = datetime.date.today().strftime("%Y-%m-%d")
+            if(obj.fluxreadtime[:10] != sday):
+                return "--"
             dosage = 0
-            querysets = HdbFlowDataDay.objects.filter(commaddr=obj.commaddr,hdate=sday)
-            if querysets.exists():
-                dosage = querysets[0].dosage
+            querysets = HdbFlowData.objects.filter(commaddr=obj.commaddr,readtime__startswith=sday)
+            if querysets.count() < 2:
+                return '-'
+            else:
+                dosage = float(querysets[querysets.count()-1].plustotalflux) - float(querysets[0].plustotalflux)
             return round(float(dosage),2)
 
         def get_month_use(self,obj):
             sday = datetime.date.today().strftime("%Y-%m")
+            
             dosage = 0
-            querysets = HdbFlowDataMonth.objects.filter(commaddr=obj.commaddr,hdate=sday)
-            if querysets.exists():
-                dosage = querysets[0].dosage
+            querysets = HdbFlowData.objects.filter(commaddr=obj.commaddr,readtime__startswith=sday)
+            if querysets.count() < 2:
+                return '-'
+            else:
+                dosage = float(querysets[querysets.count()-1].plustotalflux) - float(querysets[0].plustotalflux)
             return round(float(dosage),2)
 
         def get_range_use(self,obj):
             if sTIme is None:
-                return ''
-            flows=HdbFlowDataDay.objects.filter(commaddr=obj.commaddr,hdate__range=[sTIme,eTime]).aggregate(Sum('dosage'))
-            flow=flows['dosage__sum']
-            if flow is None:
-                flow = 0
-            return round(float(flow),2)
+                return '--'
+
+            querysets = HdbFlowData.objects.filter(commaddr=obj.commaddr,readtime__range=[sTIme,eTime])
+            if querysets.count() < 2:
+                return '-'
+            else:
+                dosage = float(querysets[querysets.count()-1].plustotalflux) - float(querysets[0].plustotalflux)
+            return round(float(dosage),2)
+
+            
 
         # def get_fluxreadtime(self,obj):
         #     try:

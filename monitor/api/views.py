@@ -48,6 +48,7 @@ from amrs.models import (
     HdbFlowDataHour,
     HdbFlowDataDay,
     HdbFlowDataMonth,
+    HdbPressureData,
 )
 # from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 # from .permissions import IsOwnerOrReadOnly
@@ -69,6 +70,7 @@ from amrs.serializers import (
     HdbFlowDataDaySerializer,
     HdbFlowDataMonthSerializer,
     HdbFlowDataInstanceSerializer,
+    HdbPressureDataSerializer,
 )
 import logging
 import logging.handlers
@@ -342,10 +344,7 @@ def syncdata_bybelongto(request):
     serializer_data = OrganizationWholeSerializer(querylist,many=True).data
     
     ret = {
-        "Code":"0000",
-        "info": "设备及数据全部成功插入",
-        "errMsg":"",
-        "belongto":serializer_data
+        "belongtos":serializer_data
     }
     return Response(ret)
 
@@ -385,7 +384,7 @@ def getWatermeterflow(request):
         commaddr equal watermeter__id
     '''
     if request.method == "GET":
-        commaddr = int(request.GET.get("commaddr", None))
+        commaddr = request.GET.get("commaddr", None)
         syear = int(request.GET.get("syear", None))
         smonth = int(request.GET.get("smonth", None))
         sday = int(request.GET.get("sday", None))
@@ -585,7 +584,7 @@ def getWatermeterflow(request):
 @api_view(['GET','POST'])
 def getinstanceflow_data(request):
     if request.method == "GET":
-        commaddr = int(request.GET.get("commaddr", None))
+        commaddr = request.GET.get("commaddr", None)
         stime = request.GET.get("stime", None)
         etime = request.GET.get("etime", None)
         
@@ -611,7 +610,7 @@ def getinstanceflow_data(request):
         ).distinct().order_by('readtime')
     queryset = queryset.exclude(flux__isnull=True)
     dosage_serializer_data =  HdbFlowDataInstanceSerializer(queryset,many=True).data
-    print(dosage_serializer_data)
+    # print(dosage_serializer_data)
 
     result = dict()
     result["rawdata"] = dosage_serializer_data
@@ -624,14 +623,14 @@ def getinstanceflow_data(request):
 @api_view(['GET','POST'])
 def getinstanceflow(request):
     if request.method == "GET":
-        commaddr = int(request.GET.get("commaddr", None))
+        commaddr = request.GET.get("commaddr", None)
         stime = request.GET.get("stime", None)
         etime = request.GET.get("etime", None)
         
         
 
     if request.method == "POST":
-        commaddr = int(request.POST.get("commaddr", None))
+        commaddr = request.POST.get("commaddr", None)
         stime = request.POST.get("stime", None)
         etime = request.POST.get("etime", None)
         
@@ -645,13 +644,21 @@ def getinstanceflow(request):
             # Q(waterid=watermeter.id) &
             Q(readtime__range=[stime,etime])
         ).distinct().order_by('readtime')
-    queryset = queryset.exclude(flux__isnull=True)
-    
+    # queryset = queryset.exclude(flux__isnull=True)
+    print('shit...')
     dosage_serializer_data =  HdbFlowDataInstanceSerializer(queryset,many=True).data
-    print(dosage_serializer_data)
+    # print(dosage_serializer_data)
+    # pressure 
+    queryset_pressure = HdbPressureData.objects.filter(
+            Q(commaddr=commaddr) &
+            # Q(waterid=watermeter.id) &
+            Q(readtime__range=[stime,etime])
+        ).distinct().order_by('readtime')
+    press_data = HdbPressureDataSerializer(queryset_pressure,many=True).data
 
     result = dict()
     result["rawdata"] = dosage_serializer_data
+    result["pressdata"] = press_data
     result["success"] = "true"
     
     
@@ -662,7 +669,7 @@ def getinstanceflow(request):
 @api_view(['GET','POST'])
 def getWatermeterflow_data(request):
     if request.method == "GET":
-        commaddr = int(request.GET.get("commaddr", None))
+        commaddr = request.GET.get("commaddr", None)
         syear = int(request.GET.get("syear", None))
         smonth = int(request.GET.get("smonth", None))
         sday = int(request.GET.get("sday", None))
@@ -670,7 +677,7 @@ def getWatermeterflow_data(request):
         
 
     if request.method == "POST":
-        commaddr = int(request.POST.get("commaddr", None))
+        commaddr = request.POST.get("commaddr", None)
         syear = int(request.POST.get("syear", None))
         smonth = int(request.POST.get("smonth", None))
         sday = int(request.POST.get("sday", None))
@@ -712,7 +719,7 @@ def getWatermeterdaily_data(request):
     当月每天的第一条数据记录 1
     '''
     if request.method == "GET":
-        commaddr = int(request.GET.get("commaddr", None))
+        commaddr = request.GET.get("commaddr", None)
         syear = int(request.GET.get("syear", None))
         smonth = int(request.GET.get("smonth", None))
         # sday = int(request.GET.get("sday", None))
@@ -1011,7 +1018,7 @@ def getWatermeterdaily(request):
         commaddr equal watermeter__id
     '''
     if request.method == "GET":
-        commaddr = int(request.GET.get("commaddr", None))
+        commaddr = request.GET.get("commaddr", None)
         syear = int(request.GET.get("syear", None))
         smonth = int(request.GET.get("smonth", None))
         
@@ -1240,7 +1247,7 @@ def getWatermeterMonth_data(request):
     当月每天的第一条数据记录
     '''
     if request.method == "GET":
-        commaddr = int(request.GET.get("commaddr", None))
+        commaddr = request.GET.get("commaddr", None)
         syear = int(request.GET.get("syear", None))
         # smonth = int(request.GET.get("smonth", None))
         # sday = int(request.GET.get("sday", None))
@@ -1530,7 +1537,7 @@ def getWatermeterMonth(request):
         commaddr equal watermeter__id
     '''
     if request.method == "GET":
-        commaddr = int(request.GET.get("commaddr", None))
+        commaddr = request.GET.get("commaddr", None)
         syear = int(request.GET.get("syear", None))
         
 
