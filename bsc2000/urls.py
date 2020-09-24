@@ -80,6 +80,7 @@ urlpatterns = [
 
     url(r'^api/amrs/', include('amrs.urls', namespace='amrs-api')),
 
+    path('api/data/', include('api.urls')),
     # 3rd test
     url(r'^CityInterface/rest/services/CountyProduct.svc/PostMDataList',PostMDataList,name='PostMDataList'),
     url(r'^CityInterface/rest/services/CountyProduct.svc/PostMData',PostMData,name='PostMData'),

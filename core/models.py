@@ -85,6 +85,12 @@ class Organization(MPTTModel):
     def __str__(self):
         return self.name 
 
+    @property
+    def is_parent(self):
+        if self.parent is not None:
+            return False
+        return True
+
     def sub_organizations(self,include_self=False):
         return self.get_descendants(include_self)
 

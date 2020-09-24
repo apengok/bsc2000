@@ -7,6 +7,29 @@
 
 <style type="text/css">
 
+.col-md-2{
+top:20px;
+width: 270px;
+height: 152px
+float:left;
+padding-left: 0px;
+padding-right: 0px;
+margin-left:26.7px;
+border: 1px solid #C4C4C4;
+}
+
+.col-md-4-table {
+width: 310px;
+height: 510px;
+
+}
+
+
+
+.exTab2{
+ width:1120px;
+  height: 510px;}
+
 .container {
     width: 100%;
     padding-right: 15px;
@@ -20,8 +43,8 @@
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
+    margin-right: 0px;
+    margin-left: 0px;
 }
         
         #showInfo table tr:nth-child(odd){
@@ -36,7 +59,7 @@
 
         }
 #userdaily ,#usermonthly ,#userflowrt,#instanceflowrt{
-  height: 500px;
+  height: 420px;
   display: block;
   /* width:90%; */
   margin-left: -15px;
@@ -44,7 +67,7 @@
 
 
         #showInfo table tr{
-            height: 25px;
+            height: 30px;
             text-align: center;
             color: #0a0a0c;
             font-size: 12;
@@ -68,7 +91,7 @@
         }
 
        #showInfo th, td {
-          padding: 10px;
+          padding: 5px;
           height: 18x;
         }
 
@@ -77,6 +100,7 @@
   color : white;
   background-color: #428bca;
   padding : 5px 15px;
+
 }
         
     </style>
@@ -88,23 +112,23 @@
       
       <div class="modal-title container">
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" style="font-weight:bold;">
                 用户代码:<span id="userid"></span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" style="font-weight:bold;">
                 站点名称:<span id="username">{{ object.username }}</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4" style="font-weight:bold;">
                 抄表日期:<span id="fluxreadtime"></span>
             </div>
           </div>
       </div>
   </div>
-  <div class="modal-body" id="showInfo">
+  <div id="showInfo" style="height: 750px;position: relative;padding: 20px;" >
       
-    <div class="row">
-      <div class="col-md-4">
-        <table border="1" >
+    <div class="row" >
+      <div class="col-md-4-table">
+        <table border="1"  >
           
           <tbody>
             <tr>
@@ -127,6 +151,18 @@
               <td style="text-align: left;padding-left: 10px">表类型</td>
               <td id="metertype"></td>
             </tr>
+                <tr>
+              <td style="text-align: left;padding-left: 10px">表类编号</td>
+              <td ></td>
+            </tr>
+                <tr>
+              <td style="text-align: left;padding-left: 10px">远传模块SIM卡号</td>
+              <td ></td>
+            </tr>
+                <tr>
+              <td style="text-align: left;padding-left: 10px">远传协议方式</td>
+              <td ></td>
+            </tr>
             <tr>
               <td style="text-align: left;padding-left: 10px">昨日用水量(m³)</td>
               <td id="yestoday_use"></td>
@@ -145,17 +181,17 @@
             
           </tbody>
         </table>
-        <div style="border: 1px solid black;height: 275px;" id="map"></div>
+        <div style="border: 1px solid #bdc3c7;height: 180px;" id="map"></div>
         
       </div>
 
         <!-- charts -->
-      <div class="col-md-8" style="border:1px solid rgb(114, 12, 12);">
+      <div class="col-md-8" style="border:1px solid #C4C4C4;height: 510px;width:1120px;left:25px;padding:0px;">
 
-        <div id="exTab2" class="container">	
+        <div id="exTab2" class="container" style="padding:0px;">
           <ul class="nav nav-tabs">
             <li class="active">
-              <a  href="#instance-content" data-toggle="tab">瞬时流量</a>
+              <a  href="#instance-content" data-toggle="tab" style=" border-left-width: 0px;border-top-width: 0px;">瞬时流量</a>
             </li>
             <li id="hour-tab">
               <a  href="#hour-content" data-toggle="tab">时用水</a>
@@ -175,23 +211,31 @@
             <!-- 瞬时用水 -->
             <div class="tab-pane active" id="instance-content">
               <div >
-                <div  style="padding-top: 20px;">
+                <div  style="padding-top: 10px;">
                   <div class="row">
-                      
+
                     <!-- <div class="col-md-2">
-                          <select  id="select000"></select> 
+                          <select  id="select000"></select>
                     </div>
                     <div class="col-md-2">
-                      <select  id="select001" ></select> 
+                      <select  id="select001" ></select>
                     </div>
                     <div class="col-md-2">
-                      <select  id="select002" ></select> 
+                      <select  id="select002" ></select>
                     </div> -->
-                    <div class="col-md-6 col-sm-8 searchListSelect">
+                    <div style="float: left;padding-left:30px" >
+                    <button id="instance1"  class="btn btn-outline btn-default" style="background-color:#F2F2F2;color:#0099FF;border:1px solid #CCCCCC;float: left;width:68px;height:37px">今天</button>
+                    <button id="instance_1" class="btn btn-outline btn-default"  style="background-color:#F2F2F2;color:#0099FF;border:1px solid #CCCCCC;float: left;width:68px;height:37px" >昨天</button>
+                    <button id="instance7" class="btn btn-outline btn-default"  style="background-color:#F2F2F2;color:#0099FF;border:1px solid #CCCCCC;float: left;width:68px;height:37px" >近7天</button>
+                    <button id="instance15" class="btn btn-outline btn-default"  style="background-color:#F2F2F2;color:#0099FF;border:1px solid #CCCCCC;float: left;width:68px;height:37px" >近15天</button>
+                    </div>
+                    <div class="col-md-6 col-sm-8 searchListSelect" style="width:33%">
+
+
                       <input style="cursor: pointer; background-color: #fafafa;"
                           class="form-control layer-date laydate-icon"
-                          id="timeInterval" name="timeInterval" readonly />
-                      <label id="timeInterval-error" class="error" for="timeInterval" style="display: none;">开始时间请不要超过上个月一号</label>
+                          id="timeInterval2" name="timeInterval2" readonly />
+                      <label id="timeInterval-error" class="error" for="timeInterval2" style="display: none;float: left">开始时间请不要超过上个月一号</label>
                   </div>
                     <div class="col-md-1">
                       <button id="inquirefluxflow" type="button" class="btn btn-primary search-btn" name="1" >查询</button>
@@ -203,23 +247,23 @@
                 </div>
                 <div class="col-md-12"  id='instanceflow-show-data'  style="display: none;">
                   <table id="instancerawdata-table" border="1" >
-              
+
                     <thead>
-                      
+
                       <tr>
                         <th  data-field="seqno" >序号</th>
                         <th  data-field="readtime"  >采样时间</th>
                         <th  data-field="flux" >瞬时流量m³</th>
                       </tr>
-                      
-          
-                      
+
+
+
                     </thead>
                   </table>
                 </div>
                 
                 <!-- <div class="col-md-12" id="flaw-show-echart" style="display: block;"> -->
-                    <div id="instanceflowrt" ></div>
+                    <div id="instanceflowrt" style="height: 400px;width: 100%;border-top:#C4C4C4 1px dashed;top:10px;left: 20px;"></div>
                 <!-- </div> -->
                 
               </div>
@@ -402,6 +446,42 @@
       </div>
 
         
+       <div class="col-md-12" style="padding-left: 0px;padding-right: 0px;border-top:#C4C4C4 1px dashed;top:20px">
+
+                <div class="col-md-2" style="margin-left: 0px;" >
+                    <div id="localImag-index1" >
+                        <img id="preview-index1" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图1" style="display: block;width: 270px;height: 152px;">
+                    </div>
+
+
+                </div>
+                <div class="col-md-2" >
+                    <div id="localImag-index2" >
+                        <img id="preview-index2" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图2" style="display: block;width: 270px;height: 152px;">
+                    </div>
+
+                </div>
+                <div class="col-md-2">
+                    <div id="localImag-index3" >
+                        <img id="preview-index3" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图3" style="display: block;width: 270px;height: 152px">
+                    </div>
+
+                </div>
+                <div class="col-md-2" >
+                    <div id="localImag-index4" >
+                        <img id="preview-index4" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图4" style="display: block;width:270px;height: 152px">
+                    </div>
+
+
+                </div>
+                <div class="col-md-2" >
+                    <div id="localImag-index5" >
+                        <img id="preview-index5" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图5" style="display: block;width: 270px;height: 152px">
+                    </div>
+
+                </div>
+            </div>
+
 
     </div>
   </div>
@@ -410,23 +490,6 @@
               
               
 
-  <div class="modal-footer">
-    <!-- <div></div> -->
-    <!-- <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal"  style="width: 80px;border-radius:7px">
-        <strong>报警状态： <span>正常</span></strong>
-    </button> -->
-    <div class="form-group pull-left">
-        <strong>报警状态： <span>正常</span></strong>
-    </div>
-    <button class="btn" type="button" id="doSubmit" style="background-color:#CD3299;color: #fffffF;width: 80px;padding-top: 10px;border-radius:7px">
-        <strong>导 出</strong>
-    </button>
-      &nbsp;
-    <button id="doCloseAdd" type="button" class="btn btn-default" data-dismiss="modal"  style="width: 80px;border-radius:7px">
-        <strong>关 闭</strong>
-    </button>
-  </div>
-            
 
 <script type="text/javascript">
   

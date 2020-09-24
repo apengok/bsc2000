@@ -1,3 +1,9 @@
+
+
+
+
+
+
 (function(window,$){
     var selectTreeId = '';
     var selectTreepId="";
@@ -21,19 +27,19 @@
 
     var ol3ops = {
         init:function(){
-            
+
             var controls = [
                 new ol.control.Attribution({collapsed: false}),
                 // new ol.control.FullScreen(),
                 new ol.control.MousePosition({projection: 'EPSG:4326',coordinateFormat: ol.coordinate.createStringXY(5)}),
-                
+
             ];
 
             // 墨卡托
             // var vec_layer = ol3ops.crtLayerXYZ("vec_w","EPSG:3857",1);
             // var cta_wlayer = ol3ops.crtLayerXYZ("cta_w","EPSG:3857",1);
             // var cva_clayer = ol3ops.crtLayerXYZ("cva_w","EPSG:3857",1);
-            
+
             // 经纬度
             var vec_layer = ol3ops.crtLayerXYZ("vec_c","EPSG:4326",1);
             var cta_wlayer = ol3ops.crtLayerXYZ("cta_c","EPSG:4326",1);
@@ -44,10 +50,10 @@
                   anchor: [0.5, 46],
                   anchorXUnits: 'fraction',
                   anchorYUnits: 'pixels',
-                  src: '/static/virvo/images/u3054.png'
+                  src: '/static/virvo/images/u3055.png'
                 }))
               });
-        
+
             var createMarker = function(coord){
               var iconFeature = new ol.Feature({
                 geometry: new ol.geom.Point(coord),
@@ -55,12 +61,12 @@
                 population: 4000,
                 rainfall: 500
               });
-        
+
               iconFeature.setStyle(iconStyle);
               return iconFeature;
             }
-        
-              
+
+
             vectorLayer = new ol.layer.Vector({
                 projection: 'EPSG:4326',
                 source: new ol.source.Vector()
@@ -113,7 +119,7 @@
                     // map.updateSize();
                 }
             }
-            
+
 
         },
         crtLayerXYZ:function(type, proj, opacity){
@@ -127,23 +133,21 @@
              layer.id = type;
              return layer;
         },
-        
-
 
 
     };//ol3op end
 
-    
+
     showInfo = {
         init: function(){
-            
+
         },
         openCity:function(evt, cityName) {
-    
+
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
-              
+
                 tabcontent[i].style.display = "none";
             }
             tablinks = document.getElementsByClassName("tablinks");
@@ -174,7 +178,7 @@
         },
         showinfoStatics:function(){
             // ajax访问后端查询
-            
+
             commaddr = $("#objId").val();
             // console.log("commaddr=",commaddr);
             $.ajax({
@@ -188,7 +192,7 @@
                     console.log(data.obj)
                     if(data.success)
                     {
-                        
+
                         $("#pickperiod").text(data.obj.pickperiod);
                         $("#reportperiod").text(data.obj.reportperiod);
                         $("#dn").text(data.obj.dn);
@@ -200,25 +204,25 @@
                         $("#fluxreadtime").text(data.obj.fluxreadtime);
                         $("#userid").text(data.obj.userid);
                         $("#username").text(data.obj.username);
-                        
+
                         lng = data.obj.lng;
                         lat = data.obj.lat;
                         console.log(lng,lat)
                         ol3ops.init();
 
-                        
+
                     }
 
                 }
             });
 
         },
-        
+
         //开始时间
         startDay: function (day) {
-            var timeInterval = $('#timeInterval').val().split('--');
-            var startValue = timeInterval[0];
-            var endValue = timeInterval[1];
+            var timeInterval = $('#timeInterval2').val().split('--');
+            var startValue="";// = timeInterval[0];
+            var endValue="";// = timeInterval[1];
             if (startValue == "" || endValue == "") {
                 var today = new Date();
                 var targetday_milliseconds = today.getTime() + 1000 * 60 * 60
@@ -241,7 +245,7 @@
                 var endMonth = today.getMonth();
                 var endDate = today.getDate();
                 endMonth = showInfo.doHandleMonth(endMonth + 1);
-                endDate = showInfo.doHandleMonth(endDate);
+                endDate = showInfo.doHandleMonth(endDate + 1);
                 endTime = endYear + "-" + endMonth + "-" + endDate + " "
                     + "23:59:59";
             } else {
@@ -322,7 +326,7 @@
             return result;
         },
         estimate: function () {
-            var timeInterval = $('#timeInterval').val().split('--');
+            var timeInterval = $('#timeInterval2').val().split('--');
             sTime = timeInterval[0];
             eTime = timeInterval[1];
             showInfo.getsTheCurrentTime();
@@ -348,12 +352,12 @@
             }
             var firstDay = year + "-" + month + "-" + "01 00:00:00";//上个月的第一天
             if (sTime < firstDay) {                                 //查询判断开始时间不能超过       上个月的第一天
-                $("#timeInterval-error").html(starTimeExceedOne).show();
+                $("#timeInterval2-error").html(starTimeExceedOne).show();
                 /*layer.msg(starTimeExceedOne, {move: false});
                 key = false;*/
                 return;
             }
-            $("#timeInterval-error").hide();
+            $("#timeInterval2-error").hide();
             var treeObj = $.fn.zTree.getZTreeObj("treeDemo");       //遍历树节点，获取vehicleID 存入集合
             var nodes = treeObj.getCheckedNodes(true);
             vid = "";
@@ -444,7 +448,7 @@
                 d=mont[m-1];
             }
 
-            
+
             var tmpl = '<option value="$name">$name 日</option>';
             var add0 = function(n){
                 if(n<10){
@@ -454,7 +458,7 @@
             };
             for(var i=0;i<d;i++){
                 select.append($(tmpl.replace(/\$name/g,  add0(d-i))));
-                
+
             }
         },
         renderWholeMonth: function(id){ //时间下拉框函数
@@ -474,8 +478,8 @@
         getinstanceflow_data:function(){
             // $("#flow-show-data").css("display","block")
             // $("#flaw-show-echart").css("display","none")
-            
-            
+
+
             commaddr = $("#objId").val();
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
@@ -492,12 +496,12 @@
                     if(data.success)
                     {
                         var data_flow = [];
-                        
+
 
                         dm = data.rawdata; //object
                         // console.log(dm)
                         $.each(dm,function(i,d){
-                            
+
                             var e = {};
                             e.seqno =i+1;
                             e.readtime = d.readtime;
@@ -505,12 +509,12 @@
                             // e.reversetotalflux = d.reversetotalflux;
                             data_flow.push(e);
                         })
-                        
+
                         console.log(data_flow)
                             $("#instancerawdata-table").bootstrapTable("destroy");
                             $("#instancerawdata-table").bootstrapTable({
                                 data: data_flow,
-                                classes: 'table table-condensed table-no-bordered', 
+                                classes: 'table table-condensed table-no-bordered',
                                 striped: false,
                                 height: "300"
                             })
@@ -526,8 +530,8 @@
             showInfo.getinstanceflow_data();
 
 
-            
-            
+
+
             commaddr = $("#objId").val();
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
@@ -546,6 +550,11 @@
                         var data_flow = [];
                         var data_seris = [];
                         var series_data = [];
+                        var data_press = [];
+
+                        $.each(data.pressdata,function(i,d){
+                            data_press.push(d.pressure)
+                        })
 
 
                         dm = data.rawdata; //object
@@ -563,7 +572,7 @@
 
                         console.log(data_seris)
                         console.log(data_flow)
-                        
+/*
                         option0 = {
                             // title: {
                             //     left: 'center',
@@ -582,7 +591,7 @@
                                             return table;
                                         }
                                     },
-                                    
+
                                     magicType: {type: ['line', 'bar']},
                                     restore: {},
                                     saveAsImage: {}
@@ -606,6 +615,7 @@
                             xAxis: {
                                 type: 'category',
                                 boundaryGap: false,  // 让折线图从X轴0刻度开始
+                             //  data: ['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
                                 data: data_seris,//['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
                             },
                             yAxis: {
@@ -616,17 +626,235 @@
                             },
                             // series:series_data
                             series: [{
-                                data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
+                               data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
+                               // data: [0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
                                 type: 'line',
                                 smooth: false
                             }]
                         };
-            
+
                         instanceflowrt = echarts.init(document.getElementById('instanceflowrt'));
                         instanceflowrt.clear();
-                        instanceflowrt.setOption(option0);
-            
+                        instanceflowrt.setOption(option0);*/
+
+
+                            var myChart = echarts.init(document.getElementById('instanceflowrt'));
+
+
+                                 var xData = function() {
+        var data = [];
+        for (var i = 1; i < 31; i++) {
+            data.push(i + "日");
+        }
+        return data;
+    }();
+
+                               option = {
+      //  backgroundColor: "#1A1835",
+
+        tooltip: {
+            trigger: "axis",
+            axisPointer: {
+                type: "shadow",
+                textStyle: {
+                    color: "#00a0e9"
+                }
+
+            },
+        },
+        grid: {
+            borderWidth: 0,
+            top: 70,
+            bottom: 75,
+            right: 50 ,
+            left: 50 ,
+            textStyle: {
+                color: "#00a0e9"
+            }
+        },
+        legend: {
+            x: '46%',
+            top: '11%',
+            textStyle: {
+                color: '#90979c',
+            },
+            data: ['瞬时流量', '压力']
+        },
+
+  toolbox: {
+        show: true,
+        feature: {
+            mark: {
+                show: true
+            },
+            dataZoom: { //数据缩放视图
+                        show: true
+            },
+            dataView: { //数据视图
+                show: true,
+                readOnly: false
+            },
+            magicType: {//动态类型切换
+                show: true,
+                type: ['line', 'bar']
+            },
+            restore: { //重置
+                show: true
+            },
+            saveAsImage: {//保存图片
+                show: true
+            },
+
+        },
+        right:70
+    },
+        calculable: true,
+        xAxis: [{
+            type: "category",
+            axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+            splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            data: data_seris //xData,
+        }],
+
+        yAxis: [{
+            type: "value",
+             name: '瞬时流量（m³/h）',
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+
+        },
+        {
+            type: 'value',
+            name: '压力（MPa）',
+            splitLine: {
+                show: false
+            },
+              axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+        }
+
+        ],
+        dataZoom: [{
+            show: true,
+            height: 30,
+            xAxisIndex: [0],
+            bottom: 20,
+
+            "start": 10,
+            "end": 80,
+            handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+            handleSize: '110%',
+            handleStyle: {
+                color: "#00a0e9",
+            },
+            textStyle:{
+                color:"rgba(204,187,225,0.5)",
+            },
+            fillerColor:"rgba(67,55,160,0.4)",
+            borderColor: "rgba(204,187,225,0.5)",
+
+        }, {
+            type: "inside",
+            show: true,
+            height: 15,
+            start: 1,
+            end: 35
+        }],
+        series: [{
+            name: "瞬时流量",
+            type: "line",
+            symbolSize: 10,
+            symbol: 'circle',
+            itemStyle: {
+                color: "#6f7de3",
+            },
+            markPoint: {
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#fff'
+                        }
                     }
+                },
+                data: [{
+                    type: 'max',
+                    name: '最大值',
+
+                }, {
+                    type: 'min',
+                    name: '最小值'
+                }]
+            },
+            data: data_flow,
+            // [
+            //     509, 917, 2455, 2610, 2719, 3033, 3044, 3085, 2708, 2809, 2117,2000,1455,1210,719,
+            //     733,944,2285,2208,3372,3936,3693,2962,2810,3519,2455,2610,2719,2484,2078
+            // ],
+        },
+         {
+            name: "压力",
+            type: "line",
+            symbolSize: 10,
+            symbol: 'circle',
+            itemStyle: {
+                color: "#c257F6",
+            },
+            yAxisIndex: 1,
+            markPoint: {
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                data: [{
+                    type: 'max',
+                    name: '最大值',
+
+                }, {
+                    type: 'min',
+                    name: '最小值'
+                }]
+            },
+            data: data_press
+            // [
+            //     21,36,29,38,35,34,39,38,34,43,40,34,35,38,42,33,
+            //     34,39,37,36,40,44,35,32,42,33,34,39,38,42,42
+            // ]
+        }, ]
+    }
+                                    myChart.setOption(option);
+                                     window.addEventListener("resize",function(){
+                                   myChart.resize();
+                                     });
+
+
+
+
+
+
+
+
+                                           }
 
                 }
             });
@@ -637,7 +865,7 @@
             var t1 = $("#select00").val();
             var t2 = $("#select01").val();
             var t3 = $("#select02").val();
-            
+
             commaddr = $("#objId").val();
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
@@ -655,12 +883,12 @@
                     if(data.success)
                     {
                         var data_flow = [];
-                        
+
 
                         dm = data.rawdata; //object
                         // console.log(dm)
                         $.each(dm,function(i,d){
-                            
+
                             var e = {};
                             e.seqno =i+1;
                             e.readtime = d.readtime;
@@ -668,12 +896,12 @@
                             e.reversetotalflux = d.reversetotalflux;
                             data_flow.push(e);
                         })
-                        
+
                         console.log(data_flow)
                             $("#rawdata-table").bootstrapTable("destroy");
                             $("#rawdata-table").bootstrapTable({
                                 data: data_flow,
-                                classes: 'table table-condensed table-no-bordered', 
+                                classes: 'table table-condensed table-no-bordered',
                                 striped: false,
                                 height: "300"
                             })
@@ -692,7 +920,7 @@
             var t1 = $("#select00").val();
             var t2 = $("#select01").val();
             var t3 = $("#select02").val();
-            
+
             commaddr = $("#objId").val();
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
@@ -736,7 +964,7 @@
                             const element = neg_data[index];
                             var dash_style = {
                                 name:'曲线',
-                                type:'line',     
+                                type:'line',
                                 smooth:false,   //关键点，为true是不支持虚线，实线就用true
                                 itemStyle:{
                                     normal:{
@@ -745,8 +973,8 @@
                                             type:'dotted'  //'dotted'虚线 'solid'实线
                                         }
                                     }
-                                }, 
-                                
+                                },
+
                                 data:neg_data[index]
                             };
                             series_data.push(dash_style)
@@ -756,7 +984,7 @@
                             const element = pos_data[index];
                             var solid_style = {
                                 name:'曲线',
-                                type:'line',     
+                                type:'line',
                                 smooth:false,   //关键点，为true是不支持虚线，实线就用true
                                 // itemStyle:{
                                 //     normal:{
@@ -765,8 +993,8 @@
                                 //             type:'dotted'  //'dotted'虚线 'solid'实线
                                 //         }
                                 //     }
-                                // }, 
-                                
+                                // },
+
                                 data:pos_data[index]
                             };
                             series_data.push(solid_style)
@@ -778,7 +1006,7 @@
                         //     type:'bar',
                         //     data:data_flow
                         // })
-                        
+
                         option1 = {
                             // title: {
                             //     left: 'center',
@@ -797,7 +1025,7 @@
                                             return table;
                                         }
                                     },
-                                    
+
                                     magicType: {type: ['line', 'bar']},
                                     restore: {},
                                     saveAsImage: {}
@@ -813,7 +1041,9 @@
                             xAxis: {
                                 type: 'category',
                                 boundaryGap: false,  // 让折线图从X轴0刻度开始
-                                data: date_show,//['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
+                                // data:['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
+
+                               data: date_show,//['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
                             },
                             yAxis: {
                                 name:'流量(吨)',
@@ -821,18 +1051,18 @@
                                 nameGap:30,
                                 type: 'value'
                             },
-                            series:series_data
-                            // series: [{
-                            //     data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
-                            //     type: 'line',
-                            //     smooth: false
-                            // }]
+                          //  series:series_data
+                             series: [{
+                                 data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
+                                 type: 'line',
+                                 smooth: false
+                             }]
                         };
-            
+
                         userflowrt = echarts.init(document.getElementById('userflowrt'));
                         userflowrt.clear();
                         userflowrt.setOption(option1);
-            
+
                     }
 
                 }
@@ -843,8 +1073,8 @@
             // $("#daily-show-echart").css("display","none")
             var t1 = $("#select1").val();
             var t2 = $("#select2").val();
-            
-            
+
+
             commaddr = $("#objId").val();
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
@@ -861,12 +1091,12 @@
                     if(data.success)
                     {
                         var data_flow = [];
-                        
+
 
                         dm = data.day_first; //object
                         // console.log(dm)
                         $.each(dm,function(i,d){
-                            
+
                             var e = {};
                             e.seqno =i+1;
                             e.readtime = d.readtime;
@@ -874,12 +1104,12 @@
                             e.reversetotalflux = d.reversetotalflux;
                             data_flow.push(e);
                         })
-                        
+
                         console.log(data_flow)
                             $("#dailyrawdata-table").bootstrapTable("destroy");
                             $("#dailyrawdata-table").bootstrapTable({
                                 data: data_flow,
-                                classes: 'table table-condensed table-no-bordered', 
+                                classes: 'table table-condensed table-no-bordered',
                                 striped: false,
                                 height: "300"
                             })
@@ -895,7 +1125,7 @@
             showInfo.getWatermeterdaily_data();
             var t1 = $("#select1").val();
             var t2 = $("#select2").val();
-            
+
             commaddr = $("#objId").val();
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
@@ -916,9 +1146,9 @@
                         var series_data = [];
                         dm = data.flowdata; //object
                         $.each(dm,function(i,d){
-                            
+
                             v = d.totalflux
-                            
+
                             data_flow.push(v);
                             // data_seris.push(h);
                         })
@@ -931,7 +1161,7 @@
                             const element = neg_data[index];
                             var dash_style = {
                                 name:'曲线',
-                                type:'line',     
+                                type:'line',
                                 smooth:false,   //关键点，为true是不支持虚线，实线就用true
                                 itemStyle:{
                                     normal:{
@@ -940,8 +1170,8 @@
                                             type:'dotted'  //'dotted'虚线 'solid'实线
                                         }
                                     }
-                                }, 
-                                
+                                },
+
                                 data:neg_data[index]
                             };
                             series_data.push(dash_style)
@@ -951,7 +1181,7 @@
                             const element = pos_data[index];
                             var solid_style = {
                                 name:'曲线',
-                                type:'line',     
+                                type:'line',
                                 smooth:false,   //关键点，为true是不支持虚线，实线就用true
                                 // itemStyle:{
                                 //     normal:{
@@ -960,8 +1190,8 @@
                                 //             type:'dotted'  //'dotted'虚线 'solid'实线
                                 //         }
                                 //     }
-                                // }, 
-                                
+                                // },
+
                                 data:pos_data[index]
                             };
                             series_data.push(solid_style)
@@ -1006,7 +1236,9 @@
                             xAxis: {
                                 type: 'category',
                                 boundaryGap: false,  // 让折线图从X轴0刻度开始
-                                data: date_show,//['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
+                             //   data: date_show,//['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
+                             data: ['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
+
                             },
                             yAxis: {
                                 name:'流量(吨)',
@@ -1014,18 +1246,20 @@
                                 nameGap:30,
                                 type: 'value'
                             },
-                            series:series_data
-                            // series: [{
-                            //     data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
-                            //     type: 'line',
-                            //     smooth: true
-                            // }]
+                            //series:series_data
+                             series: [{
+                                 data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
+                                 type: 'line',
+                                 smooth: true
+                             }]
                         };
-            
+
+
+
                         userdaily = echarts.init(document.getElementById('userdaily'));
                         userdaily.clear()
                         userdaily.setOption(option1);
-            
+
                     }
 
                 }
@@ -1036,8 +1270,8 @@
             // $("#month-show-echart").css("display","none")
             var t1 = $("#select1").val();
             var t2 = $("#select2").val();
-            
-            
+
+
             commaddr = $("#objId").val();
             // console.log("commaddr=",commaddr,t1,t2);
             $.ajax({
@@ -1054,12 +1288,12 @@
                     if(data.success)
                     {
                         var data_flow = [];
-                        
+
 
                         dm = data.day_first; //object
                         // console.log(dm)
                         $.each(dm,function(i,d){
-                            
+
                             var e = {};
                             e.seqno =i+1;
                             e.readtime = d.readtime;
@@ -1067,12 +1301,12 @@
                             e.reversetotalflux = d.reversetotalflux;
                             data_flow.push(e);
                         })
-                        
+
                         console.log(data_flow)
                             $("#monthrawdata-table").bootstrapTable("destroy");
                             $("#monthrawdata-table").bootstrapTable({
                                 data: data_flow,
-                                classes: 'table table-condensed table-no-bordered', 
+                                classes: 'table table-condensed table-no-bordered',
                                 striped: false,
                                 height: "300"
                             })
@@ -1108,9 +1342,9 @@
                         var series_data = [];
                         dm = data.flowdata; //object
                         $.each(dm,function(i,d){
-                            
+
                             v = d.totalflux
-                            
+
                             data_flow.push(v);
                             // data_seris.push(h);
                         })
@@ -1123,7 +1357,7 @@
                             const element = neg_data[index];
                             var dash_style = {
                                 name:'曲线',
-                                type:'line',     
+                                type:'line',
                                 smooth:false,   //关键点，为true是不支持虚线，实线就用true
                                 itemStyle:{
                                     normal:{
@@ -1132,8 +1366,8 @@
                                             type:'dotted'  //'dotted'虚线 'solid'实线
                                         }
                                     }
-                                }, 
-                                
+                                },
+
                                 data:neg_data[index]
                             };
                             series_data.push(dash_style)
@@ -1143,7 +1377,7 @@
                             const element = pos_data[index];
                             var solid_style = {
                                 name:'曲线',
-                                type:'line',     
+                                type:'line',
                                 smooth:false,   //关键点，为true是不支持虚线，实线就用true
                                 // itemStyle:{
                                 //     normal:{
@@ -1152,8 +1386,8 @@
                                 //             type:'dotted'  //'dotted'虚线 'solid'实线
                                 //         }
                                 //     }
-                                // }, 
-                                
+                                // },
+
                                 data:pos_data[index]
                             };
                             series_data.push(solid_style)
@@ -1199,7 +1433,8 @@
                             xAxis: {
                                 type: 'category',
                                 boundaryGap: false,  // 让折线图从X轴0刻度开始
-                                data: date_show,//['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
+                               data: date_show,//['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
+                            //  data: ['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08', '10-09', '10-10', '10-11', '10-12', '10-13','10-14', '10-15', '10-16', '10-17', '10-18', '10-19', '10-20', '10-21', '10-22', '10-23', '10-24', '10-25', '10-26','10-27','10-28','10-29','10-30']
                             },
                             yAxis: {
                                 name:'流量(吨)',
@@ -1207,13 +1442,13 @@
                                 nameGap:30,
                                 type: 'value'
                             },
-                            series:series_data,
-                            // series: [{
-                            //     name:'月用水量',
-                            //     data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
-                            //     type: 'line',
-                            //     smooth: true
-                            // }]
+                            //series:series_data,
+                             series: [{
+                                 name:'月用水量',
+                                 data: data_flow,//[0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27,0.11,0.25,0.33,0.38, 0.35, 0.19, 0.36, 0.24, 0.39, 0.12,0.27],
+                                 type: 'line',
+                                 smooth: true
+                             }]
                         };
 
                         usermonthly = echarts.init(document.getElementById('usermonthly'));
@@ -1234,9 +1469,10 @@
         // showInfo.renderSelectYear("#select000");
         // showInfo.renderSelectMonth("#select001");
         // showInfo.renderSelectDay("#select002");
-        $('#timeInterval').dateRangePicker({dateLimit:30});
+
+        $('#timeInterval2').dateRangePicker({dateLimit:30});
         showInfo.startDay(-7);
-        $('#timeInterval').val(startTime + '--' + endTime);
+        $('#timeInterval2').val(startTime + '--' + endTime);
 
         showInfo.renderSelectYear("#select00");
         showInfo.renderSelectMonth("#select01");
@@ -1276,25 +1512,50 @@
                 showInfo.renderWholeDay('#select02',monthselect);
             }
         })
-        
+
 
         $("#inquirefluxflow").on('click',function(){
-        showInfo.estimate();
-        showInfo.getinstanceflow();
+            showInfo.estimate();
+            showInfo.getinstanceflow();
         });
         $("#inquireflow").on('click',function(){
             showInfo.getWatermeterflow();
         });
-        
+
         $("#inquireDaily").on('click',function(){
             showInfo.getWatermeterdaily();
         });
-        
+
         $("#inquireMonthly").on('click',function(){
             showInfo.getWatermeterMonth();
         });
 
-        
+        $("#instance1").on('click',function(){
+            showInfo.startDay(0);
+            $('#timeInterval2').val(startTime + '--' + endTime);
+            showInfo.estimate();
+            showInfo.getinstanceflow();
+        })
+        $("#instance_1").on('click',function(){
+            showInfo.startDay(-1);
+            $('#timeInterval2').val(startTime + '--' + endTime);
+            showInfo.estimate();
+            showInfo.getinstanceflow();
+        })
+        $("#instance7").on('click',function(){
+            showInfo.startDay(-7);
+            $('#timeInterval2').val(startTime + '--' + endTime);
+            showInfo.estimate();
+            showInfo.getinstanceflow();
+        })
+        $("#instance15").on('click',function(){
+            showInfo.startDay(-15);
+            $('#timeInterval2').val(startTime + '--' + endTime);
+            showInfo.estimate();
+            showInfo.getinstanceflow();
+        })
+
+
         showInfo.showinfoStatics();
         // ol3ops.init();
         showInfo.estimate();
@@ -1302,14 +1563,14 @@
         showInfo.getWatermeterflow();
         showInfo.getWatermeterdaily();
         showInfo.getWatermeterMonth();
-        
+
 
         $('#hour-tab').on('shown.bs.tab', function (e) {
             userflowrt.resize();
         })
 
         $('#day-tab').on('shown.bs.tab', function (e) {
-            
+
             userdaily.resize()
         })
 
@@ -1324,7 +1585,7 @@
             };
         });
 
-        
+
         // $("#dayUse").css("display","block")
         //IE9
         if(navigator.appName=="Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g,"")=="MSIE9.0") {
@@ -1340,6 +1601,191 @@
 
         // 解决怪异问题：地图在页面打开是不显示，窗口大小改变后才显示
         setTimeout(function(){map.updateSize();}, 200);
-        
+
     })
+
+
+
+
+
+
 })(window,$)
+
+
+
+
+echarts_1();
+//新增瞬时流量曲线图
+
+function echarts_1() {
+
+    var myChart = echarts.init(document.getElementById('instanceflowrt1'));
+
+
+    var xData = function() {
+        var data = [];
+        for (var i = 1; i < 31; i++) {
+            data.push(i + "日");
+        }
+        return data;
+    }();
+
+    option = {
+      //  backgroundColor: "#1A1835",
+
+        tooltip: {
+            trigger: "axis",
+            axisPointer: {
+                type: "shadow",
+                textStyle: {
+                    color: "#fff"
+                }
+
+            },
+        },
+        grid: {
+            borderWidth: 0,
+            top: 110,
+            bottom: 95,
+            textStyle: {
+                color: "#fff"
+            }
+        },
+        legend: {
+            x: '46%',
+            top: '11%',
+            textStyle: {
+                color: '#90979c',
+            },
+            data: ['访问量', '订单量']
+        },
+
+
+        calculable: true,
+        xAxis: [{
+            type: "category",
+            axisLine: {
+                lineStyle: {
+                    color: "rgba(204,187,225,0.5)",
+                }
+            },
+            splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            data: xData,
+        }],
+
+        yAxis: [{
+            type: "value",
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: "rgba(204,187,225,0.5)",
+                }
+            },
+
+        }],
+        dataZoom: [{
+            show: true,
+            height: 30,
+            xAxisIndex: [0],
+            bottom: 30,
+
+            "start": 10,
+            "end": 80,
+            handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+            handleSize: '110%',
+            handleStyle: {
+                color: "#5B3AAE",
+            },
+            textStyle:{
+                color:"rgba(204,187,225,0.5)",
+            },
+            fillerColor:"rgba(67,55,160,0.4)",
+            borderColor: "rgba(204,187,225,0.5)",
+
+        }, {
+            type: "inside",
+            show: true,
+            height: 15,
+            start: 1,
+            end: 35
+        }],
+        series: [{
+            name: "访问量",
+            type: "line",
+            symbolSize: 10,
+            symbol: 'circle',
+            itemStyle: {
+                color: "#6f7de3",
+            },
+            markPoint: {
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                data: [{
+                    type: 'max',
+                    name: '最大值',
+
+                }, {
+                    type: 'min',
+                    name: '最小值'
+                }]
+            },
+            data: [
+                509, 917, 2455, 2610, 2719, 3033, 3044, 3085, 2708, 2809, 2117,2000,1455,1210,719,
+                733,944,2285,2208,3372,3936,3693,2962,2810,3519,2455,2610,2719,2484,2078
+            ],
+        }, {
+            name: "订单量",
+            type: "line",
+            symbolSize: 10,
+            symbol: 'circle',
+            itemStyle: {
+                color: "#c257F6",
+            },
+            markPoint: {
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                data: [{
+                    type: 'max',
+                    name: '最大值',
+
+                }, {
+                    type: 'min',
+                    name: '最小值'
+                }]
+            },
+            data: [
+                2136,3693,2962,3810,3519,3484,3915,3823,3455,4310,4019,3433,3544,3885,4208,3372,
+                3484,3915,3748,3675,4009,4433,3544,3285,4208,3372,3484,3915,3823,4265,4298
+            ]
+        }, ]
+    }
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){
+        myChart.resize();
+    });
+
+
+}
+
+
+
+
+
+

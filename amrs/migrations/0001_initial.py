@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'alarm',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'alarm_process',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'amrsparam',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -119,7 +119,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'bigmeter',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -131,7 +131,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'bind_bigmeter',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -143,7 +143,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'bind_community',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -155,7 +155,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'bind_group_role',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -167,7 +167,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'bind_menu_group_role',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -179,7 +179,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'bind_menu_user_role',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -191,7 +191,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'bind_user_group',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -203,7 +203,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'bind_user_role',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -222,7 +222,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'changewatermeter',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -236,7 +236,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'community',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -280,7 +280,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'concentrator',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -293,7 +293,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'district',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -309,7 +309,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'fire_hydrant',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -327,7 +327,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_community_rdc',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -346,7 +346,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_flow_data',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -359,7 +359,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_flow_data_day',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -372,7 +372,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_flow_data_hour',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -385,7 +385,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_flow_data_month',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -401,7 +401,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_pressure_data',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -415,7 +415,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_simflow',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -433,7 +433,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_watermeter_day',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -446,7 +446,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_watermeter_month',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -467,7 +467,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'imexport',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -481,7 +481,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'metercomm',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -529,7 +529,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'meterparameter',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -542,7 +542,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'meterprotocol',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -593,7 +593,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'pipe_map_node',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -624,7 +624,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'pipe_map_node_type',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -643,7 +643,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'pipe_pressure',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -656,7 +656,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'second_district',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -691,7 +691,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'second_water',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -703,7 +703,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'stn_alarm_bind',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -729,7 +729,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'syncscada',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -747,7 +747,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'system_log',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -768,7 +768,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'user',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -781,7 +781,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'user_group',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -793,7 +793,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'user_group_role',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -810,7 +810,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'user_menu',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -822,7 +822,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'user_role',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.CreateModel(
@@ -870,7 +870,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'watermeter',
-                'managed': False,
+                'managed': True,
             },
         ),
     ]

@@ -26,11 +26,11 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'hdb_watermeter_data',
-                'managed': False,
+                'managed': True,
             },
         ),
         migrations.AlterModelOptions(
             name='bigmeter',
-            options={'managed': False, 'ordering': ['-fluxreadtime']},
+            options={'managed': True, 'ordering': ['-fluxreadtime']},
         ),
     ]

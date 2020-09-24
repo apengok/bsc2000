@@ -8,7 +8,8 @@ DEBUG = True
 WSGI_APPLICATION = 'bsc2000.wsgi.dev.application'
 
 INSTALLED_APPS += [
-    'debug_toolbar'
+    'debug_toolbar',
+    'api'
 ]
 
 DATABASES = {
@@ -31,9 +32,9 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 #add geospatial something
-# GEOS_LIBRARY_PATH = 'C:/OSGeo4W64/bin/geos_c.dll'
-# GDAL_LIBRARY_PATH = 'C:/OSGeo4W64/bin/gdal111.dll'
+GEOS_LIBRARY_PATH = 'C:/OSGeo4W64/bin/geos_c.dll'
+GDAL_LIBRARY_PATH = 'C:/OSGeo4W64/bin/gdal111.dll'
 
 #add geospatial something -my home env
-GEOS_LIBRARY_PATH = 'C:/OSGeo4W/bin/geos_c.dll'
-GDAL_LIBRARY_PATH = 'C:/OSGeo4W/bin/gdal111.dll'
+# GEOS_LIBRARY_PATH = 'C:/OSGeo4W/bin/geos_c.dll'
+# GDAL_LIBRARY_PATH = 'C:/OSGeo4W/bin/gdal111.dll'
