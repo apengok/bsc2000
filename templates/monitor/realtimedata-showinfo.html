@@ -8,7 +8,7 @@
 <style type="text/css">
 
 .col-md-2{
-top:20px;
+
 width: 270px;
 height: 152px
 float:left;
@@ -102,6 +102,65 @@ height: 510px;
   padding : 5px 15px;
 
 }
+
+
+
+        table {
+            cellspacing:0 ;
+            *border-collapse: collapse; /* IE7 and lower */
+            border-spacing: 0;
+            width: 100%;
+        }
+        .bordered tr:hover {
+            background: #fbf8e9;
+            -o-transition: all 0.1s ease-in-out;
+            -webkit-transition: all 0.1s ease-in-out;
+            -moz-transition: all 0.1s ease-in-out;
+            -ms-transition: all 0.1s ease-in-out;
+            transition: all 0.1s ease-in-out;
+        }
+
+        .bordered th {
+            padding: 7px;
+            text-align: center;
+            cellspacing:0;
+        }
+
+        .bordered td{
+            padding: 7px;
+            text-align: center;
+            cellspacing:0;
+        }
+
+
+        .bordered th {
+
+             background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+             background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+             background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+             background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+             background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+             background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+        }
+        .bordered td:first-child, .bordered th:first-child {
+            border-left: none;
+        }
+
+
+
+        .bordered  tr:nth-of-type(2n){background:#FFFFFF;cursor: pointer;}
+        .bordered  tr:nth-of-type(2n+1){background:#F7FAFC;cursor: pointer;}
+
+        .bordered  tbody tr:hover{  background: #fbf8e9;
+            -o-transition: all 0.1s ease-in-out;
+            -webkit-transition: all 0.1s ease-in-out;
+            -moz-transition: all 0.1s ease-in-out;
+            -ms-transition: all 0.1s ease-in-out;
+            transition: all 0.1s ease-in-out;
+        }
+
+
+
         
     </style>
 {% endblock %}
@@ -263,7 +322,7 @@ height: 510px;
                 </div>
                 
                 <!-- <div class="col-md-12" id="flaw-show-echart" style="display: block;"> -->
-                    <div id="instanceflowrt" style="height: 400px;width: 100%;border-top:#C4C4C4 1px dashed;top:10px;left: 20px;"></div>
+                    <div id="instanceflowrt" style="height: 400px;width: 1100px;border-top:#C4C4C4 1px dashed;top:10px;left: 20px;"></div>
                 <!-- </div> -->
                 
               </div>
@@ -272,17 +331,17 @@ height: 510px;
             <!-- 时用水 -->
             <div class="tab-pane " id="hour-content">
               <div >
-                <div  style="padding-top: 20px;">
+                <div  style="padding-top: 10px;">
                   <div class="row">
                       
                     <div class="col-md-2">
-                          <select  id="select00"></select> 
+                          <select  id="select00"  style="width: 100%; height: 100%;"></select>
                     </div>
                     <div class="col-md-2">
-                      <select  id="select01" ></select> 
+                      <select  id="select01"   style="width: 100%; height: 100%;"></select>
                     </div>
                     <div class="col-md-2">
-                      <select  id="select02" ></select> 
+                      <select  id="select02"   style="width: 100%; height: 100%;"></select>
                     </div>
                     <div class="col-md-1">
                       <button id="inquireflow" type="button" class="btn btn-primary search-btn" name="1" >查询</button>
@@ -311,7 +370,7 @@ height: 510px;
                 </div>
                 
                 <!-- <div class="col-md-12" id="flaw-show-echart" style="display: block;"> -->
-                    <div id="userflowrt" ></div>
+                    <div id="userflowrt"style="height: 400px;width: 1100px;border-top:#C4C4C4 1px dashed;top:10px;left: 20px;" ></div>
                 <!-- </div> -->
                 
               </div>
@@ -319,14 +378,14 @@ height: 510px;
 
             <div class="tab-pane" id="day-content">
               <!-- daily -->
-              <div style="padding-top: 20px;">
-                <div class="row">
+              <div style="padding-top: 10px;">
+                <div class="row" >
                     
                   <div class="col-md-2">
-                    <select  id="select1"></select> 
+                    <select  id="select1" style="width: 100%; height: 100%;"></select>
                   </div>
                   <div class="col-md-2">
-                    <select  id="select2" ></select> 
+                    <select  id="select2" style="width: 100%; height: 100%;" ></select>
                   </div>
                     
                   <div class="col-md-1">
@@ -337,7 +396,7 @@ height: 510px;
                   </div> -->
                 </div>
                 <div class="col-md-12"  id='daily-show-data' style="display: none;">
-                  <table id="dailyrawdata-table"  >
+                  <table id="dailyrawdata-table"   >
             
                     <thead>
                     
@@ -355,17 +414,17 @@ height: 510px;
                 </div>
                 
                 <!-- <div class="col-md-12" id="daily-show-echart"  > -->
-                  <div id="userdaily" ></div>
+                  <div id="userdaily"  style="height: 400px;width: 1100px;border-top:#C4C4C4 1px dashed;top:10px;left: 20px;" ></div>
                 <!-- </div> -->
               </div>
 
             </div>
             <div class="tab-pane" id="mon-content">
-              <div style="padding-top: 20px;">
+              <div style="padding-top: 10px;">
                 <div class="row">
                   
                   <div class="col-md-2">
-                    <select  id="select3" ></select> 
+                    <select  id="select3"  style="width: 100%; height: 100%;" ></select>
                   </div>
                   
                   <div class="col-md-1">
@@ -395,21 +454,21 @@ height: 510px;
                 </table>
               </div>
   
-              <div class="col-md-12">
-                <div id="usermonthly" ></div>
+              <div class="col-md-12" style="padding-left: 0px;">
+                <div id="usermonthly"    style="height: 400px;width: 1100px;border-top:#C4C4C4 1px dashed;top:10px;left: 20px;" ></div>
               </div>
               
             </div>
             <!-- 报警信息 -->
             <div class="tab-pane" id="alarm-content">
-              <div style="padding-top: 20px;">
+              <div style="padding-top: 10px;">
                 <div class="row">
                   
                   <div class="col-md-2">
-                    <select  id="select4" ></select> 
+                    <select  id="select4" style="width: 100%; height: 100%;" ></select>
                   </div>
                   
-                  <div class="col-md-1">
+                  <div class="col-md-1" >
                     <button id="inquireAlarm" type="button" class="btn btn-primary search-btn" name="5" >查询</button>
                   </div>
                   <!-- <div class="col-md-1">

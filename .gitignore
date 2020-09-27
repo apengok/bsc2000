@@ -8,6 +8,7 @@ static
 publish
 publishfiles
 
+manage.py
 # C extensions
 *.so
 

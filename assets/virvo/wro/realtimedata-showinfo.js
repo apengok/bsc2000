@@ -692,7 +692,18 @@
             },
             dataView: { //数据视图
                 show: true,
-                readOnly: false
+                readOnly: true,
+                optionToContent: function(opt) {
+                        var colName = "序号";
+                        var typeName = "时间";
+                        var dataview = opt.toolbox[0].feature.dataView;  //获取dataview
+                        var table = '<div style="position:absolute;top: 5px;left: 0px;right: 0px;line-height: 1.4em;text-align:center;font-size:14px;">'+dataview.title+'</div>'
+                        table += getTable(opt,colName,typeName);
+                        return table;
+                    },
+                     buttonTextColor: "rgba(249, 249, 249, 1)",
+              buttonColor: "#0099CC"
+
             },
             magicType: {//动态类型切换
                 show: true,
@@ -911,6 +922,9 @@
                 }
             });
         },
+
+
+
         getWatermeterflow:function(){
             // $("#flow-show-data").css("display","none")
             // $("#flaw-show-echart").css("display","block")
@@ -1007,7 +1021,7 @@
                         //     data:data_flow
                         // })
 
-                        option1 = {
+          /*              option1 = {
                             // title: {
                             //     left: 'center',
                             //     text: '时段用水量统计图',
@@ -1061,7 +1075,189 @@
 
                         userflowrt = echarts.init(document.getElementById('userflowrt'));
                         userflowrt.clear();
-                        userflowrt.setOption(option1);
+                        userflowrt.setOption(option1);*/
+
+
+       var myChart1 = echarts.init(document.getElementById('userflowrt'));
+
+                                 var xData = function() {
+        var data = [];
+        for (var i = 1; i < 31; i++) {
+            data.push(i + "日");
+        }
+        return data;
+    }();
+
+                                  option1 = {
+      //  backgroundColor: "#1A1835",
+
+        tooltip: {
+            trigger: "axis",
+            axisPointer: {
+                type: "shadow",
+                textStyle: {
+                    color: "#00a0e9"
+                }
+
+            },
+        },
+        grid: {
+            borderWidth: 0,
+            top: 70,
+            bottom: 75,
+            right: 50 ,
+            left: 50 ,
+            textStyle: {
+                color: "#00a0e9"
+            }
+        },
+        legend: {
+            x: '46%',
+            top: '11%',
+            textStyle: {
+                color: '#90979c',
+            },
+            data: ['瞬时流量', '压力']
+        },
+
+  toolbox: {
+        show: true,
+        feature: {
+            mark: {
+                show: true
+            },
+            dataZoom: { //数据缩放视图
+                        show: true
+            },
+            dataView: { //数据视图
+                show: true,
+                readOnly: true,
+                optionToContent: function(opt) {
+                        var colName = "序号";
+                        var typeName = "时间";
+                        var dataview = opt.toolbox[0].feature.dataView;  //获取dataview
+                        var table = '<div style="position:absolute;top: 5px;left: 0px;right: 0px;line-height: 1.4em;text-align:center;font-size:14px;">'+dataview.title+'</div>'
+                        table += getTable(opt,colName,typeName);
+                        return table;
+                    },
+                     buttonTextColor: "rgba(249, 249, 249, 1)",
+              buttonColor: "#0099CC"
+
+            },
+            magicType: {//动态类型切换
+                show: true,
+                type: ['line', 'bar']
+            },
+            restore: { //重置
+                show: true
+            },
+            saveAsImage: {//保存图片
+                show: true
+            },
+
+        },
+        right:70
+    },
+        calculable: true,
+        xAxis: [{
+            type: "category",
+            axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+            splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            data: data_seris //xData,
+        }],
+
+        yAxis: [{
+            type: "value",
+             name: '瞬时流量（m³/h）',
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+
+        },
+
+
+        ],
+        dataZoom: [{
+            show: true,
+            height: 30,
+            xAxisIndex: [0],
+            bottom: 20,
+
+            "start": 10,
+            "end": 80,
+            handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+            handleSize: '110%',
+            handleStyle: {
+                color: "#00a0e9",
+            },
+            textStyle:{
+                color:"rgba(204,187,225,0.5)",
+            },
+            fillerColor:"rgba(67,55,160,0.4)",
+            borderColor: "rgba(204,187,225,0.5)",
+
+        }, {
+            type: "inside",
+            show: true,
+            height: 15,
+            start: 1,
+            end: 35
+        }],
+        series: [{
+            name: "瞬时流量",
+            type: "line",
+            symbolSize: 10,
+            symbol: 'circle',
+            itemStyle: {
+                color: "#6f7de3",
+            },
+            markPoint: {
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                data: [{
+                    type: 'max',
+                    name: '最大值',
+
+                }, {
+                    type: 'min',
+                    name: '最小值'
+                }]
+            },
+            data: data_flow,
+            // [
+            //     509, 917, 2455, 2610, 2719, 3033, 3044, 3085, 2708, 2809, 2117,2000,1455,1210,719,
+            //     733,944,2285,2208,3372,3936,3693,2962,2810,3519,2455,2610,2719,2484,2078
+            // ],
+        },
+      ]
+    }
+                                    myChart1.setOption(option1);
+                                     window.addEventListener("resize",function(){
+                                   myChart1.resize();
+                                     });
+
+
+
+
 
                     }
 
@@ -1202,7 +1398,7 @@
                         //     type:'bar',
                         //     data:data_flow
                         // })
-                        console.log(series_data)
+                  /*      console.log(series_data)
                         option1 = {
                             // title: {
                             //     left: 'center',
@@ -1258,9 +1454,194 @@
 
                         userdaily = echarts.init(document.getElementById('userdaily'));
                         userdaily.clear()
-                        userdaily.setOption(option1);
+                        userdaily.setOption(option1);*/
+
+
+
+     var myChart1 = echarts.init(document.getElementById('userdaily'));
+
+                                 var xData = function() {
+        var data = [];
+        for (var i = 1; i < 31; i++) {
+            data.push(i + "日");
+        }
+        return data;
+    }();
+
+                                  option1 = {
+      //  backgroundColor: "#1A1835",
+
+        tooltip: {
+            trigger: "axis",
+            axisPointer: {
+                type: "shadow",
+                textStyle: {
+                    color: "#00a0e9"
+                }
+
+            },
+        },
+        grid: {
+            borderWidth: 0,
+            top: 70,
+            bottom: 75,
+            right: 50 ,
+            left: 50 ,
+            textStyle: {
+                color: "#00a0e9"
+            }
+        },
+        legend: {
+            x: '46%',
+            top: '11%',
+            textStyle: {
+                color: '#90979c',
+            },
+            data: ['瞬时流量', '压力']
+        },
+
+  toolbox: {
+        show: true,
+        feature: {
+            mark: {
+                show: true
+            },
+            dataZoom: { //数据缩放视图
+                        show: true
+            },
+            dataView: { //数据视图
+                show: true,
+                readOnly: true,
+                optionToContent: function(opt) {
+                        var colName = "序号";
+                        var typeName = "时间";
+                        var dataview = opt.toolbox[0].feature.dataView;  //获取dataview
+                        var table = '<div style="position:absolute;top: 5px;left: 0px;right: 0px;line-height: 1.4em;text-align:center;font-size:14px;">'+dataview.title+'</div>'
+                        table += getTable(opt,colName,typeName);
+                        return table;
+                    },
+                     buttonTextColor: "rgba(249, 249, 249, 1)",
+              buttonColor: "#0099CC"
+
+            },
+            magicType: {//动态类型切换
+                show: true,
+                type: ['line', 'bar']
+            },
+            restore: { //重置
+                show: true
+            },
+            saveAsImage: {//保存图片
+                show: true
+            },
+
+        },
+        right:70
+    },
+        calculable: true,
+        xAxis: [{
+            type: "category",
+            axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+            splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            data: data_seris //xData,
+        }],
+
+        yAxis: [{
+            type: "value",
+             name: '瞬时流量（m³/h）',
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+
+        },
+
+
+        ],
+        dataZoom: [{
+            show: true,
+            height: 30,
+            xAxisIndex: [0],
+            bottom: 20,
+
+            "start": 10,
+            "end": 80,
+            handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+            handleSize: '110%',
+            handleStyle: {
+                color: "#00a0e9",
+            },
+            textStyle:{
+                color:"rgba(204,187,225,0.5)",
+            },
+            fillerColor:"rgba(67,55,160,0.4)",
+            borderColor: "rgba(204,187,225,0.5)",
+
+        }, {
+            type: "inside",
+            show: true,
+            height: 15,
+            start: 1,
+            end: 35
+        }],
+        series: [{
+            name: "瞬时流量",
+            type: "line",
+            symbolSize: 10,
+            symbol: 'circle',
+            itemStyle: {
+                color: "#6f7de3",
+            },
+            markPoint: {
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                data: [{
+                    type: 'max',
+                    name: '最大值',
+
+                }, {
+                    type: 'min',
+                    name: '最小值'
+                }]
+            },
+            data: data_flow,
+            // [
+            //     509, 917, 2455, 2610, 2719, 3033, 3044, 3085, 2708, 2809, 2117,2000,1455,1210,719,
+            //     733,944,2285,2208,3372,3936,3693,2962,2810,3519,2455,2610,2719,2484,2078
+            // ],
+        },
+      ]
+    }
+                                    myChart1.setOption(option1);
+                                     window.addEventListener("resize",function(){
+                                   myChart1.resize();
+                                     });
+
+
+
 
                     }
+
+
+
 
                 }
             });
@@ -1399,7 +1780,7 @@
                         //     data:data_flow
                         // })
                         // console.log(series_data)
-
+/*
                         option2 = {
                             // title: {
                             //     left: 'center',
@@ -1453,7 +1834,193 @@
 
                         usermonthly = echarts.init(document.getElementById('usermonthly'));
                         usermonthly.clear();
-                        usermonthly.setOption(option2);
+                        usermonthly.setOption(option2);*/
+
+
+
+
+     var myChart1 = echarts.init(document.getElementById('usermonthly'));
+
+                                 var xData = function() {
+        var data = [];
+        for (var i = 1; i < 31; i++) {
+            data.push(i + "日");
+        }
+        return data;
+    }();
+
+                                  option1 = {
+      //  backgroundColor: "#1A1835",
+
+        tooltip: {
+            trigger: "axis",
+            axisPointer: {
+                type: "shadow",
+                textStyle: {
+                    color: "#00a0e9"
+                }
+
+            },
+        },
+        grid: {
+            borderWidth: 0,
+            top: 70,
+            bottom: 75,
+            right: 50 ,
+            left: 50 ,
+            textStyle: {
+                color: "#00a0e9"
+            }
+        },
+        legend: {
+            x: '46%',
+            top: '11%',
+            textStyle: {
+                color: '#90979c',
+            },
+            data: ['瞬时流量', '压力']
+        },
+
+  toolbox: {
+        show: true,
+        feature: {
+            mark: {
+                show: true
+            },
+            dataZoom: { //数据缩放视图
+                        show: true
+            },
+            dataView: { //数据视图
+                show: true,
+                readOnly: true,
+                optionToContent: function(opt) {
+                        var colName = "序号";
+                        var typeName = "时间";
+                        var dataview = opt.toolbox[0].feature.dataView;  //获取dataview
+                        var table = '<div style="position:absolute;top: 5px;left: 0px;right: 0px;line-height: 1.4em;text-align:center;font-size:14px;">'+dataview.title+'</div>'
+                        table += getTable(opt,colName,typeName);
+                        return table;
+                    },
+                     buttonTextColor: "rgba(249, 249, 249, 1)",
+              buttonColor: "#0099CC"
+
+            },
+            magicType: {//动态类型切换
+                show: true,
+                type: ['line', 'bar']
+            },
+            restore: { //重置
+                show: true
+            },
+            saveAsImage: {//保存图片
+                show: true
+            },
+
+        },
+        right:70
+    },
+        calculable: true,
+        xAxis: [{
+            type: "category",
+            axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+            splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            data: data_seris //xData,
+        }],
+
+        yAxis: [{
+            type: "value",
+             name: '瞬时流量（m³/h）',
+            splitLine: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: "#00a0e9",
+                }
+            },
+
+        },
+
+
+        ],
+        dataZoom: [{
+            show: true,
+            height: 30,
+            xAxisIndex: [0],
+            bottom: 20,
+
+            "start": 10,
+            "end": 80,
+            handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+            handleSize: '110%',
+            handleStyle: {
+                color: "#00a0e9",
+            },
+            textStyle:{
+                color:"rgba(204,187,225,0.5)",
+            },
+            fillerColor:"rgba(67,55,160,0.4)",
+            borderColor: "rgba(204,187,225,0.5)",
+
+        }, {
+            type: "inside",
+            show: true,
+            height: 15,
+            start: 1,
+            end: 35
+        }],
+        series: [{
+            name: "瞬时流量",
+            type: "line",
+            symbolSize: 10,
+            symbol: 'circle',
+            itemStyle: {
+                color: "#6f7de3",
+            },
+            markPoint: {
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                data: [{
+                    type: 'max',
+                    name: '最大值',
+
+                }, {
+                    type: 'min',
+                    name: '最小值'
+                }]
+            },
+            data: data_flow,
+            // [
+            //     509, 917, 2455, 2610, 2719, 3033, 3044, 3085, 2708, 2809, 2117,2000,1455,1210,719,
+            //     733,944,2285,2208,3372,3936,3693,2962,2810,3519,2455,2610,2719,2484,2078
+            // ],
+        },
+      ]
+    }
+                                    myChart1.setOption(option1);
+                                     window.addEventListener("resize",function(){
+                                   myChart1.resize();
+                                     });
+
+
+
+
+
+
                     }
 
                 }
@@ -1611,10 +2178,58 @@
 
 })(window,$)
 
+function getTable(opt,colName,typeName){
+        var axisData = opt.xAxis[0].data;//获取图形的data数组
+        var series = opt.series;//获取series
+        var num = 0;//记录序号
+        var sum = new Array();//获取合计数组（根据对应的系数生成相应数量的sum）
+        for(var i=0; i<series.length; i++){
+            sum[i] = 0;
+        }
+        var table = '<table class="bordered"><thead><tr>'
+            + '<th>'+colName+'</th>'
+            + '<th>'+typeName+'</th>';
+        for(var i=0; i<series.length;i++){
+            table += '<th>'+series[i].name+'</th>'
+        }
+        table += '</tr></thead><tbody>';
+        for (var i = 0, l = axisData.length; i < l; i++) {
+            num += 1;
+            for(var n=0;n<series.length;n++){
+                if(series[n].data[i]){
+                    sum[n] += Number(series[n].data[i]);
+                }else{
+                    sum[n] += Number(0);
+                }
+
+            }
+            table += '<tr>'
+                + '<td>' + num + '</td>'
+                + '<td>' + axisData[i] + '</td>';
+            for(var j=0; j<series.length;j++){
+                if(series[j].data[i]){
+                    table += '<td>' + series[j].data[i] + '</td>';
+                }else{
+                    table += '<td>' + 0 + '</td>';
+                }
+
+            }
+            table += '</tr>';
+        }
+        //最后一行加上合计
+/*        table += '<tr>'+ '<td>' + (num+1) + '</td>' + '<td>合计</td>';
+        for(var n=0;n<series.length;n++){
+            if(String(sum[n]).indexOf(".")>-1)
+                table += '<td>' + (Number(sum[n])).toFixed(2)  + '</td>';
+            else
+                table += '<td>' + Number(sum[n])  + '</td>';
+        }*/
+        table += '</tr></tbody></table>';
+        return table;
+    }
 
 
-
-echarts_1();
+//echarts_1();
 //新增瞬时流量曲线图
 
 function echarts_1() {

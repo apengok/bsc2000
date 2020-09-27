@@ -19,7 +19,7 @@ class DataTablePageNumberPagination(PageNumberPagination):
 
     def get_paginated_response(self, data):
         draw = int(self.request.GET.get("draw", 1))
-        length = int(self.request.GET.get("length", 10000))
+        length = int(self.request.GET.get("length", 10))
         start = int(self.request.GET.get("start", 0))
 
         record_count = self.page.paginator.count
@@ -41,7 +41,7 @@ class DataTablePageNumberPagination(PageNumberPagination):
 
 
 class TempDataTablePageNumberPagination(PageNumberPagination):
-    page_size = 20000
+    page_size = 20
     # page_query_param = 'draw'
     page_size_query_param = 'length'
 

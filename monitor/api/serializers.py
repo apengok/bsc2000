@@ -231,15 +231,18 @@ def create_BigmeterRTSerializer(sTIme,eTime):
 
         def get_day_use(self,obj):
             sday = datetime.date.today().strftime("%Y-%m-%d")
-            if(obj.fluxreadtime[:10] != sday):
-                return "--"
-            dosage = 0
-            querysets = HdbFlowData.objects.filter(commaddr=obj.commaddr,readtime__startswith=sday)
-            if querysets.count() < 2:
-                return '-'
-            else:
-                dosage = float(querysets[querysets.count()-1].plustotalflux) - float(querysets[0].plustotalflux)
-            return round(float(dosage),2)
+            try:
+                if obj.fluxreadtime[:10] != sday:
+                    return "--"
+                dosage = 0
+                querysets = HdbFlowData.objects.filter(commaddr=obj.commaddr,readtime__startswith=sday)
+                if querysets.count() < 2:
+                    return '-'
+                else:
+                    dosage = float(querysets[querysets.count()-1].plustotalflux) - float(querysets[0].plustotalflux)
+                return round(float(dosage),2)
+            except:
+                return '--'
 
         def get_month_use(self,obj):
             sday = datetime.date.today().strftime("%Y-%m")
