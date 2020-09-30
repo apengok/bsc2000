@@ -108,7 +108,7 @@ class BigmeterRTListAPIView(ListAPIView):
         order_dir = self.request.GET.get('order[0][dir]')
 
         colo = self.request.GET.get('columns[%s][data]'%order_column) or 'none'
-        print(order_column,order_dir,colo)
+        #print(order_column,order_dir,colo)
 
         organ = self.request.user.belongto
         
@@ -154,7 +154,7 @@ class BigmeterRTListAPIView(ListAPIView):
         if order_dir != 'asc':
             queryset_list = queryset_list[::-1]
         
-        # print('time elapse:',time.time()-t1)
+        # #print('time elapse:',time.time()-t1)
         
         return queryset_list
 
@@ -165,7 +165,7 @@ def getmapstationlist(request):
     groupName = request.GET.get("groupName") or ''
     user = request.user
     organs = user.belongto
-    print(organs,type(organs))
+    #print(organs,type(organs))
     if groupName == '':
         selectedgroup = Organization.objects.filter(cid=organs.cid).values().first()
     else:
@@ -211,7 +211,7 @@ def getmapsecondwaterlist(request):
     groupName = request.GET.get("groupName") or ''
     user = request.user
     organs = user.belongto
-    print(organs,type(organs))
+    #print(organs,type(organs))
     if groupName == '':
         selectedgroup = Organization.objects.filter(cid=organs.cid).values().first()
     else:
@@ -254,7 +254,7 @@ def getmapsecondwaterlist(request):
 
 @api_view(['GET','POST'])
 def test_zxesi_view(request):
-    # print(request.data)
+    # #print(request.data)
     seqNo = request.data.get("seqNo","somerandnumber")
     
     ret = {
@@ -280,7 +280,7 @@ def test_zxesi_view(request):
 @api_view(['GET','POST'])
 def PostMDataList(request):
     
-    print(request.data)
+    #print(request.data)
     
     ret = {
         "Code":"0000",
@@ -306,7 +306,7 @@ def PostMData_yuangu_test(request):
         DeviceName = sd.get("username")
         pt = sd.get("fluxreadtime","1970-01-01 00:00:00")
         for i in range(len(extra_names)):
-            # print(extra_dbnames[i],':',sd.get(extra_dbnames[i]))
+            # #print(extra_dbnames[i],':',sd.get(extra_dbnames[i]))
             pv = sd.get(extra_dbnames[i])
             push_data.append({
                 "DeviceID":DeviceID + '-' + extra_names[i],
@@ -318,7 +318,7 @@ def PostMData_yuangu_test(request):
                 "HistoryData":[]
             })
 
-    # print(type(serializer_data))
+    # #print(type(serializer_data))
     
     return Response(push_data)
 
@@ -354,7 +354,7 @@ def showinfoStatics(request):
         realtime-showinfo.js 通过站点名显示表信息
     '''
     commaddr = request.GET.get("commaddr", None)
-    print("commaddr=",commaddr)        
+    #print("commaddr=",commaddr)        
     if commaddr is None:
         return ResourceWarning({"success":"true","records":[]})
 
@@ -416,7 +416,7 @@ def getWatermeterflow(request):
             Q(readtime__startswith=qmonth)
         ).distinct().order_by('readtime')
     dosage_serializer_data =  HdbFlowDataSerializer(queryset,many=True).data
-    print(dosage_serializer_data)
+    #print(dosage_serializer_data)
 
     datel = ['0:00']
     for i in range(24):
@@ -434,7 +434,7 @@ def getWatermeterflow(request):
         before_first = ''
         for i in range(data_len):
             s = dosage_serializer_data[i]
-            # print(s.get("readtime")[11:16],s.get("totalflux"))
+            # #print(s.get("readtime")[11:16],s.get("totalflux"))
             dts = datetime.datetime.strptime(s.get("readtime")[11:16],"%H:%M") 
             if dts > dt1 and dts <= dt2:
                 # 找到了 记录比较值
@@ -445,11 +445,11 @@ def getWatermeterflow(request):
                         before_first = dosage_serializer_data[0].get("totalflux")
                     else:
                         before_first = dosage_serializer_data[i-1].get("totalflux")
-                    print('before_first',before_first)
+                    #print('before_first',before_first)
                 data_between.append(s.get("totalflux"))
         
         if len(data_between) > 0:
-            print(data_between,before_first)
+            #print(data_between,before_first)
             # 当天只有一条数据记录时，计算好这个数据落在的时间段直接返回
             if data_len == 1:
                 return float(before_first)
@@ -460,8 +460,8 @@ def getWatermeterflow(request):
             
             
 
-    # print(datel)
-    # print(len(datel))
+    # #print(datel)
+    # #print(len(datel))
     ret_data = []
     for i in range(len(datel)-1):
         t1 = datel[i]
@@ -473,7 +473,7 @@ def getWatermeterflow(request):
         flag = 'valid'
         if ret == '-':
             flag = 'invalid'
-        # print(t1,"ret=",ret)
+        # #print(t1,"ret=",ret)
         t2 = datel[i+1]
         ret_data.append({
             "readtime":t2,
@@ -501,8 +501,8 @@ def getWatermeterflow(request):
         if s.get("flag") == 'valid' and flag == 'start':
             value = s.get("totalflux")
             avg_value = float(value) / cnt
-            print('need update ',tmp)
-            print('avg=',avg_value)
+            #print('need update ',tmp)
+            #print('avg=',avg_value)
             # 它自己因为被平均了，也要换成平均值
             tmp.append(s.get("readtime"))
             # 写入平均值到 ret_data
@@ -610,7 +610,7 @@ def getinstanceflow_data(request):
         ).distinct().order_by('readtime')
     queryset = queryset.exclude(flux__isnull=True)
     dosage_serializer_data =  HdbFlowDataInstanceSerializer(queryset,many=True).data
-    # print(dosage_serializer_data)
+    # #print(dosage_serializer_data)
 
     result = dict()
     result["rawdata"] = dosage_serializer_data
@@ -645,9 +645,9 @@ def getinstanceflow(request):
             Q(readtime__range=[stime,etime])
         ).distinct().order_by('readtime')
     # queryset = queryset.exclude(flux__isnull=True)
-    print('shit...')
+    #print('shit...')
     dosage_serializer_data =  HdbFlowDataInstanceSerializer(queryset,many=True).data
-    # print(dosage_serializer_data)
+    # #print(dosage_serializer_data)
     # pressure 
     queryset_pressure = HdbPressureData.objects.filter(
             Q(commaddr=commaddr) &
@@ -702,7 +702,7 @@ def getWatermeterflow_data(request):
             Q(readtime__startswith=qmonth)
         ).distinct().order_by('readtime')
     dosage_serializer_data =  HdbFlowDataSerializer(queryset,many=True).data
-    print(dosage_serializer_data)
+    #print(dosage_serializer_data)
 
     result = dict()
     result["rawdata"] = dosage_serializer_data
@@ -799,8 +799,8 @@ def getWatermeterdaily_data(request):
             
             
 
-    # print(datel)
-    # print(len(datel))
+    # #print(datel)
+    # #print(len(datel))
     # 对时间段内没有数据记录的 计算平均值
     ret_data = []
     # 获取
@@ -813,9 +813,9 @@ def getWatermeterdaily_data(request):
         ).distinct().order_by('readtime').last()
         tmp1 = query_before_first.totalflux
     except Exception as e:
-        print(e)
+        #print(e)
         tmp1 = 0 #被减值 当天不存在，记录上一天（上一条）记录,
-    print('tmp1=',tmp1)
+    #print('tmp1=',tmp1)
     end_day = datel[-1]
     try:
         query_before_first = HdbFlowData.objects.filter(
@@ -825,9 +825,9 @@ def getWatermeterdaily_data(request):
         ).distinct().order_by('readtime').first()
         end_value = query_before_first.totalflux
     except Exception as e:
-        print(e)
+        #print(e)
         end_value = '-' #被减值 当天不存在，记录上一天（上一条）记录,
-    print('end_value=',end_value)
+    #print('end_value=',end_value)
     tmp_date = []
     record_value = []
     record_date = []
@@ -837,24 +837,24 @@ def getWatermeterdaily_data(request):
         flag = 'invalid'
         t1 = datel[i]
         ret1 = get_data_from_day_first(t1)
-        print(i+1,t1,ret1,sflag)
+        #print(i+1,t1,ret1,sflag)
         # 1. 有效值，如果是开始 invalid or valid
         if ret1 != '-' and sflag == 'begin':
             sflag = 'valid'
             tmp1 = float(ret1)
             record_date.append(t1)
-            print('\t1.',record_date)
+            #print('\t1.',record_date)
 
         # 1.1 开始就无效值
         elif ret1 == '-' and sflag == 'begin':
             sflag = 'invalid'
             record_date.append(t1)
-            print('\t2.',record_date)
+            #print('\t2.',record_date)
 
         # 2.有效值开始，直到下一个有效值
         elif ret1 != '-' and sflag == 'valid':
             value = float(ret1) - float(tmp1)
-            print('\t3.',record_date)
+            #print('\t3.',record_date)
             if len(record_date) == 1: #下一个就是有效值
                 sflag = 'begin'
                 flag = 'valid'
@@ -879,7 +879,7 @@ def getWatermeterdaily_data(request):
         # 有效值开始，到下一个还是无效值
         elif ret1 == '-' and sflag == 'valid':
             record_date.append(t1)
-            print('\t4.',record_date)
+            #print('\t4.',record_date)
             if t1 == end_day:
                 if end_value != '-':
                     value = float(end_value) - float(tmp1)
@@ -901,8 +901,8 @@ def getWatermeterdaily_data(request):
         elif ret1 != '-' and sflag == 'invalid':
             # record_date.append(t1)
             sflag = 'valid'
-            print('\t tmp1=',tmp1)
-            print('\t6.',record_date)
+            #print('\t tmp1=',tmp1)
+            #print('\t6.',record_date)
             value = float(ret1) - float(tmp1)
             flag = 'invalid'
             value = value/len(record_date)
@@ -915,11 +915,11 @@ def getWatermeterdaily_data(request):
             tmp1 = ret1
             record_date = []
             record_date.append(t1)
-            print('\t6.1.',record_date)
+            #print('\t6.1.',record_date)
         # 后面都没有找到有效的数据了
         elif ret1 == '-' and sflag == 'invalid':
             record_date.append(t1)
-            print('\t7.',record_date)
+            #print('\t7.',record_date)
             if t1 == end_day:
                 if end_value != '-':
                     value = float(end_value) - float(tmp1)
@@ -1050,14 +1050,14 @@ def getWatermeterdaily(request):
     dosage_serializer_data =  HdbFlowDataSerializer(queryset,many=True).data
 
     
-    # print(dosage_serializer_data)
+    # #print(dosage_serializer_data)
 
     # queryset = HdbWatermeterDay.objects.filter(
     #         Q(communityid=watermeter.communityid) &
     #         Q(waterid=watermeter.id) &
     #         Q(hdate__startswith=qmonth)
     #     ).distinct()
-    # print(queryset)
+    # #print(queryset)
     # dosage_serializer_data =  HdbWatermeterDaySerializer(queryset,many=True).data
     mon_day =[31,28,31,30,31,30,31,31,30,31,30,31]
     day = today.day
@@ -1095,18 +1095,18 @@ def getWatermeterdaily(request):
             dts = datetime.datetime.strptime(s.get("readtime")[:10],"%Y-%m-%d") 
             if dts >= dt1 and dts <= dt2:
                 # 找到了 记录比较值
-                print(s.get("readtime")[0:10],s.get("totalflux"))
+                #print(s.get("readtime")[0:10],s.get("totalflux"))
                 if sflag:
                     sflag = False
                     if i == 0:
                         before_first = dosage_serializer_data[0].get("totalflux")
                     else:
                         before_first = dosage_serializer_data[i-1].get("totalflux")
-                    print('before_first',before_first)
+                    #print('before_first',before_first)
                 data_between.append(s.get("totalflux"))
         
         if len(data_between) > 0:
-            print(data_between,before_first)
+            #print(data_between,before_first)
             # 当天只有一条数据记录时，计算好这个数据落在的时间段直接返回
             if data_len == 1:
                 return float(before_first)
@@ -1117,8 +1117,8 @@ def getWatermeterdaily(request):
             
             
 
-    # print(datel)
-    # print(len(datel))
+    # #print(datel)
+    # #print(len(datel))
     ret_data = []
     for i in range(len(datel)-1):
         t1 = datel[i]
@@ -1128,18 +1128,18 @@ def getWatermeterdaily(request):
         d2 = get_t_first(t2)
         flag = 'invalid'
         ret = '-'
-        print(d2,d1)
+        #print(d2,d1)
         if d1  and d2 :
             flag = 'valid'
             ret = float(d2) - float(d1)
-        # print(t1,"ret=",ret)
+        # #print(t1,"ret=",ret)
         ret_data.append({
             "readtime":t1,
             "totalflux":ret,
             "flag":flag
         })
 
-    print(ret_data)
+    #print(ret_data)
     def update_avg(target,value):
         for s in ret_data:
             if s.get("readtime") in target:
@@ -1160,8 +1160,8 @@ def getWatermeterdaily(request):
         if s.get("flag") == 'valid' and flag == 'start':
             value = s.get("totalflux")
             avg_value = float(value) / cnt
-            print('need update ',tmp)
-            print('avg=',avg_value)
+            #print('need update ',tmp)
+            #print('avg=',avg_value)
             # 它自己因为被平均了，也要换成平均值
             tmp.append(s.get("readtime"))
             # 写入平均值到 ret_data
@@ -1273,14 +1273,14 @@ def getWatermeterMonth_data(request):
 
 
     # qmonth = '{}-{:02d}'.format(syear,smonth)
-    # print('this water:',watermeter,watermeter.wateraddr,qmonth)
+    # #print('this water:',watermeter,watermeter.wateraddr,qmonth)
     queryset = HdbFlowData.objects.filter(
             Q(commaddr=commaddr) &
             # Q(waterid=watermeter.id) &
             Q(readtime__startswith=syear)
         ).distinct().order_by('readtime')
     dosage_serializer_data =  HdbFlowDataSerializer(queryset,many=True).data
-    # print(dosage_serializer_data)
+    # #print(dosage_serializer_data)
 
     
 
@@ -1320,8 +1320,8 @@ def getWatermeterMonth_data(request):
             
             
 
-    # print(datel)
-    # print(len(datel))
+    # #print(datel)
+    # #print(len(datel))
     # 对时间段内没有数据记录的 计算平均值
     ret_data = []
     # 获取
@@ -1334,9 +1334,9 @@ def getWatermeterMonth_data(request):
         ).distinct().order_by('readtime').last()
         tmp1 = query_before_first.totalflux
     except Exception as e:
-        print(e)
+        #print(e)
         tmp1 = 0 #被减值 当天不存在，记录上一天（上一条）记录,
-    print('tmp1=',tmp1)
+    #print('tmp1=',tmp1)
     end_day = datel[-1]
     try:
         query_before_first = HdbFlowData.objects.filter(
@@ -1346,9 +1346,9 @@ def getWatermeterMonth_data(request):
         ).distinct().order_by('readtime').first()
         end_value = query_before_first.totalflux
     except Exception as e:
-        print(e)
+        #print(e)
         end_value = '-' #被减值 当天不存在，记录上一天（上一条）记录,
-    print('end_value=',end_value)
+    #print('end_value=',end_value)
     tmp_date = []
     record_value = []
     record_date = []
@@ -1358,24 +1358,24 @@ def getWatermeterMonth_data(request):
         flag = 'invalid'
         t1 = datel[i]
         ret1 = get_data_from_day_first(t1)
-        print(i+1,t1,ret1,sflag)
+        #print(i+1,t1,ret1,sflag)
         # 1. 有效值，如果是开始 invalid or valid
         if ret1 != '-' and sflag == 'begin':
             sflag = 'valid'
             tmp1 = float(ret1)
             record_date.append(t1)
-            print('\t1.',record_date)
+            #print('\t1.',record_date)
 
         # 1.1 开始就无效值
         elif ret1 == '-' and sflag == 'begin':
             sflag = 'invalid'
             record_date.append(t1)
-            print('\t2.',record_date)
+            #print('\t2.',record_date)
 
         # 2.有效值开始，直到下一个有效值
         elif ret1 != '-' and sflag == 'valid':
             value = float(ret1) - float(tmp1)
-            print('\t3.',record_date)
+            #print('\t3.',record_date)
             if len(record_date) == 1: #下一个就是有效值
                 sflag = 'begin'
                 flag = 'valid'
@@ -1400,7 +1400,7 @@ def getWatermeterMonth_data(request):
         # 有效值开始，到下一个还是无效值
         elif ret1 == '-' and sflag == 'valid':
             record_date.append(t1)
-            print('\t4.',record_date)
+            #print('\t4.',record_date)
             if t1 == end_day:
                 if end_value != '-':
                     value = float(end_value) - float(tmp1)
@@ -1422,8 +1422,8 @@ def getWatermeterMonth_data(request):
         elif ret1 != '-' and sflag == 'invalid':
             # record_date.append(t1)
             sflag = 'valid'
-            print('\t tmp1=',tmp1)
-            print('\t6.',record_date)
+            #print('\t tmp1=',tmp1)
+            #print('\t6.',record_date)
             value = float(ret1) - float(tmp1)
             flag = 'invalid'
             value = value/len(record_date)
@@ -1436,11 +1436,11 @@ def getWatermeterMonth_data(request):
             tmp1 = ret1
             record_date = []
             record_date.append(t1)
-            print('\t6.1.',record_date)
+            #print('\t6.1.',record_date)
         # 后面都没有找到有效的数据了
         elif ret1 == '-' and sflag == 'invalid':
             record_date.append(t1)
-            print('\t7.',record_date)
+            #print('\t7.',record_date)
             if t1 == end_day:
                 if end_value != '-':
                     value = float(end_value) - float(tmp1)

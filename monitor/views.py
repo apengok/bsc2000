@@ -839,5 +839,11 @@ class RtdShowInfoView(TemplateView):
         # print("dasfefaesdfsdf----",obj.numbersth,obj.id,obj.serialnumber)
         context["object"] = self.get_object()
         context["numbersth"] = obj.username
+        
+        context["image1"] = '/media/'+ str(obj.station.image1) if obj.station.image1 else ""
+        context["image2"] = '/media/'+ str(obj.station.image2) if obj.station.image2 else ""
+        context["image3"] = '/media/'+ str(obj.station.image3) if obj.station.image3 else ""
+        context["image4"] = '/media/'+ str(obj.station.image4) if obj.station.image4 else ""
+        context["image5"] = '/media/'+ str(obj.station.image5) if obj.station.image5 else ""
 
         return context
