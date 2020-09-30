@@ -733,13 +733,13 @@
         var rows = table.fnGetNodes();
         var list = [];
         $.each(table.fnGetNodes(), function (index, value) {
-            console.log(index,value);
+            // console.log(index,value);
             
 
             var commaddr = $(value).find('td:eq(5)').html();
             var station_type = $(value).find('td:eq(6)').html();
             
-            console.log(commaddr)
+            // console.log(commaddr)
             
         $('#dataTable').find('tr#'+index).find('td:eq(15)').html('newValue');
     });
@@ -776,7 +776,7 @@
                         data_flow.push(e);
                     })
                     
-                    console.log(data_flow)
+                    // console.log(data_flow)
                         $("#instancerawdata-table").bootstrapTable("destroy");
                         $("#instancerawdata-table").bootstrapTable({
                             data: data_flow,

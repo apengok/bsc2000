@@ -98,7 +98,7 @@ var headers = {"access_token": "8ec340a5-b4d9-4ebb-9889-e014993a8099"};
 
 <script src="{% static 'virvo/wro/topPublic.js' %}"></script> 
 
-      <section class="main-content-wrapper main-content-toggle-left">
+      <section class="main-content-wrapper main-content-toggle-left" style="min-width: 2048px;" >
             <!--sidebar start-->
             {% include 'sidenav.html' %}
 <!--sidebar end-->
@@ -107,38 +107,45 @@ var headers = {"access_token": "8ec340a5-b4d9-4ebb-9889-e014993a8099"};
 <input value="{{ user.groups.all.0 }}" id="permission" type="hidden"  />
 
 <input value="{{ user.is_admin|lower }}" id="isAdmin" type="hidden"  />
-            <section id="main-content">
+            <section id="main-content" style="border-top:4px solid #999999;">
                 <div class="row eightIsZero">
-                    <div class="col-md-12 realtime-content">
+                    <div class="col-md-12 realtime-content" style="background:#fff">
                         {% block content_left %}
-                        <div id="content-left" class="col-md-2" style="padding-right: 0px; padding-left: 0px;">
-                            <div style="background-color: rgba(0, 153, 204, 1);" >
-                                <div style="font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';font-weight: 700;font-style: normal;font-size: 14px;color: white;margin: 10px 10px 0 20px;">全部站点(1251)
+                        <div id="content-left" class="col-md-2" style="padding-right: 0px; padding-left: 0px;border-right:2px solid rgb(204, 204, 204);">
+                            <div class="panel-heading" style="background-color:#ffffff;color:#767676;border-bottom:none;">
+                                <!-- <h3 class="panel-title fwb">轨迹回放</h3> -->
+                                <div  >
+                                    <div style="font-family: '微软雅黑 Bold', '微软雅黑 Regular', '微软雅黑';font-weight: 700;font-style: normal;font-size: 16px;color: inherit;margin: 10px 10px 0 20px;">全部站点(1251)
+                                    </div>
                                 </div>
-                            </div>
-                            <div style="background:#fff;">
-                                <div class="form-group">
-                                  <label class="col-md-6 control-label" style="margin-top:10px;color: #1627e0;">在线(6)</label>
-                                  <label class="col-md-6 control-label" style="margin-top:10px;color: grey;">离线(0)</label>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-6 control-label" style="margin-top:10px;color: #f20804;">报警站点(0)</label>
-                                  <label class="col-md-6 control-label" style="margin-top:10px;color: #02470e;">关注站点(0)</label>
-                                </div>
-                                <div class="form-group">
-                                  <label class="col-md-6 control-label" style="margin-top:10px;margin-bottom:20px;color: #8c4380;">大用户站点(0)</label>
-                                  
+                                <div id="goHidden" class="actions2 pull-right"
+                                  style="top:-35px!important;left:5px!important;color: #0099CC;box-shadow: 0px 0px 0px;">
+                                  <i class="fa fa-chevron-left"></i>
                                 </div>
                             </div>
 
-                            <div class="col-md-12" style="padding-right: 0px; padding-left: 0px;">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                      <h3 class="panel-title fwb">组织架构</h3>
-                                      <div class="actions  listActions">
-                                        <i class="fa fa-chevron-down"></i>
-                                      </div>
+                            <div id="station_status"  style="background-color:#ffffff;border-top: 1px solid #CCCCCC;border-bottom: 1px solid #CCCCCC;height: 100px;">
+                                    <div class="col-md-12 " id="disable" style="text-align: left;">
+                                        <div style="background:#fff;text-align: left;">
+                                            <div style="margin-top: -20px;">
+                                              <label class="col-md-6 control-label " style="color: #1627e0;text-align: left;">在线(6)</label>
+                                              <label class="col-md-6 control-label" style="color: grey;text-align: left;">离线(0)</label>
+                                            </div>
+                                            <div class="form-group">
+                                              <label class="col-md-6 control-label" style="color: #f20804;text-align: left;">报警站点(0)</label>
+                                              <label class="col-md-6 control-label" style="color: #02470e;text-align: left;">关注站点(0)</label>
+                                            </div>
+                                            <div class="form-group">
+                                              <label class="col-md-6 control-label" style="color: #8c4380;text-align: left;">大用户站点(0)</label>
+
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+
+                            <div class="col-md-12" style="padding-right: 0px; padding-left: 0px;height: 770px">
+                                <div class="panel panel-default">
+
                                     <div class="panel-body" style="padding: 0px;">
                                       <div class="form-group" style="margin-top: 15px;">
                                         <div class="col-md-12">
@@ -146,7 +153,7 @@ var headers = {"access_token": "8ec340a5-b4d9-4ebb-9889-e014993a8099"};
                                         </div>
                                       </div>
                                       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  panelCarBg" style="padding: 0px;height:80%!important">
-                                        <ul id="treeDemo" class="ztreee" style="overflow:auto;height:460px!important"></ul>
+                                        <ul id="treeDemo" class="ztreee" style="overflow:auto;min-height:660px!important"></ul>
                                       </div>
                                     </div>
                                 </div>

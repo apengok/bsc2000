@@ -91,7 +91,7 @@ height: 510px;
         }
 
        #showInfo th, td {
-          padding: 5px;
+        <!--  padding: 5px;-->
           height: 18x;
         }
 
@@ -187,7 +187,7 @@ height: 510px;
       
     <div class="row" >
       <div class="col-md-4-table">
-        <table border="1"  >
+        <table border="1"  style="height: 330px;"    >
           
           <tbody>
             <tr>
@@ -297,7 +297,7 @@ height: 510px;
                       <label id="timeInterval-error" class="error" for="timeInterval2" style="display: none;float: left">开始时间请不要超过上个月一号</label>
                   </div>
                     <div class="col-md-1">
-                      <button id="inquirefluxflow" type="button" class="btn btn-primary search-btn" name="1" >查询</button>
+                      <button id="inquirefluxflow1" type="button" class="btn btn-primary search-btn" name="1" >查询</button>
                     </div>
                     <!-- <div class="col-md-1">
                       <button id="inquireflow-data" type="button" class="btn btn-primary search-btn" name="2" >数据</button>
@@ -322,7 +322,7 @@ height: 510px;
                 </div>
                 
                 <!-- <div class="col-md-12" id="flaw-show-echart" style="display: block;"> -->
-                    <div id="instanceflowrt" style="height: 400px;width: 1100px;border-top:#C4C4C4 1px dashed;top:10px;left: 20px;"></div>
+                    <div id="instanceflowrt" style="height: 400px;width: 1100px;border-top:#C4C4C4 1px dashed;top:10px;left: 20px;margin-left: 0px;"></div>
                 <!-- </div> -->
                 
               </div>
@@ -507,35 +507,35 @@ height: 510px;
         
        <div class="col-md-12" style="padding-left: 0px;padding-right: 0px;border-top:#C4C4C4 1px dashed;top:20px">
 
-                <div class="col-md-2" style="margin-left: 0px;" >
+                <div class="col-md-2" style="margin-left: 0px;top:20px;" >
                     <div id="localImag-index1" >
-                        <img id="preview-index1" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图1" style="display: block;width: 270px;height: 152px;">
+                        <img id="preview-index1" class="img-click" src="{{ image1|default:'/static/virvo/images/u-null.png'}}" alt="现场图1" style="display: block;width: 270px;height: 152px;">
                     </div>
 
 
                 </div>
-                <div class="col-md-2" >
+                <div class="col-md-2" style="top:20px;" >
                     <div id="localImag-index2" >
-                        <img id="preview-index2" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图2" style="display: block;width: 270px;height: 152px;">
+                        <img id="preview-index2" class="img-click" src="{{ image2|default:'/static/virvo/images/u-null.png'}}" alt="现场图2" style="display: block;width: 270px;height: 152px;">
                     </div>
 
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" style="top:20px;">
                     <div id="localImag-index3" >
-                        <img id="preview-index3" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图3" style="display: block;width: 270px;height: 152px">
+                        <img id="preview-index3" class="img-click" src="{{ image3|default:'/static/virvo/images/u-null.png'}}" alt="现场图3" style="display: block;width: 270px;height: 152px">
                     </div>
 
                 </div>
-                <div class="col-md-2" >
+                <div class="col-md-2" style="top:20px;" >
                     <div id="localImag-index4" >
-                        <img id="preview-index4" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图4" style="display: block;width:270px;height: 152px">
+                        <img id="preview-index4" class="img-click" src="{{ image4|default:'/static/virvo/images/u-null.png'}}" alt="现场图4" style="display: block;width:270px;height: 152px">
                     </div>
 
 
                 </div>
-                <div class="col-md-2" >
+                <div class="col-md-2"  style="top:20px;" >
                     <div id="localImag-index5" >
-                        <img id="preview-index5" class="img-click" src="/static/virvo/images/u-null.png" alt="现场图5" style="display: block;width: 270px;height: 152px">
+                        <img id="preview-index5" class="img-click" src="{{ image5|default:'/static/virvo/images/u-null.png'}}" alt="现场图5" style="display: block;width: 270px;height: 152px">
                     </div>
 
                 </div>

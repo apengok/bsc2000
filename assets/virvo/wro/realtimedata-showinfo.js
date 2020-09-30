@@ -95,7 +95,7 @@
                 }
                 center = [longitude,latitude];
             }
-            console.log(center)
+            // console.log(center)
             map = new ol.Map({
                 layers: [vec_layer,cta_wlayer,cva_clayer,vectorLayer],
                 controls: controls,
@@ -112,7 +112,7 @@
             if(lng != "" && lat != ""){
                 if(!isNaN(lng) && !isNaN(lat))
                 {
-                    console.log(lng,lat)
+                    // console.log(lng,lat)
                     vectorLayer.getSource().clear();
                     var marker = createMarker(center)
                     vectorLayer.getSource().addFeature(marker);
@@ -156,7 +156,7 @@
             }
             evt.currentTarget.className += " active";
             document.getElementById(cityName).style.display = "block";
-            console.log('cityname:',cityName)
+            // console.log('cityname:',cityName)
             // $("#dayUse").css("display","block")
           },
         requeryComunityData:function(flag){
@@ -189,7 +189,7 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    console.log(data.obj)
+                    // console.log(data.obj)
                     if(data.success)
                     {
 
@@ -207,7 +207,7 @@
 
                         lng = data.obj.lng;
                         lat = data.obj.lat;
-                        console.log(lng,lat)
+                        // console.log(lng,lat)
                         ol3ops.init();
 
 
@@ -314,6 +314,7 @@
             if (atime != undefined && atime != "") {
                 startTime = atime;
             }
+            console.log(startTime,endTime)
         },
         unique: function (arr) {
             var result = [], hash = {};
@@ -327,8 +328,10 @@
         },
         estimate: function () {
             var timeInterval = $('#timeInterval2').val().split('--');
+            console.log(timeInterval)
             sTime = timeInterval[0];
             eTime = timeInterval[1];
+            console.log(sTime,eTime)
             showInfo.getsTheCurrentTime();
             if (eTime > endTime) {                              //查询判断
                 layer.msg(endTimeGtNowTime, {move: false});
@@ -510,7 +513,7 @@
                             data_flow.push(e);
                         })
 
-                        console.log(data_flow)
+                        // console.log(data_flow)
                             $("#instancerawdata-table").bootstrapTable("destroy");
                             $("#instancerawdata-table").bootstrapTable({
                                 data: data_flow,
@@ -570,8 +573,8 @@
                             data_seris.push(h);
                         })
 
-                        console.log(data_seris)
-                        console.log(data_flow)
+                        // console.log(data_seris)
+                        // console.log(data_flow)
 /*
                         option0 = {
                             // title: {
@@ -908,7 +911,7 @@
                             data_flow.push(e);
                         })
 
-                        console.log(data_flow)
+                        // console.log(data_flow)
                             $("#rawdata-table").bootstrapTable("destroy");
                             $("#rawdata-table").bootstrapTable({
                                 data: data_flow,
@@ -1283,7 +1286,7 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
+                    // console.log(data)
                     if(data.success)
                     {
                         var data_flow = [];
@@ -1301,7 +1304,7 @@
                             data_flow.push(e);
                         })
 
-                        console.log(data_flow)
+                        // console.log(data_flow)
                             $("#dailyrawdata-table").bootstrapTable("destroy");
                             $("#dailyrawdata-table").bootstrapTable({
                                 data: data_flow,
@@ -1665,7 +1668,7 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
+                    // console.log(data)
                     if(data.success)
                     {
                         var data_flow = [];
@@ -1683,7 +1686,7 @@
                             data_flow.push(e);
                         })
 
-                        console.log(data_flow)
+                        // console.log(data_flow)
                             $("#monthrawdata-table").bootstrapTable("destroy");
                             $("#monthrawdata-table").bootstrapTable({
                                 data: data_flow,
@@ -2081,7 +2084,7 @@
         })
 
 
-        $("#inquirefluxflow").on('click',function(){
+        $("#inquirefluxflow1").on('click',function(){
             showInfo.estimate();
             showInfo.getinstanceflow();
         });

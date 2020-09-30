@@ -4,6 +4,7 @@
 
 {% block stylesheet %}
 <link rel="stylesheet" href="{% static '/ol/v3.20.1-dist/ol.css' %}"/>
+<script src="http://api.tianditu.gov.cn/api?v=4.0&tk=e0955897c7f8a5adeba75b55bb11b600" type="text/javascript"></script>
 
 <style type="text/css">
         .amap-info-sharp {
@@ -15,9 +16,15 @@
         }
 
         #MapContainer {
-            height: 20000px;
-        }
 
+            height: 20000px;
+            overflow-x: scroll;
+            overflow-y: scroll;
+
+        }
+    #MapContainer::-webkit-scrollbar {
+        display: none;
+    }
         #mapDropSetting {
             border: 1px solid #c4c4c4;
             box-shadow: 2px 2px 2px #c4c4c4;
@@ -140,7 +147,7 @@
 
 
 {% block content_left %}
-<div id="content-left" class="col-md-2" style="padding-right: 0px; padding-left: 0px;">
+<div id="content-left" class="col-md-2" style="padding-right: 0px; padding-left: 0px;min-height:850px;max-height:850px;border-right: 1px solid #CCCCCC;">
     <div id="operationMenu" class="panel panel-default panDefMenu">
         <div class="panel-heading" style="padding:10px;background-color:#ffffff;color:#767676;">
             <!-- <h3 class="panel-title fwb">轨迹回放</h3> -->
@@ -179,7 +186,7 @@
 
 {% block main_content %}
 
-<div id="content-right" class="col-md-10 content-right" >
+<div id="content-right" class="col-md-10 content-right" style="margin-left: -15px;">
     <div >
         <!-- <div id="js-map" class="map"></div> -->
         
@@ -189,7 +196,7 @@
     </div>
     
     <div id="dragDIV" style="height:2px;width:100%;cursor:n-resize;background-color:#ffffff;"></div>
-        <ul id="myTab" class="nav nav-tabs">
+        <ul id="myTab" class="nav nav-tabs"  style="">
             <li id="v-travelData" class="active"><a href="#GPSData" data-toggle="tab">实时数据</a></li>
             
             <li id="tableAlarmDate"><a href="#warningData" data-toggle="tab" id="AlarmData">报警信息</a></li>
@@ -306,21 +313,20 @@
 {% block javascript %}
 <!-- <script src="http://webapi.amap.com/maps?v=1.4.6&key=f034871b532a7bfb2d93f18e915b322c&plugin=AMap.DistrictSearch"></script> -->
 <!-- <script src="http://webapi.amap.com/maps?v=1.4.6&key=f034871b532a7bfb2d93f18e915b322c&plugin=AMap.DistrictSearch,AMap.MouseTool,AMap.Driving,AMap.Autocomplete,AMap.Geocoder,AMap.PlaceSearch,AMap.PolyEditor,AMap.CircleEditor,AMap.MarkerClusterer"></script> -->
-
 <script type="text/javascript" src="{% static '/ol/v3.20.1-dist/ol-debug.js' %}"></script>
 <script type="text/javascript" src="{% static 'virvo/wro/bd-echatrs.js' %}"></script>
 <script src="{% static 'scada/js/JClientDataAccess.js' %}"></script>
 <script src="{% static 'virvo/resources/js/zTree/js/ztreeSearch.js' %}"></script>
 <script src="{% static 'virvo/wro/concentratormap_ol3.js' %}"></script>
 
-  <script type="text/javascript">
+<script type="text/javascript">
      //120.25.223.180
     // var obj = new JGaraphPlugin.ClientDataAccess({hostName:'http://120.25.223.180',port:'8080'});
     // var obj = new JGaraphPlugin.ClientDataAccess({hostName:'120.78.255.129',port:'8080'});
     
     
     
- </script>
+</script>
 
  
 {% endblock %}

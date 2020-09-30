@@ -125,7 +125,9 @@ function assignmentNotExpandFilter(node){ // 搜索type等于人或者车
           anchor: [0.5, 46],
           anchorXUnits: 'fraction',
           anchorYUnits: 'pixels',
-          src: 'https://openlayers.org/en/v3.20.1/examples/data/icon.png'
+         // src: 'https://openlayers.org/en/v3.20.1/examples/data/icon.png'
+            src: '/static/virvo/images/20200929154640.png'
+
         }))
       });
 
@@ -329,12 +331,15 @@ function assignmentNotExpandFilter(node){ // 搜索type等于人或者车
       logoWidth = $("#header .brand").width();
       btnIconWidth = $("#header .toggle-navigation").width();
       windowWidth = $(window).width();
-      newwidth = (logoWidth + btnIconWidth + 40 + 2) / windowWidth * 100;
+     // newwidth = (logoWidth + btnIconWidth + 40 + 6) / windowWidth * 100;
+      newwidth = 300 / windowWidth * 100;
       $("#content-left").css({
-        "width": newwidth + "%"
+       // "width": newwidth + "%"
+       "width": 310 + "px"
       });
       $("#content-right").css({
-        "width": 100 - newwidth + "%"
+        //"width": 100 - newwidth + "%"
+        "width": windowWidth - 310 + "px"
       });
       $(".sidebar").attr("class", "sidebar sidebar-toggle");
       //$(".main-content-wrapper").attr("class","main-content-wrapper main-content-toggle-left");

@@ -5,6 +5,9 @@
 */
 html{overflow-y: scroll;}
 :root{overflow-y: auto;overflow-x: hidden;}
+:root::-webkit-scrollbar {
+        display: none;
+    }
 :root body{position: absolute;}
 body{user-select:none;-ms-user-select:none;-moz-user-select:none;-webkit-user-select:none;width: 100vw;}
 select.form-control{padding: 6px 40px 6px 11px}

@@ -87,10 +87,12 @@
             newwidth = (logoWidth + btnIconWidth + 46) / windowWidth * 100;
             //左右自适应宽度
             $contentLeft.css({
-                "width": newwidth + "%"
+             //   "width": newwidth + "%"
+               "width": 310 + "px"
             });
             $contentRight.css({
-                "width": 100 - newwidth + "%"
+              //  "width": 100 - newwidth + "%"
+               "width": windowWidth - 310 + "px"
             });
             //加载时隐藏left同时计算宽度
             $sidebar.attr("class", "sidebar sidebar-toggle");
@@ -252,6 +254,8 @@
                 })
               });
 
+
+
               var element = document.getElementById('popup');
               var popup = new ol.Overlay({
                 element: element,
@@ -260,8 +264,8 @@
                 offset: [0, -50]
                 });
                 map.addOverlay(popup);
-                
-        
+
+
                 // display popup on click
               map.on('pointermove', function(evt) {
                 //   console.log(evt);
@@ -670,7 +674,13 @@
             treeClickedType = treeNode.otype;
             // concentratormap.TabCarBox();
             concentratormap.showHidePeopleOrVehicle();
-            
+
+
+                      //重新渲染
+                      //map.render();
+                      //重新计算容器大小
+                      map.updateSize();
+
         },
         pressureGauge:function(){
             // ajax访问后端查询
@@ -943,6 +953,10 @@
                   console.log("2.")
 
                   $("#scalingBtn").unbind().bind("click", function () {
+
+
+
+
                     if ($(this).hasClass("fa-chevron-down")) {
                       oldMHeight = $("#MapContainer").height();
                       oldTHeight = $(".trackPlaybackTable .dataTables_scrollBody").height();
@@ -954,6 +968,10 @@
                       $(".trackPlaybackTable .dataTables_scrollBody").css({
                         "height": "0px"
                       });
+                      //重新渲染
+                      //map.render();
+                      //重新计算容器大小
+                      map.updateSize();
                     } else {
                       $(this).attr("class", "fa  fa-chevron-down");
                       $("#MapContainer").css({
@@ -962,6 +980,11 @@
                       $(".trackPlaybackTable .dataTables_scrollBody").css({
                         "height": oldTHeight + "px"
                       });
+
+                      //重新渲染
+                      //map.render();
+                      //重新计算容器大小
+                      map.updateSize();
                     }
                   });
           } else {
